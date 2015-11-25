@@ -9,11 +9,11 @@ class ApproxGraphPLE_Node:
     z = float
     disable = bool
     
-    def __init__(self,x,y,z,disable):
-        self.x=x
-        self.y=y
-        self.z=z
-        self.disable=disable
+    def __init__(self, x, y, z, disable):
+        self.x = x
+        self.y = y
+        self.z = z
+        self.disable = disable
         
 class ApproxGraphPLE_Edge:
     """Edge from the approximation graph of the PLE algorithm"""
@@ -31,24 +31,24 @@ Edge = ApproxGraphPLE_Edge
 class ApproxGraphPLE:
     """The class reprensenting the approximation graph for the PLE algorithm"""
     def __init__(self):
-        self.nodes=[]
-        self.edges={}
+        self.nodes = []
+        self.edges = {}
     
-    def distance_euclidian(node1,node2):
+    def distance_euclidian(node1, node2):
         d = (node1.x - node2.x)**2 + (node1.y - node2.y)**2 + (node1.y - node2.y)**2
         d = math.sqrt(d)
         return d
         
-    def distance(node1,node2):
-        distance_euclide(node1,node2)
+    def distance(node1, node2):
+        distance_euclide(node1, node2)
         
-    def add(self,node,edges):
+    def add(self, node, edges):
         self.nodes = self.nodes.append(node)
-        self.edges[node]=edges
+        self.edges[node] = edges
         
     def smallest_path_a_star(self, start, goal):
-        to_evaluate = {start : distance(start,goal)}
-        score = {start : 0. }
+        to_evaluate = {start: distance(start, goal)}
+        score = {start: 0. }
         seen = {}
         
         while len(to_evaluate) > 0:
@@ -59,7 +59,7 @@ class ApproxGraphPLE:
             to_evaluate.pop(current)
             seen[current] = 1
             
-            for neighbor, edge in self.edges[current].items() :
+            for neighbor, edge in self.edges[current].items():
                 if seen.has_key(neighbor):
                     continue
                 local_score = score[current] + edge.distance
