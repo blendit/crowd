@@ -2,6 +2,7 @@ import numpy as np
 import math
 import operator
 
+
 class ApproxGraphPLE_Node:
     """Node from the approximation graph of the PLE algorithm"""
     x = float
@@ -15,6 +16,7 @@ class ApproxGraphPLE_Node:
         self.z = z
         self.disable = disable
         
+        
 class ApproxGraphPLE_Edge:
     """Edge from the approximation graph of the PLE algorithm"""
     base_distance = float
@@ -27,6 +29,7 @@ class ApproxGraphPLE_Edge:
 
 Node = ApproxGraphPLE_Node
 Edge = ApproxGraphPLE_Edge
+
 
 class ApproxGraphPLE:
     """The class reprensenting the approximation graph for the PLE algorithm"""
@@ -48,7 +51,7 @@ class ApproxGraphPLE:
         
     def smallest_path_a_star(self, start, goal):
         to_evaluate = {start: distance(start, goal)}
-        score = {start: 0. }
+        score = {start: 0.}
         seen = {}
         
         while len(to_evaluate) > 0:
@@ -60,13 +63,12 @@ class ApproxGraphPLE:
             seen[current] = 1
             
             for neighbor, edge in self.edges[current].items():
-                if seen.has_key(neighbor):
+                if neighbor in seen:
                     continue
                 local_score = score[current] + edge.distance
-                if to_evaluate.has_key(neighbor):
+                if neighbor in to_evaluate:
                     if local_score > score[neighbor]:
                         continue
                 
-                to_evaluate[neighbor] = local_score + distance(neighbor,goal)
+                to_evaluate[neighbor] = local_score + distance(neighbor, goal)
                 score[neighbor] = local_score
-    
