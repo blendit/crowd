@@ -12,7 +12,7 @@ class ApproxGraphPLE_Node:
     # State of the node in the graph
     disable = bool
     
-    def __init__(self, x, y, z, disable):
+    def __init__(self, x=0., y=0., z=0., disable=false):
         self.x = x
         self.y = y
         self.z = z
@@ -37,27 +37,37 @@ Edge = ApproxGraphPLE_Edge
 
 class ApproxGraphPLE:
     """The class reprensenting the approximation graph for the PLE algorithm"""
-    def __init__(self):
+  
+    def __init__(self, dx=0., sizeX=0., sizeY=0., posX=0., posY=0.):
         self.nodes = []  # List of the nodes
-        self.edges = {}  # (Temporary) Dictionary of dictionaries of edges
+        self.edges = {}
+        self.dx = dx
+        self.sizeX = sizeX.
+        self.sizeY = sizeY
+        self.posX = posX
+        self.posY = posY
     
-    # Heuristic distance
     def distance_euclidian(node1, node2):
+        """Heuristic distance"""
         d = (node1.x - node2.x)**2 + (node1.y - node2.y)**2 + (node1.y - node2.y)**2
         d = math.sqrt(d)
         return d
     
-    # Distance used in the A* algorithm
     def distance(node1, node2):
+        """Distance used in the A* algorithm"""
         distance_euclide(node1, node2)
     
-    # Temporary way to add nodes
     def add(self, node, edges):
+        """Temporary way to add nodes"""
         self.nodes = self.nodes.append(node)
         self.edges[node] = edges
+        
+    def create(self):
+        """Create a plan graph according to parameters"""
+        node=Node()
     
-    # A* algorithm
     def smallest_path_a_star(self, start, goal):
+        """A* algorithm"""
         to_evaluate = {start: distance(start, goal)}  # Dictionary of the nodes to evaluate and the approximated distance to the goal
         score = {start: 0.}  # Distance to the goal
         seen = {}  # Dictionary of the node seen
@@ -70,7 +80,7 @@ class ApproxGraphPLE:
             to_evaluate.pop(current)
             seen[current] = 1  # Adding current into the dictionary (the value doesn't interest us)
             
-            for neighbor, edge in self.edges[current].items():
+            for (neighbor, edge) in self.edges[current]:
                 if neighbor.disable:
                     continue
                 if neighbor in seen:
