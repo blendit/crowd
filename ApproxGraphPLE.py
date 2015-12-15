@@ -75,12 +75,6 @@ class Graph:
             for j in range(0, self.nY):
                 my_node = self.nodes[1 + i + j * self.nX]
                 my_neighbors = self.edges[my_node]
-                """
-                if i > 0:
-                    neighbor = self.nodes[i + j * self.nX]
-                    my_neighbors[neighbor] = Edge(0., my_node, neighbor)
-                    calc_base_distance(my_neighbors[neighbor])
-                    my_neighbors[neighbor].init_distance()"""
                 if i < self.nX - 1:
                     neighbor = self.nodes[2 + i + j * self.nX]
                     new_edge = Edge(0., my_node, neighbor)
@@ -88,13 +82,6 @@ class Graph:
                     self.edges[neighbor][my_node] = new_edge
                     calc_base_distance(my_neighbors[neighbor])
                     my_neighbors[neighbor].init_distance()
-                """
-                if j > 0:
-                    neighbor = self.nodes[1 + i + (j - 1) * self.nX]
-                    my_neighbors[neighbor] = Edge(0., my_node, neighbor)
-                    calc_base_distance(my_neighbors[neighbor])
-                    my_neighbors[neighbor].init_distance()
-                    """
                 if j < self.nY - 1:
                     neighbor = self.nodes[1 + i + (j + 1) * self.nX]
                     new_edge = Edge(0., my_node, neighbor)
@@ -102,12 +89,6 @@ class Graph:
                     self.edges[neighbor][my_node] = new_edge
                     calc_base_distance(my_neighbors[neighbor])
                     my_neighbors[neighbor].init_distance()
-                    """
-                if i > 0 and j > 0:
-                    neighbor = self.nodes[i + (j - 1) * self.nX]
-                    my_neighbors[neighbor] = Edge(0., my_node, neighbor)
-                    calc_base_distance(my_neighbors[neighbor])
-                    my_neighbors[neighbor].init_distance()"""
                 if i < self.nX - 1 and j > 0:
                     neighbor = self.nodes[2 + i + (j - 1) * self.nX]
                     new_edge = Edge(0., my_node, neighbor)
@@ -122,12 +103,6 @@ class Graph:
                     self.edges[neighbor][my_node] = new_edge
                     calc_base_distance(my_neighbors[neighbor])
                     my_neighbors[neighbor].init_distance()
-                    """
-                if j < self.nY - 1 and i > 0:
-                    neighbor = self.nodes[i + (j + 1) * self.nX]
-                    my_neighbors[neighbor] = Edge(0., my_node, neighbor)
-                    calc_base_distance(my_neighbors[neighbor])
-                    my_neighbors[neighbor].init_distance()"""
                 self.edges[my_node] = my_neighbors
 
     def find_neighbors(self, x, y):
