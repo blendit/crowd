@@ -8,6 +8,9 @@ class Node:
         self.y = y
         self.z = z
         self.disable = disable
+        # Two atributes used in the A* algorithm in order to reduce memory consumption.
+        self.seen = False
+        self.score = 0.
 
     def distance_euclidian(self, node2):
         """Heuristic distance"""
@@ -67,49 +70,64 @@ class Graph:
                 self.nodes.append(Node(x=self.posX + self.d * i, y=self.posY + self.d * j))
         for i in range(0, self.nX):
             for j in range(0, self.nY):
+                self.edges[self.nodes[1 + i + j * self.nX]] = {}
+        for i in range(0, self.nX):
+            for j in range(0, self.nY):
                 my_node = self.nodes[1 + i + j * self.nX]
-                self.edges[my_node] = {}
                 my_neighbors = self.edges[my_node]
+                """
                 if i > 0:
                     neighbor = self.nodes[i + j * self.nX]
                     my_neighbors[neighbor] = Edge(0., my_node, neighbor)
                     calc_base_distance(my_neighbors[neighbor])
-                    my_neighbors[neighbor].init_distance()
+                    my_neighbors[neighbor].init_distance()"""
                 if i < self.nX - 1:
                     neighbor = self.nodes[2 + i + j * self.nX]
-                    my_neighbors[neighbor] = Edge(0., my_node, neighbor)
+                    new_edge = Edge(0., my_node, neighbor)
+                    my_neighbors[neighbor] = new_edge
+                    self.edges[neighbor][my_node] = new_edge
                     calc_base_distance(my_neighbors[neighbor])
                     my_neighbors[neighbor].init_distance()
+                """
                 if j > 0:
                     neighbor = self.nodes[1 + i + (j - 1) * self.nX]
                     my_neighbors[neighbor] = Edge(0., my_node, neighbor)
                     calc_base_distance(my_neighbors[neighbor])
                     my_neighbors[neighbor].init_distance()
+                    """
                 if j < self.nY - 1:
                     neighbor = self.nodes[1 + i + (j + 1) * self.nX]
-                    my_neighbors[neighbor] = Edge(0., my_node, neighbor)
+                    new_edge = Edge(0., my_node, neighbor)
+                    my_neighbors[neighbor] = new_edge
+                    self.edges[neighbor][my_node] = new_edge
                     calc_base_distance(my_neighbors[neighbor])
                     my_neighbors[neighbor].init_distance()
+                    """
                 if i > 0 and j > 0:
                     neighbor = self.nodes[i + (j - 1) * self.nX]
                     my_neighbors[neighbor] = Edge(0., my_node, neighbor)
                     calc_base_distance(my_neighbors[neighbor])
-                    my_neighbors[neighbor].init_distance()
+                    my_neighbors[neighbor].init_distance()"""
                 if i < self.nX - 1 and j > 0:
                     neighbor = self.nodes[2 + i + (j - 1) * self.nX]
-                    my_neighbors[neighbor] = Edge(0., my_node, neighbor)
+                    new_edge = Edge(0., my_node, neighbor)
+                    my_neighbors[neighbor] = new_edge
+                    self.edges[neighbor][my_node] = new_edge
                     calc_base_distance(my_neighbors[neighbor])
                     my_neighbors[neighbor].init_distance()
                 if j < self.nY - 1 and i < self.nX - 1:
                     neighbor = self.nodes[2 + i + (j + 1) * self.nX]
-                    my_neighbors[neighbor] = Edge(0., my_node, neighbor)
+                    new_edge = Edge(0., my_node, neighbor)
+                    my_neighbors[neighbor] = new_edge
+                    self.edges[neighbor][my_node] = new_edge
                     calc_base_distance(my_neighbors[neighbor])
                     my_neighbors[neighbor].init_distance()
+                    """
                 if j < self.nY - 1 and i > 0:
                     neighbor = self.nodes[i + (j + 1) * self.nX]
                     my_neighbors[neighbor] = Edge(0., my_node, neighbor)
                     calc_base_distance(my_neighbors[neighbor])
-                    my_neighbors[neighbor].init_distance()
+                    my_neighbors[neighbor].init_distance()"""
                 self.edges[my_node] = my_neighbors
 
     def find_neighbors(self, x, y):
@@ -178,29 +196,30 @@ class Graph:
         start = self.nodes[0]
         goal = self.nodes[1 + self.nX * self.nY]
         to_evaluate = {start: distance(start, goal)}  # Dictionary of the nodes to evaluate and the approximated distance to the goal
-        score = {start: 0.}  # Distance to the goal
-        seen = {}  # Dictionary of the node seen
+        start.score = 0.  # Distance to the goal
         
         while len(to_evaluate) > 0:
             current = min(to_evaluate.items(), key=lambda x: x[1])[0]  # Get the minimum node of to_evaluate
             # print('Je vois (%.2f,%.2f) à %.2f' %(current.x,current.y,score[current]))
             
             if current == goal:  # It is over
-                return score[goal]
+                for node in self.nodes:
+                    node.seen = False
+                return goal.score
                 
             to_evaluate.pop(current)
-            seen[current] = 1  # Adding current into the dictionary (the value doesn't interest us)
+            current.seen = True  # Adding current into the dictionary (the value doesn't interest us)
             
             for (neighbor, edge) in self.edges[current].items():
                 if neighbor.disable or edge.disable:
                     continue
-                if neighbor in seen:
+                if neighbor.seen:
                     continue
-                local_score = score[current] + edge.distance  # Posible minimum distance to the start
+                local_score = current.score + edge.distance  # Posible minimum distance to the start
                 if neighbor in to_evaluate:
-                    if local_score >= score[neighbor]:
+                    if local_score >= neighbor.score:
                         continue
                 
                 to_evaluate[neighbor] = local_score + distance(neighbor, goal)  # Distance so far + heuristic distance
-                score[neighbor] = local_score
+                neighbor.score = local_score
         # Error -> TODO
