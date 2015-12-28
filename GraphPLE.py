@@ -14,7 +14,7 @@ class Node:
 
     def distance_euclidian(self, node2):
         """Heuristic distance"""
-        d = (self.x - node2.x)**2 + (self.y - node2.y)**2 + (self.z - node2.z)**2
+        d = (self.x - node2.x) ** 2 + (self.y - node2.y) ** 2 + (self.z - node2.z) ** 2
         d = math.sqrt(d)
         return d
         
