@@ -26,7 +26,7 @@ def distance(node1, node2):
         
 class Edge:
     """Edge from the approximation graph of the PLE algorithm"""
-    def __init__(self, base_distance, node1, node2, disable=False):
+    def __init__(self, node1, node2, base_distance=distance, disable=False):
         self.base_distance = base_distance
         self.distance = base_distance
         self.nodes = [node1, node2]
