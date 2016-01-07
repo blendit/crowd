@@ -3,7 +3,11 @@ python: "3.4"
 
 install:
   - "pip install pep8"
+  - "pip install coveralls"
 
 before_script: "pep8 . --ignore=W293,E501"
 
-script: ls
+script: coverage run --source=test_graph test_graph.py
+
+after_success:
+  coveralls
