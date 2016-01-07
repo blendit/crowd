@@ -55,7 +55,7 @@ class TestClassGraph(unittest.TestCase):
         g.add_entry_point(0, 0)
         g.add_goal_point(10, 10)
 
-        self.assertEqual(g.smallest_path_a_star(), 10*sqrt(2))
+        self.assertEqual(g.smallest_path_a_star(), 10 * sqrt(2))
         
         g.reset_graph()
         g.remove_entry_point()
@@ -64,7 +64,7 @@ class TestClassGraph(unittest.TestCase):
         g.add_entry_point(1, 1)
         g.add_goal_point(9, 9)
 
-        self.assertEqual(g.smallest_path_a_star(), 8*sqrt(2))
+        self.assertEqual(g.smallest_path_a_star(), 8 * sqrt(2))
         
 
 if __name__ == '__main__':
