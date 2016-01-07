@@ -8,13 +8,16 @@ class PathEnvironnement:
         self.mine_field = mine_field  # mine_field is a set of forbidden surfaces
 
     def intersection_not_empty(obj1, obj2):
-        """This function return true if the intersection of the objects is empty, false otherwise"""
+        """Returns true if the intersection of the objects is empty, false otherwise"""
         intersection = obj1.intersection(obj2)
         if intersection.is_empty:
-            return 0
+            return False
         else:
-            return 1
-    
+            return True
+   
+    def intersect_mine_field(self, point1, point2, t):
+        """Returns true if the line from point1 to point2 of thickness t intersect the mine_field"""
+
     def is_disable_node(self, node):
         for exclusion in self.mine_field:
             if exclusion.encloses_point(Point(node.x, node.y)):
