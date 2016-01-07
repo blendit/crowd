@@ -14,7 +14,7 @@ class Node:
 
     def distance_euclidian(self, node2):
         """Heuristic distance"""
-        d = (self.x - node2.x)**2 + (self.y - node2.y)**2 + (self.z - node2.z)**2
+        d = (self.x - node2.x) ** 2 + (self.y - node2.y) ** 2 + (self.z - node2.z) ** 2
         d = math.sqrt(d)
         return d
         
@@ -26,7 +26,7 @@ def distance(node1, node2):
         
 class Edge:
     """Edge from the approximation graph of the PLE algorithm"""
-    def __init__(self, base_distance, node1, node2, disable=False):
+    def __init__(self, node1, node2, base_distance=distance, disable=False):
         self.base_distance = base_distance
         self.distance = base_distance
         self.nodes = [node1, node2]
@@ -42,10 +42,20 @@ class Edge:
     def init_distance(self):
         self.distance = self.base_distance
 
+        
+def default_calc_base_distance(edge):
+        edge.base_distance_gen()
 
+        
 class Graph:
     """The class reprensenting the approximation graph for the PLE algorithm"""
-    def __init__(self, d=0., sizeX=0., sizeY=0., posX=0., posY=0.):
+    def __init__(self, d=0., sizeX=0., sizeY=0., posX=0., posY=0., calc_base_distance=default_calc_base_distance):
+        """Initailisation of a grid graph, with:
+        * *d*: size of an edge of the grid
+        * *sizeX*: x size of the grid
+        * *sizeY*: y size of the grid
+        * *posX*: x position of the upper left point of the grid
+        * *posY*: y position of the upper left point of the grid"""
         self.nodes = []  # List of the nodes
         self.edges = {}
         self.d = d
@@ -55,9 +65,7 @@ class Graph:
         self.posY = posY
         self.nX = 0
         self.nY = 0
-        
-    def default_calc_base_distance(edge):
-        edge.base_distance_gen()
+        self.create(calc_base_distance)
         
     def create(self, calc_base_distance=default_calc_base_distance):
         """Create a grid plane graph according to parameters"""
@@ -77,28 +85,28 @@ class Graph:
                 my_neighbors = self.edges[my_node]
                 if i < self.nX - 1:
                     neighbor = self.nodes[2 + i + j * self.nX]
-                    new_edge = Edge(0., my_node, neighbor)
+                    new_edge = Edge(my_node, neighbor, 0.)
                     my_neighbors[neighbor] = new_edge
                     self.edges[neighbor][my_node] = new_edge
                     calc_base_distance(my_neighbors[neighbor])
                     my_neighbors[neighbor].init_distance()
                 if j < self.nY - 1:
                     neighbor = self.nodes[1 + i + (j + 1) * self.nX]
-                    new_edge = Edge(0., my_node, neighbor)
+                    new_edge = Edge(my_node, neighbor, 0.)
                     my_neighbors[neighbor] = new_edge
                     self.edges[neighbor][my_node] = new_edge
                     calc_base_distance(my_neighbors[neighbor])
                     my_neighbors[neighbor].init_distance()
                 if i < self.nX - 1 and j > 0:
                     neighbor = self.nodes[2 + i + (j - 1) * self.nX]
-                    new_edge = Edge(0., my_node, neighbor)
+                    new_edge = Edge(my_node, neighbor, 0.)
                     my_neighbors[neighbor] = new_edge
                     self.edges[neighbor][my_node] = new_edge
                     calc_base_distance(my_neighbors[neighbor])
                     my_neighbors[neighbor].init_distance()
                 if j < self.nY - 1 and i < self.nX - 1:
                     neighbor = self.nodes[2 + i + (j + 1) * self.nX]
-                    new_edge = Edge(0., my_node, neighbor)
+                    new_edge = Edge(my_node, neighbor, 0.)
                     my_neighbors[neighbor] = new_edge
                     self.edges[neighbor][my_node] = new_edge
                     calc_base_distance(my_neighbors[neighbor])
@@ -132,7 +140,7 @@ class Graph:
         self.edges[me] = {}
         for neighbor in my_neighbors:
             # print('voisin : (%.2f,%.2f)' %(neighbor.x,neighbor.y))
-            new_edge = Edge(0., me, neighbor)
+            new_edge = Edge(me, neighbor, 0.)
             new_edge.base_distance_gen()
             new_edge.init_distance()
             self.edges[me][neighbor] = new_edge
@@ -153,7 +161,7 @@ class Graph:
         self.edges[me] = {}
         for neighbor in my_neighbors:
             # print('voisin : (%.2f,%.2f)' %(neighbor.x,neighbor.y))
-            new_edge = Edge(0., me, neighbor)
+            new_edge = Edge(me, neighbor, 0.)
             new_edge.base_distance_gen()
             new_edge.init_distance()
             self.edges[me][neighbor] = new_edge
@@ -165,6 +173,7 @@ class Graph:
         for neighbor in self.edges[goal].keys():
             self.edges[neighbor].pop(goal)
         self.edges.pop(goal)
+        self.nodes.pop()
             
     def smallest_path_a_star(self):
         """A* algorithm"""
@@ -198,3 +207,8 @@ class Graph:
                 to_evaluate[neighbor] = local_score + distance(neighbor, goal)  # Distance so far + heuristic distance
                 neighbor.score = local_score
         # Error -> TODO
+        
+    def reset_graph(self):
+        for node in self.nodes:
+            node.seen = False
+            node.score = 0.
