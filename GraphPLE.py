@@ -173,6 +173,7 @@ class Graph:
         for neighbor in self.edges[goal].keys():
             self.edges[neighbor].pop(goal)
         self.edges.pop(goal)
+        self.nodes.pop()
             
     def smallest_path_a_star(self):
         """A* algorithm"""
