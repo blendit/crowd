@@ -59,6 +59,7 @@ class TestClassGraph(unittest.TestCase):
         
         g.remove_entry_point()
         g.remove_goal_point()
+        g.reset_graph()
         g.add_entry_point(1, 1)
         g.add_goal_point(9, 9)
 
