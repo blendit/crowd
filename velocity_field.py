@@ -1,19 +1,20 @@
 import shapely.geometry as S
 import math
 
+
 class VelocityField:
     """The class independant from Blender describing the allowed velocity fields"""
     def __init__(self, individual, tau, others):
         """Create the velocity field for the PLE algorithm"""
         # tau is the small movement time for which we compute the velocity field
-        # others is a list of the others individuals (the first 
-        self.individual = individual # individual whose velocity field is calculated
-        self.init_field(dt) # Base velocity field (square of sidelength 2 vmax * tau)
+        # others is a list of the others individuals (the first
+        self.individual = individual  # individual whose velocity field is calculated
+        self.init_field(dt)  # Base velocity field (square of sidelength 2 vmax * tau)
         
     def init_field(self, tau):
         """Create an initial velocity field for the individual"""
-        vmax = self.individual.vmax # Maximum velocity of the individual
-        radius = vmax * tau # We compute the "radius" of the square
+        vmax = self.individual.vmax  # Maximum velocity of the individual
+        radius = vmax * tau  # We compute the "radius" of the square
         self.field = S.Polygon([(- radius, - radius), (radius, - radius), (- radius, radius), (radius, radius)])
         
     def is_far_away(self, neighboor, tau):
@@ -22,17 +23,20 @@ class VelocityField:
         dy = neighboor.y - self.individual.y
         dz = neighboor.z - self.individual.z
         distance = math.sqrt(dx ** 2 + dy ** 2 + dz ** 2)
-        if distance > individual.vmax * tau + neighboor.vmax * tau + individual.radius + neighboor.radius:
+        if distance > self.individual.vmax * tau + neighboor.vmax * tau + self.individual.radius + neighboor.radius:
             return True
         else:
             return False
     
+    # TODO : Expend all of this to 3D situations
+    def orca(self, neighboor, tau):
+        """Computes the ORCA hyperplane between the two individual (cf Reciprocal n-body collision avoidance)"""
+              
     def compute_field(self, tau, others):
         """This function computes a velocity_field for self.individual which is collision free with the others individuals"""
         for neighboor in others:
-            if neighboor == individual: # we only consider the others individual
+            if neighboor == individual:  # we only consider the others individual
                 continue
-            if is_far_away(neighboor):  # we do not do computation for to far away individuals
+            if is_far_away(neighboor):   # we do not do computation for to far away individuals
                 continue
             # TODO : call a function that effectively compute the velocity field
-            
