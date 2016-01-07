@@ -206,3 +206,8 @@ class Graph:
                 to_evaluate[neighbor] = local_score + distance(neighbor, goal)  # Distance so far + heuristic distance
                 neighbor.score = local_score
         # Error -> TODO
+        
+    def reset_graph(self):
+        for node in self.nodes:
+            node.seen = False
+            node.score = 0.
