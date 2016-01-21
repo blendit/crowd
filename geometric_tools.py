@@ -16,12 +16,14 @@ def angle(p1, p2):
         theta = theta + 2 * math.pi
     return theta
 
+
 def distance(point1, point2):
     """Euclidian Distance between two points"""
-    d = (point1.x - point2.x)**2 + (point1.y - point2.y)**2 
+    d = (point1.x - point2.x)**2 + (point1.y - point2.y)**2
     d = math.sqrt(d)
     return d
  
+
 def create_cone(point1, point2, dmax):
     """Create a polygon representing a cone. It starts at 0 and the 2 limits of the cone are given by the two points, the angle is also smaller than Pi. Moreover this cone is intersected with a square given by dmax"""
     theta1 = argument(point1)
@@ -52,7 +54,8 @@ def create_cone(point1, point2, dmax):
     z = max(point2.x, point2.y)
     verticies.append(S.Point(point2.x / z * dmax, point2.y / z * dmax))
     return S.Polygon(verticies)
-    
+ 
+   
 def cut_cone(cone, center, radius):
     """Create a truncated cone for the ORCA algorithm given the cone and a circle.
        To create this truncated cone, we need to first to cut a triangle consisting of the point 0 and the two points of the circle who make a diameter perpandicular to the segment [0,center of the circle].
@@ -63,7 +66,8 @@ def cut_cone(cone, center, radius):
     result = cone.difference(disk_minus)
     result = result.union(disk_plus)
     return result
-    
+
+   
 def create_truncate_cone(pA, rA, pB, rB, dmax, tau):
     """Create a truncated cone for the ORCA algorithm"""
     # We first need to find the two points for the create_cone function
@@ -81,9 +85,8 @@ def create_truncate_cone(pA, rA, pB, rB, dmax, tau):
     center.y /= tau
     cone = cut_cone(cone, center, (rA + rB) / tau)
     return cone
-    
+
+  
 def find_closest(my_list, point):
     # TODO
     return 0
-    
-    
