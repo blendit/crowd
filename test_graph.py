@@ -65,7 +65,3 @@ class TestClassGraph(unittest.TestCase):
         g.add_goal_point(9, 9)
 
         self.assertEqual(g.smallest_path_a_star(), 8 * sqrt(2))
-        
-
-if __name__ == '__main__':
-    unittest.main()
