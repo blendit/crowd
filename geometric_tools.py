@@ -86,18 +86,6 @@ def create_truncate_cone(pA, rA, pB, rB, dmax, tau):
     cone = cut_cone(cone, center, (rA + rB) / tau)
     return cone
 
-<<<<<<< HEAD
-def closest(pA, pB, pM):
-    """Find the closest point to M on the segment [AB]. Those points are couples."""
-    dist = (pM[0] - pA[0]) * (pB[0] - pA[0]) + (pM[1] - pA[1]) * (pB[1] - pA[1])
-    dist /= math.sqrt((pB[0] - pA[0]) ** 2 + (pB[1] - pA[1]) ** 2)
-
-def find_closest(my_list, pM):
-    """Find the closest point to pM among the boundaries represented by the lists of points given in parameter"""
-    first = my_list[0]
-    last = my_list[len(my_list) - 1]
-    
-=======
 
 def find_projection(pA, pB, pM):
     """Find the closest point on the segment [AB] to the point M"""
@@ -113,7 +101,9 @@ def find_projection(pA, pB, pM):
     else:
         return (x,y)
 
+
 def find_closest(my_list, point):
+    """Find the closest point of the boundaries of a polygon represented by my_list to the point passed as second parameter"""
     first = my_list[0]
     second = my_list[len(my_list) - 1]
     minimum = [find_projection(first, second, point)]
@@ -123,5 +113,17 @@ def find_closest(my_list, point):
         second = my_list[i + 1]
         proj = find_projection(first, second, point)
         dist = distance(point,proj)
->>>>>>> 5799c6095b7192bada1193befad794dd599b826d
-    return 0
+        if dist < minimum[1]:
+            minimum = [proj, dist]
+    return Point(minimum[0])
+    
+def half_plane(point, orthogonal, vmax):
+    """Create the intersection of the half plane starting at point facing the direction given by orthogonal with the square  of 'radius' vmax"""
+    end_points = [S.Point(-vmax, -vmax), S.Point(vmax, -vmax), S.Point(vmax, vmax), S.Point(-vmax, vmax)]  # Boundaries of the square
+    
+    
+    
+    
+    
+    
+    
