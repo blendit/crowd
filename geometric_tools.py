@@ -99,7 +99,7 @@ def find_projection(pA, pB, pM):
     elif scalar > dist ** 2:
         return pB
     else:
-        return (x,y)
+        return (x, y)
 
 
 def find_closest(my_list, point):
@@ -107,23 +107,17 @@ def find_closest(my_list, point):
     first = my_list[0]
     second = my_list[len(my_list) - 1]
     minimum = [find_projection(first, second, point)]
-    minimum.append(distance(point,minimum[0]))
+    minimum.append(distance(point, minimum[0]))
     for i in range(len(my_list) - 1):
         first = my_list[i]
         second = my_list[i + 1]
         proj = find_projection(first, second, point)
-        dist = distance(point,proj)
+        dist = distance(point, proj)
         if dist < minimum[1]:
             minimum = [proj, dist]
     return Point(minimum[0])
+
     
 def half_plane(point, orthogonal, vmax):
     """Create the intersection of the half plane starting at point facing the direction given by orthogonal with the square  of 'radius' vmax"""
     end_points = [S.Point(-vmax, -vmax), S.Point(vmax, -vmax), S.Point(vmax, vmax), S.Point(-vmax, vmax)]  # Boundaries of the square
-    
-    
-    
-    
-    
-    
-    
