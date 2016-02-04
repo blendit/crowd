@@ -14,9 +14,12 @@ class PathEnvironnement:
             return False
         else:
             return True
-   
+
     def intersect_mine_field(self, point1, point2, t):
         """Returns true if the line from point1 to point2 of thickness t intersect the mine_field"""
+        line = S.LineString(point1, point2)
+        line = line.buffer(t)
+        return intersection_not_empty(line, self.mine_field)
 
     def is_disable_node(self, node):
         for exclusion in self.mine_field:
