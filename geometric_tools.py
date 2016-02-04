@@ -86,7 +86,14 @@ def create_truncate_cone(pA, rA, pB, rB, dmax, tau):
     cone = cut_cone(cone, center, (rA + rB) / tau)
     return cone
 
-  
-def find_closest(my_list, point):
-    # TODO
+def closest(pA, pB, pM):
+    """Find the closest point to M on the segment [AB]. Those points are couples."""
+    dist = (pM[0] - pA[0]) * (pB[0] - pA[0]) + (pM[1] - pA[1]) * (pB[1] - pA[1])
+    dist /= math.sqrt((pB[0] - pA[0]) ** 2 + (pB[1] - pA[1]) ** 2)
+
+def find_closest(my_list, pM):
+    """Find the closest point to pM among the boundaries represented by the lists of points given in parameter"""
+    first = my_list[0]
+    last = my_list[len(my_list) - 1]
+    
     return 0
