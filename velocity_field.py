@@ -1,5 +1,6 @@
 import shapely.geometry as S
 import math
+from geometric_tools import *
 
 
 class VelocityField:
@@ -31,6 +32,14 @@ class VelocityField:
     # TODO : Expend all of this to 3D situations
     def orca(self, neighboor, tau):
         """Computes the ORCA hyperplane between the two individual (cf Reciprocal n-body collision avoidance)"""
+        vmax = self.individual.vmax
+        point_us = S.Point(self.individual.x, self.individual.y)
+        point_him = S.Point(neighboor.x, neighboor.y)
+        cone = create_truncate_cone(point_us, self.individual.radius, point_him, neighboor.radius, vmax * tau, tau)
+        v_opt = difference(self.individual.v, neighboor.v)
+        u = find_closest(my_list, v_opt)
+        origin = S.Point(self.individual.v.x + 1.0/2.0 * u.x, self.individual.v.y + 1.0/2.0 * u.y)
+        return half_plane(origin, u, vmax)
               
     def compute_field(self, tau, others):
         """This function computes a velocity_field for self.individual which is collision free with the others individuals"""

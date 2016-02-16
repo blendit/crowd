@@ -17,6 +17,10 @@ def angle(p1, p2):
     return theta
 
 
+def difference(p1, p2):
+    return S.Point(p1.x - p2.x, p1.y - p2.y)
+
+
 def distance(point1, point2):
     """Euclidian Distance between two points"""
     d = (point1.x - point2.x)**2 + (point1.y - point2.y)**2
@@ -119,7 +123,7 @@ def find_closest(my_list, point):
 
 
 def in_half_plane(origin, orthogonal, point):
-    if (point.x -origin.x) * orthogonal.x + (point.y -origin.y) * orthogonal.y >= 0:
+    if (point.x -origin.x) * orthogonal.x + (point.y -origin.y) * orthogonal.y >= 0.000001:
         return True
     return False
    
@@ -147,4 +151,8 @@ def half_plane(origin, orthogonal, vmax):
     for p in end_points:
         if in_half_plane(origin, orthogonal, p):
             points.append(p)
-    
+    for i in range(4):
+        for p in intersection_line_line(origin, orthogonal, end_points[i], end_points[(i + 1) % 4]):
+            points.append(p)
+    points.sort(key=lambda x: argument(x))
+    return S.Polygon(points)    
