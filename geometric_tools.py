@@ -155,4 +155,4 @@ def half_plane(origin, orthogonal, vmax):
         for p in intersection_line_line(origin, orthogonal, end_points[i], end_points[(i + 1) % 4]):
             points.append(p)
     points.sort(key=lambda x: argument(x))
-    return S.Polygon(points)  
+    return S.Polygon(points)
