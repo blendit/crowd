@@ -123,7 +123,7 @@ def find_closest(my_list, point):
 
 
 def in_half_plane(origin, orthogonal, point):
-    if (point.x -origin.x) * orthogonal.x + (point.y -origin.y) * orthogonal.y >= 0.000001:
+    if (point.x - origin.x) * orthogonal.x + (point.y - origin.y) * orthogonal.y >= 0.000001:
         return True
     return False
    
@@ -155,4 +155,4 @@ def half_plane(origin, orthogonal, vmax):
         for p in intersection_line_line(origin, orthogonal, end_points[i], end_points[(i + 1) % 4]):
             points.append(p)
     points.sort(key=lambda x: argument(x))
-    return S.Polygon(points)    
+    return S.Polygon(points)  

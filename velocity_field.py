@@ -38,7 +38,7 @@ class VelocityField:
         cone = create_truncate_cone(point_us, self.individual.radius, point_him, neighboor.radius, vmax * tau, tau)
         v_opt = difference(self.individual.v, neighboor.v)
         u = find_closest(my_list, v_opt)
-        origin = S.Point(self.individual.v.x + 1.0/2.0 * u.x, self.individual.v.y + 1.0/2.0 * u.y)
+        origin = S.Point(self.individual.v.x + 1.0 / 2.0 * u.x, self.individual.v.y + 1.0 / 2.0 * u.y)
         return half_plane(origin, u, vmax)
               
     def compute_field(self, tau, others):
