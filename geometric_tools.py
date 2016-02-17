@@ -30,6 +30,13 @@ def distance(point1, point2):
     d = math.sqrt(d)
     return d
 
+
+def distance_tuple(point1, point2):
+    """Euclidian Distance between two points"""
+    d = (point1[0] - point2[0])**2 + (point1[1] - point2[1])**2
+    d = math.sqrt(d)
+    return d
+    
  
 def point_to_tuple(point_list):
     """Transform a list of Points into a list of tuples"""
@@ -89,6 +96,7 @@ def create_truncate_cone(pA, rA, pB, rB, dmax, tau):
     if norm > 0:
         cos_theta = math.sqrt(norm ** 2 - r ** 2) / norm
         sin_theta = r / norm
+        norm /= tau
         # Trigonometric formulas
         point1 = S.Point(norm * (math.cos(theta_c) * cos_theta + sin_theta * math.sin(theta_c)), norm * (math.sin(theta_c) * cos_theta - sin_theta * math.cos(theta_c)))
         point2 = S.Point(norm * (math.cos(theta_c) * cos_theta - sin_theta * math.sin(theta_c)), norm * (math.sin(theta_c) * cos_theta + sin_theta * math.cos(theta_c)))
@@ -99,23 +107,33 @@ def create_truncate_cone(pA, rA, pB, rB, dmax, tau):
     center = S.Point(center.x / tau, center.y / tau)
     # We truncate the cone
     cone = cut_cone(cone, center, (rA + rB) / tau, dmax)
-    return cone
+    # TODO : Add point1/tau and point2/tau in the return
+    return [cone, point1, point2]
 
 
 def find_projection(pA, pB, pM):
     """Find the closest point on the segment [AB] to the point M"""
     # TODO : This is not working at all
+    """
     dist = math.sqrt((pB[0] - pA[0]) ** 2 + (pB[1] - pA[1]) ** 2)
     AM = (pM[0] - pA[0]) * (pB[0] - pA[0]) + (pM[1] - pA[1]) * (pB[1] - pA[1])
     AM /= dist
     x, y = pM[0] + AM / dist * (pB[0] - pA[0]), pM[1] + AM / dist * (pB[1] - pA[1])
     scalar = (x - pA[0]) * (pB[0] - pA[0]) + (y - pA[1]) * (pB[1] - pA[1])
+    """
+    vectAB = (pB[0] - pA[0], pB[1] - pA[1])
+    if vectAB == (0, 0):
+        return pA
+    vectAM = (pM[0] - pA[0], pM[1] - pA[1])
+    scalar = vectAB[0] * vectAM[0] + vectAB[1] * vectAM[1]
+    dist_square = vectAB[0] * vectAB[0] + vectAB[1] * vectAB[1]
     if 0 > scalar:
         return pA
-    elif scalar > dist ** 2:
+    elif scalar > dist_square:
         return pB
     else:
-        return (x, y)
+        scalar = scalar / dist_square
+        return (pA[0] + vectAB[0] * scalar, pA[1] + vectAB[1] * scalar)
 
 
 def find_closest(my_list, point):
@@ -123,15 +141,16 @@ def find_closest(my_list, point):
     first = my_list[0]
     second = my_list[len(my_list) - 1]
     minimum = [find_projection(first, second, point)]
-    minimum.append(distance(point, minimum[0]))
+    minimum.append(distance_tuple(point, minimum[0]))
     for i in range(len(my_list) - 1):
         first = my_list[i]
         second = my_list[i + 1]
         proj = find_projection(first, second, point)
-        dist = distance(point, proj)
+        dist = distance_tuple(point, proj)
         if dist < minimum[1]:
             minimum = [proj, dist]
-    return Point(minimum[0])
+    # TODO : Take into account the fact that the cone is cut
+    return S.Point(minimum[0][0], minimum[0][1])
 
 
 def in_half_plane(origin, orthogonal, point):

@@ -113,7 +113,7 @@ class TestGeometricTools(unittest.TestCase):
         # We get the answer (i.e. what the current algorithm does when i'm writing this)
         answer = answer.intersection(square)
         # We get the result that the algorithm actualy gives
-        result = create_truncate_cone(pA, rA, pB, rB, dmax, tau)
+        result = create_truncate_cone(pA, rA, pB, rB, dmax, tau)[0]
         # We check if they are "equals"
         area1 = result.area
         area2 = answer.area
@@ -125,16 +125,48 @@ class TestGeometricTools(unittest.TestCase):
         p1 = (1, 0)
         p2 = (0, 1)
         p3 = (2, 1)
-        p4 = (-2, -1)
-        p5 = (-1, 1)
-        p6 = (-1, 2)
-        p7 = (-1, -2)
-        p8 = (2, -1)
-        
+        p4 = (2, 1.5)
+        p5 = (-1, 2)
+        p6 = (2, -1)
+        p7 = (0.5, 0.5)
+        p8 = (-1, -1)
+        # Test 1 :
         result = find_projection(p1, p2, p3)
-        print(result[0], result[1])
+        answer = (1, 0)
+        self.assertEqual(result[0], answer[0])
+        self.assertEqual(result[1], answer[1])
+        # Test 2 :
+        result = find_projection(p1, p2, p4)
+        answer = (0.75, 0.25)
+        self.assertEqual(result[0], answer[0])
+        self.assertEqual(result[1], answer[1])
+        # Test 3 :
+        result = find_projection(p1, p2, p5)
+        answer = (0, 1)
+        self.assertEqual(result[0], answer[0])
+        self.assertEqual(result[1], answer[1])
+        # Test 4 :
+        result = find_projection(p1, p2, p6)
+        answer = (1, 0)
+        self.assertEqual(result[0], answer[0])
+        self.assertEqual(result[1], answer[1])
+        # Test 5 :
+        result = find_projection(p1, p2, p7)
+        answer = (0.5, 0.5)
+        self.assertEqual(result[0], answer[0])
+        self.assertEqual(result[1], answer[1])
+        # Test 6 :
+        result = find_projection(p1, p2, p8)
+        answer = (0.5, 0.5)
+        self.assertEqual(result[0], answer[0])
+        self.assertEqual(result[1], answer[1])
+        # Test 7 :
+        result = find_projection(p3, p2, p8)
+        answer = (0, 1)
+        self.assertEqual(result[0], answer[0])
+        self.assertEqual(result[1], answer[1])
 
-    
+
 class AffichePolygon():
     """Plot a polygon"""
     def plot_poly(self, poly, xrange=[-10, 10], yrange=[-10, 10]):
@@ -157,6 +189,7 @@ print("###")
 T.test_create_cone()
 T.test_create_truncate_cone()
 T.test_find_projection()
+
 tau = 1
 vmax = 10
 dmax = vmax * tau
@@ -166,7 +199,7 @@ pB = S.Point(0,0)
 A = AffichePolygon()
 
 print(distance(pA,pB))
-poly = create_truncate_cone(pA, rA, pB, rB, dmax, tau)
+poly = create_truncate_cone(pA, rA, pB, rB, dmax, tau)[0]
 plt.plot([pB.x -pA.x,0], [pB.y -pA.y,0], 'ro')
 plt.plot([(pB.x -pA.x) /tau,0], [(pB.y -pA.y) /tau,0], 'ro')
 
@@ -193,5 +226,9 @@ A.plot_poly(poly, xrange = [-30, 30], yrange = [-30, 30])
 A.plot_poly(center.buffer(r), xrange = [-30, 30], yrange = [-30, 30])
 A.plot_poly(S.Point((pB.x -pA.x) /tau, (pB.y -pA.y) /tau).buffer(r/tau), xrange = [-30, 30], yrange = [-30, 30])
 
-plt.show()
-"""
+#
+v_opt = (-7,-7)
+u = find_closest(list(poly.exterior.coords), v_opt)
+plt.plot([u.x,v_opt[0]], [u.y,v_opt[1]], 'go')
+print(u.x, u.y)
+plt.show()"""
