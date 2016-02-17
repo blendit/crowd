@@ -65,15 +65,17 @@ Moreover this cone is intersected with a square given by dmax"""
     return S.Polygon(point_to_tuple(vertices))
  
    
-def cut_cone(cone, center, radius):
+def cut_cone(cone, center, radius, dmax):
     """Create a truncated cone for the ORCA algorithm given the cone and a circle.
 To create this truncated cone, we need to first to cut a triangle consisting of the point 0 and the two points of the circle who make a diameter perpandicular to the segment [0,center of the circle].
 We then add back the disk induced by the circle.
     """
     disk_plus = center.buffer(radius)  # the disk to add
     disk_minus = S.Point(0, 0).buffer(math.sqrt(distance(center, S.Point(0, 0)) ** 2 - radius ** 2))  # the disk that will cut the triangle (it will cut more but this will be added back at the union step
-    result = cone.difference(disk_minus)
-    result = result.union(disk_plus)
+    result = cone.difference(disk_minus)  # We cut a part of the cone
+    result = result.union(disk_plus)  # We add back another part
+    square = S.Polygon([(-dmax, -dmax), (dmax, -dmax), (dmax, dmax), (-dmax, dmax)])
+    result = result.intersection(square)  # we make sure that we didn't add too much
     return result
 
    
@@ -87,20 +89,22 @@ def create_truncate_cone(pA, rA, pB, rB, dmax, tau):
     if norm > 0:
         cos_theta = math.sqrt(norm ** 2 - r ** 2) / norm
         sin_theta = r / norm
-        # Trigo !
+        # Trigonometric formulas
         point1 = S.Point(norm * (math.cos(theta_c) * cos_theta + sin_theta * math.sin(theta_c)), norm * (math.sin(theta_c) * cos_theta - sin_theta * math.cos(theta_c)))
         point2 = S.Point(norm * (math.cos(theta_c) * cos_theta - sin_theta * math.sin(theta_c)), norm * (math.sin(theta_c) * cos_theta + sin_theta * math.cos(theta_c)))
-    #  else:
-        # TODO : Error
+    else:
+        raise Blendit('Same Position Between Two Peaple')
     # We compute the cone
     cone = create_cone(point1, point2, dmax)
     center = S.Point(center.x / tau, center.y / tau)
-    cone = cut_cone(cone, center, (rA + rB) / tau)
+    # We truncate the cone
+    cone = cut_cone(cone, center, (rA + rB) / tau, dmax)
     return cone
 
 
 def find_projection(pA, pB, pM):
     """Find the closest point on the segment [AB] to the point M"""
+    # TODO : This is not working at all
     dist = math.sqrt((pB[0] - pA[0]) ** 2 + (pB[1] - pA[1]) ** 2)
     AM = (pM[0] - pA[0]) * (pB[0] - pA[0]) + (pM[1] - pA[1]) * (pB[1] - pA[1])
     AM /= dist

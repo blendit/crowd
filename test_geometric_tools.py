@@ -81,7 +81,60 @@ class TestGeometricTools(unittest.TestCase):
         test_result = polygon.equals(answer)
         self.assertEqual(test_result, True)
     
+    def test_create_truncate_cone(self):
+        tau = 2
+        vmax = 10
+        dmax = vmax * tau
+        rA = rB = 4
+        pA = S.Point(12, 6)
+        pB = S.Point(0, 0)
+        # To test this function we will assume that it is correct for at this point in time.
+        center = S.Point(pB.x - pA.x, pB.y - pA.y)
+        theta_c = argument(center)
+        norm = distance(center, S.Point(0, 0))
+        r = rA + rB
+        if norm > 0:
+            cos_theta = math.sqrt(norm ** 2 - r ** 2) / norm
+            sin_theta = r / norm
+            point1 = S.Point(norm * (math.cos(theta_c) * cos_theta + sin_theta * math.sin(theta_c)), norm * (math.sin(theta_c) * cos_theta - sin_theta * math.cos(theta_c)))
+            point2 = S.Point(norm * (math.cos(theta_c) * cos_theta - sin_theta * math.sin(theta_c)), norm * (math.sin(theta_c) * cos_theta + sin_theta * math.cos(theta_c)))
+        else:
+            self.assertEqual(False, True)  # We crash
+        # We compute the cone
+        cone = create_cone(point1, point2, dmax)
+        center = S.Point(center.x / tau, center.y / tau)
+        # We truncate the cone
+        radius = (rA + rB) / tau
+        disk_plus = center.buffer(radius)
+        disk_minus = S.Point(0, 0).buffer(math.sqrt(distance(center, S.Point(0, 0)) ** 2 - radius ** 2))
+        answer = cone.difference(disk_minus)
+        answer = answer.union(disk_plus)
+        square = S.Polygon([(-dmax, -dmax), (dmax, -dmax), (dmax, dmax), (-dmax, dmax)])
+        # We get the answer (i.e. what the current algorithm does when i'm writing this)
+        answer = answer.intersection(square)
+        # We get the result that the algorithm actualy gives
+        result = create_truncate_cone(pA, rA, pB, rB, dmax, tau)
+        # We check if they are "equals"
+        area1 = result.area
+        area2 = answer.area
+        area3 = result.intersection(answer).area
+        self.assertEqual(area1, area3)
+        self.assertEqual(area2, area3)
+    
+    def test_find_projection(self):
+        p1 = (1, 0)
+        p2 = (0, 1)
+        p3 = (2, 1)
+        p4 = (-2, -1)
+        p5 = (-1, 1)
+        p6 = (-1, 2)
+        p7 = (-1, -2)
+        p8 = (2, -1)
+        
+        result = find_projection(p1, p2, p3)
+        print(result[0], result[1])
 
+    
 class AffichePolygon():
     """Plot a polygon"""
     def plot_poly(self, poly, xrange=[-10, 10], yrange=[-10, 10]):
@@ -102,16 +155,21 @@ T = TestGeometricTools()
 T.test_angle()
 print("###")
 T.test_create_cone()
-tau = 2.0
+T.test_create_truncate_cone()
+T.test_find_projection()
+tau = 1
 vmax = 10
 dmax = vmax * tau
 rA = rB = 4
-pA = S.Point(12,3)
+pA = S.Point(12,6)
 pB = S.Point(0,0)
+A = AffichePolygon()
+
+print(distance(pA,pB))
 poly = create_truncate_cone(pA, rA, pB, rB, dmax, tau)
 plt.plot([pB.x -pA.x,0], [pB.y -pA.y,0], 'ro')
+plt.plot([(pB.x -pA.x) /tau,0], [(pB.y -pA.y) /tau,0], 'ro')
 
-A = AffichePolygon()
 
 center = S.Point(pB.x - pA.x, pB.y - pA.y)
 theta_c = argument(center)
@@ -130,9 +188,10 @@ if norm > 0:
     point1 = S.Point(norm2 * (math.cos(theta_c) * cos_theta + sin_theta * math.sin(theta_c)), norm2 * (math.sin(theta_c) * cos_theta - sin_theta * math.cos(theta_c)))
     point2 = S.Point(norm2 * (math.cos(theta_c) * cos_theta - sin_theta * math.sin(theta_c)), norm2 * (math.sin(theta_c) * cos_theta + sin_theta * math.cos(theta_c)))
     plt.plot([point1.x,point2.x], [point1.y,point2.y], 'yo')
-        
+
 A.plot_poly(poly, xrange = [-30, 30], yrange = [-30, 30])
 A.plot_poly(center.buffer(r), xrange = [-30, 30], yrange = [-30, 30])
+A.plot_poly(S.Point((pB.x -pA.x) /tau, (pB.y -pA.y) /tau).buffer(r/tau), xrange = [-30, 30], yrange = [-30, 30])
 
 plt.show()
 """
