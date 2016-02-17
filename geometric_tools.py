@@ -85,7 +85,34 @@ We then add back the disk induced by the circle.
     result = result.intersection(square)  # we make sure that we didn't add too much
     return result
 
-   
+
+class alternative_truncated_cone:
+    """Represent the truncated cone"""
+    
+    def __init__(self, pA, rA, pB, rB, dmax, tau):
+        """Create a truncated cone for the ORCA algorithm"""
+        center = S.Point(pB.x - pA.x, pB.y - pA.y)
+        theta_c = argument(center)
+        norm = distance(center, S.Point(0, 0))
+        r = rA + rB
+        if norm > 0:
+            cos_theta = math.sqrt(norm ** 2 - r ** 2) / norm
+            sin_theta = r / norm
+            norm /= tau
+            # Trigonometric formulas
+            point1 = S.Point(norm * (math.cos(theta_c) * cos_theta + sin_theta * math.sin(theta_c)), norm * (math.sin(theta_c) * cos_theta - sin_theta * math.cos(theta_c)))
+            point2 = S.Point(norm * (math.cos(theta_c) * cos_theta - sin_theta * math.sin(theta_c)), norm * (math.sin(theta_c) * cos_theta + sin_theta * math.cos(theta_c)))
+        else:
+            raise Blendit('Same Position Between Two Peaple')
+        self.limit_points = [point1, point2]
+        center = S.Point(center.x / tau, center.y / tau)
+        other_point = S.Point(2 * center.x, 2 * center.y)
+        cut_triangle = S.Polygon([(other_point.x, other_point.y), (point1.x, point1.y), (point2.x, point2.y)])
+        disk = center.buffer((rA + rB) / tau)
+        half_disk = disk.intersection(cut_triangle)
+        # TODO : transform half_disk into half_circle.
+
+
 def create_truncate_cone(pA, rA, pB, rB, dmax, tau):
     """Create a truncated cone for the ORCA algorithm"""
     # We first need to find the two points for the create_cone function
