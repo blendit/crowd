@@ -10,7 +10,7 @@ class VelocityField:
         # tau is the small movement time for which we compute the velocity field
         # others is a list of the others individuals (the first
         self.individual = individual  # individual whose velocity field is calculated
-        self.init_field(dt)  # Base velocity field (square of sidelength 2 vmax * tau)
+        self.init_field(tau)  # Base velocity field (square of sidelength 2 vmax * tau)
         
     def init_field(self, tau):
         """Create an initial velocity field for the individual"""
@@ -35,9 +35,10 @@ class VelocityField:
         vmax = self.individual.vmax
         point_us = S.Point(self.individual.x, self.individual.y)
         point_him = S.Point(neighboor.x, neighboor.y)
-        cone, p1, p2 = create_truncate_cone(point_us, self.individual.radius, point_him, neighboor.radius, vmax * tau, tau)
+        cone = TruncatedCone(point_us, self.individual.radius, point_him, neighboor.radius, vmax * tau, tau)
         v_opt = difference(self.individual.v, neighboor.v)
-        u = find_closest(list(cone.exterior.coords), (v_opt.x, v_opt.y))
+        u_end = cone.find_closest((v_opt.x, v_opt.y))
+        u = difference(u_end, v_opt)
         origin = S.Point(self.individual.v.x + 1.0 / 2.0 * u.x, self.individual.v.y + 1.0 / 2.0 * u.y)
         return half_plane(origin, u, vmax)
               
