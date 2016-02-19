@@ -169,31 +169,37 @@ plt.plot(coords_x, coords_y, 'b.')
 A.plot_poly(center.buffer(r), xrange = [-30, 30], yrange = [-30, 30])
 A.plot_poly(S.Point((pB.x -pA.x) /tau, (pB.y -pA.y) /tau).buffer(r/tau), xrange = [-30, 30], yrange = [-30, 30])
 
-v_opt = (-5,-4)
-u = cone.find_closest(v_opt)
-plt.plot([u.x,v_opt[0]], [u.y,v_opt[1]], 'mo')
-print(u.x, u.y)
-
 class Indiv:
     def __init__(self, i):
         if i == 1:
             self.x = -12
             self.y = 6
-            self.vmax = 25
-            self.v = S.Point(10, -10)
+            self.vmax = 10
+            self.v = S.Point(-10, -10)
             self.radius = 4
         else:
             self.x = 0
             self.y = 0
-            self.vmax = 25
+            self.vmax = 10
             self.v = S.Point(0, 10)
             self.radius = 4
     
     
 ind = Indiv(0)
 nei = Indiv(1)
+
+v_opt = (ind.v.x - nei.v.x, ind.v.y - nei.v.y)
+u = cone.find_closest(v_opt)
+plt.plot([u.x,v_opt[0]], [u.y,v_opt[1]], 'mo')
+u = S.Point(u.x - v_opt[0], u.y - v_opt[1])
+
+print(u.x, u.y)
+origin = S.Point(1/2 * u.x + ind.v.x, 1/2 * u.y + ind.v.y)
+plt.plot([origin.x], [origin.y], 'co')
+
 V = VelocityField(ind, tau, [])
-poly = V.orca(nei, tau)
+#poly = V.orca(nei, tau)
+poly = half_plane(origin, u, ind.vmax)
 A.plot_poly(poly, xrange = [-30, 30], yrange = [-30, 30])
 plt.show()
 """

@@ -170,31 +170,36 @@ class TruncatedCone:
 # Non tested/corrected stuff at the moment
 
 def in_half_plane(origin, orthogonal, point):
-    if (point.x - origin.x) * orthogonal.x + (point.y - origin.y) * orthogonal.y >= 0.000001:
+    if (point.x - origin.x) * orthogonal.x + (point.y - origin.y) * orthogonal.y >= -0.000001:
         return True
     return False
    
     
-def intersection_line_line(origin1, ortho, point1, point2):
+def intersection_line_line(origin1, ortho, point1, point2, vmax):
     """This function makes an intersection between two lines with the following representations:
     line1 : origin1 + ortho (vector that is normal to the line)
     line2 : two points
     """
     vect1 = S.Point(point1.x - point2.x, point1.y - point2.y)
-    if vect1.x * ortho.x + vect1.y * ortho.y:
+    if vect1.x * ortho.x + vect1.y * ortho.y == 0:
         return []
     origin2 = S.Point(origin1.x + ortho.y, origin1.y - ortho.x)
     px = (origin1.x * origin2.y - origin1.y * origin2.x) * (point1.x - point2.x) - (point1.x * point2.y - point1.y * point2.x) * (origin1.x - origin2.x)
     px /= (origin1.x - origin2.x) * (point1.y - point2.y) - (origin1.y - origin2.y) * (point1.x - point2.x)
     py = (origin1.y * origin2.x - origin1.x * origin2.y) * (point1.y - point2.y) - (point1.y * point2.x - point1.x * point2.y) * (origin1.y - origin2.y)
     py /= (origin1.y - origin2.y) * (point1.x - point2.x) - (origin1.x - origin2.x) * (point1.y - point2.y)
-    return [S.Point(px, py)]
+    print(px, py)
+    if abs(px) <= vmax and abs(py) <= vmax:
+        return [S.Point(px, py)]
+    else:
+        return []
     
 
 def half_plane(origin, orthogonal, vmax):
     """Create the intersection of the half plane starting at point facing the direction given by orthogonal with the square  of 'radius' vmax"""
     end_points = [S.Point(-vmax, -vmax), S.Point(vmax, -vmax), S.Point(vmax, vmax), S.Point(-vmax, vmax)]  # Boundaries of the square
     points = []
+    print("ortho :", orthogonal.x, orthogonal.y)
     print("####")
     print(origin.x, origin.y, orthogonal.x, orthogonal.y)
     for p in end_points:
@@ -202,7 +207,7 @@ def half_plane(origin, orthogonal, vmax):
             print("ici")
             points.append(p)
     for i in range(4):
-        for p in intersection_line_line(origin, orthogonal, end_points[i], end_points[(i + 1) % 4]):
+        for p in intersection_line_line(origin, orthogonal, end_points[i], end_points[(i + 1) % 4], vmax):
             print("ici'")
             points.append(p)
     points.sort(key=lambda x: argument(x))
