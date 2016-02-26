@@ -17,7 +17,7 @@ class PathEnvironnement:
 
     def intersect_mine_field(self, point1, point2, t):
         """Returns true if the line from point1 to point2 of thickness t intersect the mine_field"""
-        line = S.LineString(point1, point2)
+        line = S.LineString([(point1.x, point1.y), (point2.x, point2.y)])
         line = line.buffer(t)
         return intersection_not_empty(line, self.mine_field)
 
