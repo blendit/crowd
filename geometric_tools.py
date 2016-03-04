@@ -167,8 +167,6 @@ class TruncatedCone:
         return S.Point(minimum[0][0], minimum[0][1])
         
 
-# Non tested/corrected stuff at the moment
-
 def in_half_plane(origin, orthogonal, point):
     if (point.x - origin.x) * orthogonal.x + (point.y - origin.y) * orthogonal.y >= -0.000001:
         return True
@@ -179,37 +177,44 @@ def intersection_line_line(origin1, ortho, point1, point2, vmax):
     """This function makes an intersection between two lines with the following representations:
     line1 : origin1 + ortho (vector that is normal to the line)
     line2 : two points
+    Return the list of intersection points (empty or of cardinal 1)
     """
+    # Direction vector of the second line
     vect1 = S.Point(point1.x - point2.x, point1.y - point2.y)
+    # Test if the lines are colinear or not
     if vect1.x * ortho.x + vect1.y * ortho.y == 0:
         return []
+    # Find a second point on the first line
     origin2 = S.Point(origin1.x + ortho.y, origin1.y - ortho.x)
+    # Compute the intersection with an ugly forumla
     px = (origin1.x * origin2.y - origin1.y * origin2.x) * (point1.x - point2.x) - (point1.x * point2.y - point1.y * point2.x) * (origin1.x - origin2.x)
     px /= (origin1.x - origin2.x) * (point1.y - point2.y) - (origin1.y - origin2.y) * (point1.x - point2.x)
     py = (origin1.y * origin2.x - origin1.x * origin2.y) * (point1.y - point2.y) - (point1.y * point2.x - point1.x * point2.y) * (origin1.y - origin2.y)
     py /= (origin1.y - origin2.y) * (point1.x - point2.x) - (origin1.x - origin2.x) * (point1.y - point2.y)
-    print(px, py)
+    # Test if our intersection is within our range or not
     if abs(px) <= vmax and abs(py) <= vmax:
         return [S.Point(px, py)]
     else:
         return []
     
-
+# TODO : Find a way to not bug if the two individual are in colision at the begining. (I.e. : if there is a bug at the begining then find a way to correct it in the end)
 def half_plane(origin, orthogonal, vmax):
     """Create the intersection of the half plane starting at point facing the direction given by orthogonal with the square  of 'radius' vmax"""
-    end_points = [S.Point(-vmax, -vmax), S.Point(vmax, -vmax), S.Point(vmax, vmax), S.Point(-vmax, vmax)]  # Boundaries of the square
+    # We first verify that zero is in the half_plane
+    zero = S.Point(0, 0)
+    if not in_half_plane(origin, orthogonal, zero):
+        print("in_half_plane : Failed sanity check")
+    # Boundaries of the square
+    end_points = [S.Point(-vmax, -vmax), S.Point(vmax, -vmax), S.Point(vmax, vmax), S.Point(-vmax, vmax)]
     points = []
-    print("ortho :", orthogonal.x, orthogonal.y)
-    print("####")
-    print(origin.x, origin.y, orthogonal.x, orthogonal.y)
+    # We add the boundaries of the square that are in the half_plane
     for p in end_points:
         if in_half_plane(origin, orthogonal, p):
-            print("ici")
             points.append(p)
+    # We add the intersection points between the separation line and the sides of the square
     for i in range(4):
         for p in intersection_line_line(origin, orthogonal, end_points[i], end_points[(i + 1) % 4], vmax):
-            print("ici'")
             points.append(p)
+    # We order the points by there argument (0 is in the half plane by construction)
     points.sort(key=lambda x: argument(x))
-    print([point_to_tuple(x) for x in points])
     return S.Polygon([point_to_tuple(x) for x in points])
