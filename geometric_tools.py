@@ -196,6 +196,7 @@ def intersection_line_line(origin1, ortho, point1, point2, vmax):
         return [S.Point(px, py)]
     else:
         return []
+
     
 # TODO : Find a way to not bug if the two individual are in colision at the begining. (I.e. : if there is a bug at the begining then find a way to correct it in the end)
 def half_plane(origin, orthogonal, vmax):

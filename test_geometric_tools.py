@@ -84,8 +84,7 @@ class TestGeometricTools(unittest.TestCase):
         self.assertEqual(result[1], answer[1])
 
     # TODO : automatic test for the create_truncated_cone (no idea how for now)
-
-    
+  
     def test_find_projection_half_line(self):
         p1 = (1, 0)
         p2 = (0, 1)
@@ -207,7 +206,7 @@ class AfficheLineString():
         ax.set_aspect(1)
         # plt.show()
 
-
+"""
 T = TestGeometricTools()
 T.test_angle()
 print("###")
@@ -221,7 +220,7 @@ T.test_in_half_plane()
 print("###")
 T.test_intersection_line_line()
 
-"""
+
 tau = 0.5
 vmax = 10
 dmax = vmax * tau
