@@ -32,21 +32,28 @@ class VelocityField:
     # TODO : Expend all of this to 3D situations
     def orca(self, neighboor, tau):
         """Computes the ORCA hyperplane between the two individual (cf Reciprocal n-body collision avoidance)"""
+        # We define some parameters
         vmax = self.individual.vmax
         point_us = S.Point(self.individual.x, self.individual.y)
         point_him = S.Point(neighboor.x, neighboor.y)
-        cone = TruncatedCone(point_us, self.individual.radius, point_him, neighboor.radius, vmax * tau, tau)
         v_opt = difference(self.individual.v, neighboor.v)
+        
+        # We create the trucated cone
+        cone = TruncatedCone(point_us, self.individual.radius, point_him, neighboor.radius, vmax * tau, tau)
+        # We get a point we have to find
         u_end = cone.find_closest((v_opt.x, v_opt.y))
+        
         u = difference(u_end, v_opt)
         origin = S.Point(self.individual.v.x + 1.0 / 2.0 * u.x, self.individual.v.y + 1.0 / 2.0 * u.y)
+        # We return the right half plane
         return half_plane(origin, u, vmax)
               
-    def compute_field(self, tau, others):
+    def compute_field(self, tau, others):  # TODO: This function has to be tested
         """This function computes a velocity_field for self.individual which is collision free with the others individuals"""
         for neighboor in others:
             if neighboor == individual:  # we only consider the others individual
                 continue
             if is_far_away(neighboor):   # we do not do computation for to far away individuals
                 continue
-            # TODO : call a function that effectively compute the velocity field
+            self.field = self.field.intersection(self.orca(neighboor, tau))
+        # TODO : Take the environment into account
