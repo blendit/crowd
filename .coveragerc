@@ -1,2 +1,2 @@
 [run]
-source = test_geometric_tools geometric_tools velocity_field
+source = .
