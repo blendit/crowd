@@ -3,6 +3,9 @@ python: "3.4"
 
 install:
   - "pip install pep8"
+  - "pip install shapely"
+  - "pip install numpy"
+  - "pip install matplotlib"
 
 before_script: "pep8 . --ignore=W293,E501"
 
