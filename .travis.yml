@@ -3,6 +3,7 @@ python: "3.4"
 
 install:
   - "pip install pep8"
+  - "pip install coveralls"
   - "pip install shapely"
   - "pip install numpy"
   - "pip install matplotlib"
