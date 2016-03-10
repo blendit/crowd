@@ -24,3 +24,14 @@ def find_closest_to_optimal(d, pA, pB):
         dist = circle.distance(line)
         circle_dist = circle.buffer(dist).exterior
         return circle_dist.intersection(line)
+
+
+def find_closest_to_optimal(vopt, obj1, center, angle)
+    """Find the point of the polygone obj1 at angle that is the closest to vopt"""
+    xopt = math.cos(angle)
+    yopt = math.sin(angle)
+    Popt = S.Point(xopt, yopt)
+    if intersection_not_empty(obj1, Popt):
+        return Popt
+    else:
+        line = S.LineString([(Popt.x, Popt.y), (center.X, center.y)])
