@@ -4,6 +4,9 @@ python: "3.4"
 install:
   - "pip install pep8"
   - "pip install coveralls"
+  - "pip install shapely"
+  - "pip install numpy"
+  - "pip install matplotlib"
 
 before_script: "pep8 . --ignore=W293,E501"
 
@@ -11,4 +14,4 @@ script:
   - coverage run -m unittest discover
 
 after_success:
-  coveralls
+  COVERALLS_REPO_TOKEN=RhdM65xiv9S1UOav2u0MODADaSNu5drM1 coveralls
