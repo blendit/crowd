@@ -26,6 +26,7 @@ def find_closest_to_optimal(vopt, obj1, center, angle):
 
 
 def dist_theta(vopt, obj1, center, angle, tau, indiv, p_goal):
+    """Find the energy used if the individual goes in the direction theta"""
     p_ind = find_closest_to_optimal(vopt, obj1, center, angle)
     vind = math.sqrt(p_ind.x * p_ind.x + p_ind.y * p_ind.y)
     dist = vind * tau
@@ -37,6 +38,7 @@ def dist_theta(vopt, obj1, center, angle, tau, indiv, p_goal):
 
 
 def best_angle(vopt, obj1, center, tau, dtheta, indiv):
+    """Find the best angle and the speed vector corresponding"""
     act_ang = 0
     min_energy = dist_theta(vopt, obj1, center, act_ang, tau, indiv)
     best_ang = 0
@@ -46,4 +48,5 @@ def best_angle(vopt, obj1, center, tau, dtheta, indiv):
         if energy < min_energy:
             min_energy = energy
             best_ang = act_ang
-    return (best_ang, min_energy)
+    v = find_closest_to_optimal(vopt, obj1, center, best_angle):
+    return (best_ang, v)
