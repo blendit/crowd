@@ -29,7 +29,7 @@ def getbezpoints(spl, mt, seg=0):
     p3 = mt * points[seg + 1].co
     return p0, p1, p2, p3
 
-# Computes segments lengths, precision can be chosen, this is a same precision
+# Computes segments lengths, precision can be chosen, this is the same precision
 # for every segment
 
 
@@ -86,15 +86,17 @@ def seg_lengths(obj):
 
 def create_path(points):
 
-    bpy.ops.curve.primitive_bezier_curve_add(enter_editmode=True, location=(points[0][0] + 1, points[0][1], points[0][2]))
+    bpy.ops.curve.primitive_bezier_curve_add(enter_editmode=True, location=(points[0][0] - 1, points[0][1], points[0][2]))
     
     bpy.ops.curve.select_all()
     bpy.ops.curve.de_select_last()
+
+    for i in range(len(points) - 1):
+        bpy.ops.curve.vertex_add(location=points[i + 1])
+
+    bpy.ops.curve.select_all()
+    bpy.ops.curve.de_select_first()
     bpy.ops.curve.delete()
-    bpy.ops.curve.de_select_last()
-    
-    for p in points:
-        bpy.ops.curve.vertex_add(location=p)
 
     bpy.ops.object.editmode_toggle()
     path_name = bpy.context.active_object.name
@@ -105,20 +107,33 @@ def create_path(points):
 
 
 def get_paths(paths):
-    i = 0
     paths_info = []
     
     for points in paths:
         path_name = create_path(points)
         [total_length, lengths_of_segments] = seg_lengths(bpy.context.active_object)
-        paths_info.append([path_name, total_length, lengths_of_segments])
-        i = i + 1
+        paths_info.append([path_name, total_length, lengths_of_segments, points[0]])
+        print(points[0])
          
     return paths_info
 
-paths_info = get_paths([[[0, 0, 0], [0, 0, 1]], [[2, 2, 2], [3, 3, 3]], [[-1, -1, -1], [-2, -2, 3], [-1, -2, -1]]])
+paths_info = get_paths([[[0, 0, 1], [5, 0, 1], [5, 0, 5], [0, 0, 5]], [[-2, 0, -2], [-3, 0, -13]], [[-1, -2, -1], [0, -10, 0]]])
 
 # we print names and lengths of the paths
 
-for path in paths_info:
-    print(path[0], path[1])
+
+scn = bpy.context.scene
+scn.frame_start = 0
+scn.frame_end = 250
+
+for i in range(len(paths_info)):
+    path = bpy.data.curves[paths_info[i][0]]
+    bpy.ops.mesh.primitive_cube_add(radius=1, view_align=False, enter_editmode=False, location=(0, 0, 0))
+    bpy.ops.object.constraint_add(type='FOLLOW_PATH')
+    bpy.context.object.constraints["Follow Path"].target = bpy.data.objects[paths_info[i][0]]
+
+    path.eval_time = 0
+    path.keyframe_insert('eval_time', frame=0)
+            
+    path.eval_time = 100
+    path.keyframe_insert('eval_time', frame=251)
