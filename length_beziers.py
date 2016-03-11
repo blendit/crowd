@@ -32,7 +32,6 @@ def getbezpoints(spl, mt, seg=0):
 # Computes segments lengths, precision can be chosen, this is the same precision
 # for every segment
 
-
 def seg_lengths(obj):
     
     prec = 10000
