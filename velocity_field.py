@@ -5,7 +5,7 @@ from geometric_tools import *
 
 class VelocityField:
     """The class independant from Blender describing the allowed velocity fields"""
-    def __init__(self, individual, tau, others):
+    def __init__(self, individual, tau):
         """Create the velocity field for the PLE algorithm"""
         # tau is the small movement time for which we compute the velocity field
         # others is a list of the others individuals (the first
