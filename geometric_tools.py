@@ -16,22 +16,22 @@ def find_closest_to_optimal(vopt, obj1, center, angle):
     """Find the point of the polygone obj1 (authorised speeds) at angle that is the closest to vopt"""
     xopt = math.cos(angle)
     yopt = math.sin(angle)
-    Popt = S.Point(xopt, yopt)
-    if intersection_not_empty(obj1, Popt):
-        return Popt
+    p_opt = S.Point(xopt, yopt)
+    if intersection_not_empty(obj1, p_opt):
+        return p_opt
     else:
-        line = S.LineString([(Popt.x, Popt.y), (center.x, center.y)])
+        line = S.LineString([(p_opt.x, p_opt.y), (center.x, center.y)])
         obj1_ext = obj1.exterior
         return line.intersection(obj1_ext)
 
 
-def dist_theta(vopt, obj1, center, angle, tau, indiv):
-    Pind = find_closest_to_optimal(vopt, obj1, center, angle)
-    vind = math.sqrt(Pind.x * Pind.x + Pind.y * Pind.y)
+def dist_theta(vopt, obj1, center, angle, tau, indiv, p_goal):
+    p_ind = find_closest_to_optimal(vopt, obj1, center, angle)
+    vind = math.sqrt(p_ind.x * p_ind.x + p_ind.y * p_ind.y)
     dist = vind * tau
     xnew = center.x + dist * math.cos(angle)
     ynew = center.y + dist * math.sin(angle)
-    L = 0.0  # Result of A*
+    L = math.sqrt((xnew - p_goal.x) * (xnew - p_goal.x) + (ynew - p_goal.y) * (ynew - p_goal.y))  # Result of A*
     energy = tau * (indiv.es + indiv.ew * vind * vind) + 2 * L * math.sqrt(indiv.es * indiv.ew)
     return energy
 
