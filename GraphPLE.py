@@ -212,3 +212,12 @@ class Graph:
         for node in self.nodes:
             node.seen = False
             node.score = 0.
+            
+    def find_graph_distance(indv, goal):
+        """Find the distance in the graph"""
+        self.add_entry_point(indv.x, indv.y)
+        self.add_goal_point(goal.x, goal.y)
+        self.smallest_path_a_star()
+        self.remove_entry_point()
+        self.emove_goal_point()
+        self.reset_graph()
