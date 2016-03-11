@@ -174,6 +174,14 @@ class TestGeometricTools(unittest.TestCase):
         answer = []
         self.assertEqual(result, answer)
 
+    def test_intersection_not_empty(self):
+        """Test the intersection_not_empty fonction"""
+        p0 = S.Point(0, 0)
+        p1 = S.Point(1, 1)
+        p2 = S.Point(1, -1)
+        p3 = S.Point(2, 1)
+        circle = p0.dilate(1)  # Circle of center (0,0) and radius 1
+
         
 class AffichePolygon():
     """Plot a polygon"""
