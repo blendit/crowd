@@ -28,10 +28,22 @@ class Crowd:
         """Add one individual to the crowd"""
         self.individuals.add(indiv)
             
-    def animate(self):
+    def animate(self, dtheta):
         """Animate the crowd"""
         continu = True
         while continu:
             continu = False
             for indiv in self.individuals:
+                V = VelocityField(indiv, self.tau)
+                V.compute_field(self.tau, self.individuals)
+                if S.Point(indiv.goal.x - indiv.position.x, indiv.goal.y - indiv.position.y) in V.field:
+                    v = S.Point(indiv.goal.x - indiv.position.x, indiv.goal.y - indiv.position.y)
+                else:
+                    v = best_angle(V.field, S.Point(0, 0), self..tau, dtheta, indiv)
                 
+                if distance(indiv, goal) > 0.0001:
+                    continu = True
+                    # TODO : finish here
+                else:
+                    self.trajectory.add([goal.x,goal.y, 0.])
+                    continue
