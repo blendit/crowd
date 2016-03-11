@@ -179,8 +179,22 @@ class TestGeometricTools(unittest.TestCase):
         p0 = S.Point(0, 0)
         p1 = S.Point(1, 1)
         p2 = S.Point(1, -1)
-        p3 = S.Point(2, 1)
+        p3 = S.Point(2, 2)
         circle = p0.dilate(1)  # Circle of center (0,0) and radius 1
+        line1 = S.LineString([(p0.x, p0.y), (p1.x, p1.y)])
+        line2 = S.LineString([(p3.x, p3.y), (p1.x, p1.y)])
+        # Test 1 :
+        result = intersection_not_empty(cercle, line1)
+        answer = True
+        self.assertEqual(result, answer)
+        # Test 2 :
+        result = intersection_not_empty(cercle, line2)
+        answer = False
+        self.assertEqual(result, answer)
+        # Test 3 :
+        result = intersection_not_empty(cercle, p2)
+        answer = False
+        self.assertEqual(result, answer)
 
         
 class AffichePolygon():
