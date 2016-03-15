@@ -6,6 +6,7 @@ import random
 from math import pi
 from matplotlib import pyplot as plt
 from velocity_field import *
+import classe as C
 
 # random.seed()
 
@@ -175,7 +176,7 @@ class TestGeometricTools(unittest.TestCase):
         self.assertEqual(result, answer)
 
     def test_intersection_not_empty(self):
-        """Test the intersection_not_empty fonction"""
+        """Test the intersection_not_empty function"""
         p0 = S.Point(0, 0)
         p1 = S.Point(1, 1)
         p2 = S.Point(1, -1)
@@ -195,6 +196,15 @@ class TestGeometricTools(unittest.TestCase):
         result = intersection_not_empty(cercle, p2)
         answer = False
         self.assertEqual(result, answer)
+
+    def test_find_closest_to_optimal(self):
+        """Test the find_closest_to_optimal function"""
+        individual = C.Individual(0, 0, 0, 5, 2, 2.23, 1.26, 2, S.Point(10,20))
+        vopt = 2
+        p0 = S.Point(0, 0)
+        angle = 0.1
+        circle1 = p0.dilate(1)
+        circle2 = p0.dilate(3)
 
         
 class AffichePolygon():
