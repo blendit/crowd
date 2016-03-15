@@ -2,6 +2,9 @@ import numpy as np
 import shapely.geometry as S
 import math
 
+import GraphPLE as G
+import velocity_field as T
+import geometric_tools as GT
 
 class Individual:
     """The class independant from Blender describing an individual"""
@@ -34,16 +37,17 @@ class Crowd:
         while continu:
             continu = False
             for indiv in self.individuals:
-                V = VelocityField(indiv, self.tau)
+                V = T.VelocityField(indiv, self.tau)
                 V.compute_field(self.tau, self.individuals)
-                if S.Point(indiv.goal.x - indiv.position.x, indiv.goal.y - indiv.position.y) in V.field:
+                if S.Point(indiv.goal.x - indiv.position.x, indiv.goal.y - indiv.position.y) in V.field.exterior.coords:
                     v = S.Point(indiv.goal.x - indiv.position.x, indiv.goal.y - indiv.position.y)
                 else:
-                    v = best_angle(V.field, S.Point(0, 0), self..tau, dtheta, indiv)
+                    v = GT.best_angle(indiv.vopt, V.field, S.Point(0, 0), self.tau, dtheta, indiv, indiv.goal)
                 
                 if distance(indiv, goal) > 0.0001:
                     continu = True
+                    indiv.trajectory.add([indiv.position.x + v.x * self.tau, indiv.position.y + v.y * self.tau, indiv.position.z])
                     # TODO : finish here
                 else:
-                    self.trajectory.add([goal.x,goal.y, 0.])
+                    indiv.trajectory.add([goal.x,goal.y, 0.])
                     continue
