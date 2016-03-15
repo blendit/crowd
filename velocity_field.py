@@ -51,7 +51,7 @@ class VelocityField:
     def compute_field(self, tau, others):  # TODO: This function has to be tested
         """This function computes a velocity_field for self.individual which is collision free with the others individuals"""
         for neighboor in others:
-            if neighboor == individual:  # we only consider the others individual
+            if neighboor == self.individual:  # we only consider the others individual
                 continue
             if is_far_away(neighboor):   # we do not do computation for to far away individuals
                 continue

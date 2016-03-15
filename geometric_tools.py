@@ -37,10 +37,10 @@ def dist_theta(vopt, obj1, center, angle, tau, indiv, p_goal):
     return energy
 
 
-def best_angle(vopt, obj1, center, tau, dtheta, indiv):
+def best_angle(vopt, obj1, center, tau, dtheta, indiv, p_goal):
     """Find the best angle and the speed vector corresponding"""
     act_ang = 0
-    min_energy = dist_theta(vopt, obj1, center, act_ang, tau, indiv)
+    min_energy = dist_theta(vopt, obj1, center, act_ang, tau, indiv, p_goal)
     best_ang = 0
     while (ang < 2 * math.pi):  # If angles are not in degree
         act_ang += dtheta
