@@ -6,7 +6,7 @@ import random
 from math import pi
 from matplotlib import pyplot as plt
 from velocity_field import *
-import classe as C
+import classes as C
 
 # random.seed()
 
@@ -181,19 +181,19 @@ class TestGeometricTools(unittest.TestCase):
         p1 = S.Point(1, 1)
         p2 = S.Point(1, -1)
         p3 = S.Point(2, 2)
-        circle = p0.dilate(1)  # Circle of center (0,0) and radius 1
+        circle = p0.buffer(1)  # Circle of center (0,0) and radius 1
         line1 = S.LineString([(p0.x, p0.y), (p1.x, p1.y)])
         line2 = S.LineString([(p3.x, p3.y), (p1.x, p1.y)])
         # Test 1 :
-        result = intersection_not_empty(cercle, line1)
+        result = intersection_not_empty(circle, line1)
         answer = True
         self.assertEqual(result, answer)
         # Test 2 :
-        result = intersection_not_empty(cercle, line2)
+        result = intersection_not_empty(circle, line2)
         answer = False
         self.assertEqual(result, answer)
         # Test 3 :
-        result = intersection_not_empty(cercle, p2)
+        result = intersection_not_empty(circle, p2)
         answer = False
         self.assertEqual(result, answer)
 
@@ -202,9 +202,19 @@ class TestGeometricTools(unittest.TestCase):
         individual = C.Individual(0, 0, 0, 5, 2, 2.23, 1.26, 2, S.Point(10,20))
         vopt = 2
         p0 = S.Point(0, 0)
-        angle = 0.1
-        circle1 = p0.dilate(1)
-        circle2 = p0.dilate(3)
+        angle = math.pi/3
+        circle1 = p0.buffer(1)
+        circle2 = p0.buffer(3)
+        # Test 1 :
+        result = find_closest_to_optimal(vopt, circle1, p0, angle)
+        answer = S.Point(1/2, math.sqrt(3)/2)
+        self.assertAlmostEqual(result.x, answer.x, places=2)
+        self.assertAlmostEqual(result.y, answer.y, places=2)
+        # Test 2 :
+        result = find_closest_to_optimal(vopt, circle2, p0, angle)
+        answer = S.Point(1, math.sqrt(3))
+        self.assertAlmostEqual(result.x, answer.x, places=2)
+        self.assertAlmostEqual(result.y, answer.y, places=2)
 
         
 class AffichePolygon():
@@ -237,3 +247,7 @@ class AfficheLineString():
         ax.set_ylim(*yrange)
         ax.set_aspect(1)
         plt.show()
+
+
+#TestGeometricTools().test_intersection_not_empty()
+TestGeometricTools().test_find_closest_to_optimal()
