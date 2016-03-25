@@ -47,8 +47,8 @@ class VelocityField:
         origin = S.Point(self.individual.v.x + 1.0 / 2.0 * u.x, self.individual.v.y + 1.0 / 2.0 * u.y)
         # We return the right half plane
         return half_plane(origin, u, vmax)
-              
-    def compute_field(self, tau, others):  # TODO: This function has to be tested
+
+    def compute_field(self, tau, others, minefield):  # TODO: This function has to be tested
         """This function computes a velocity_field for self.individual which is collision free with the others individuals"""
         for neighboor in others:
             if neighboor == self.individual:  # we only consider the others individual
@@ -56,4 +56,6 @@ class VelocityField:
             if is_far_away(neighboor):   # we do not do computation for to far away individuals
                 continue
             self.field = self.field.intersection(self.orca(neighboor, tau))
+        for mine in minefield:
+            self.field = self.field.difference(mine)
         # TODO : Take the environment into account
