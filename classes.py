@@ -38,9 +38,9 @@ class Crowd:
             continu = False
             for indiv in self.individuals:
                 V = T.VelocityField(indiv, self.tau)
-                V.compute_field(self.tau, self.individuals)
-                if S.Point(indiv.goal.x - indiv.position.x, indiv.goal.y - indiv.position.y) in V.field.exterior.coords:
-                    v = S.Point(indiv.goal.x - indiv.position.x, indiv.goal.y - indiv.position.y)
+                V.compute_field(self.tau, self.individuals, [])
+                if S.Point((indiv.goal.x - indiv.position.x) / self.tau, (indiv.goal.y - indiv.position.y) / self.tau) in V.field.exterior.coords:
+                    v = S.Point((indiv.goal.x - indiv.position.x) / self.tau, (indiv.goal.y - indiv.position.y) / self.tau)
                 else:
                     v = GT.best_angle(indiv.vopt, V.field, S.Point(0, 0), self.tau, dtheta, indiv, indiv.goal)
                 
