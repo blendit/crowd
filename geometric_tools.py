@@ -17,7 +17,7 @@ def find_closest_to_optimal(vopt, obj1, center, angle):
     xopt = math.cos(angle)
     yopt = math.sin(angle)
     p_opt = S.Point(xopt, yopt)
-    if intersection_not_empty(obj1, p_opt):
+    if obj1.contains(p_opt):
         return p_opt
     else:
         line = S.LineString([(p_opt.x, p_opt.y), (center.x, center.y)])
@@ -37,10 +37,10 @@ def dist_theta(vopt, obj1, center, angle, tau, indiv, p_goal):
     return energy
 
 
-def best_angle(vopt, obj1, center, tau, dtheta, indiv, p_goal):
+def best_angle(vopt, obj1, center, tau, dtheta, indiv):
     """Find the best angle and the speed vector corresponding"""
     act_ang = 0
-    min_energy = dist_theta(vopt, obj1, center, act_ang, tau, indiv, p_goal)
+    min_energy = dist_theta(vopt, obj1, center, act_ang, tau, indiv)
     best_ang = 0
     while (ang < 2 * math.pi):  # If angles are not in degree
         act_ang += dtheta
