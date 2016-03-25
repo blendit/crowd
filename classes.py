@@ -6,6 +6,7 @@ import GraphPLE as G
 import velocity_field as T
 import geometric_tools as GT
 
+
 class Individual:
     """The class independant from Blender describing an individual"""
     def __init__(self, x, y, z, vmax, vopt, es, ew, radius, goal):
@@ -49,5 +50,5 @@ class Crowd:
                     indiv.trajectory.add([indiv.position.x + v.x * self.tau, indiv.position.y + v.y * self.tau, indiv.position.z])
                     # TODO : finish here
                 else:
-                    indiv.trajectory.add([goal.x,goal.y, 0.])
+                    indiv.trajectory.add([goal.x, goal.y, 0.])
                     continue
