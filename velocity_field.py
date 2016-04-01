@@ -66,5 +66,5 @@ class VelocityField:
             print(orc)
             self.field = self.field.intersection(orc)
         for mine in minefield:
-            self.field = self.field.difference(mine)
+            self.field = self.field.difference(mine) # TODO : IT will bug
         # TODO : Take the environment into account
