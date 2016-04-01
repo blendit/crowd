@@ -46,10 +46,10 @@ class Crowd:
                 else:
                     v = GT.best_angle(indiv.vopt, V.field, S.Point(0, 0), self.tau, dtheta, indiv, indiv.goal)
                 
-                if distance(indiv, goal) > 0.001:
+                if GT.distance(indiv.position, indiv.goal) > 0.001:
                     continu = True
-                    indiv.trajectory.add([indiv.position.x + v.x * self.tau, indiv.position.y + v.y * self.tau, indiv.position.z])
+                    indiv.trajectory.extend([indiv.position.x + v.x * self.tau, indiv.position.y + v.y * self.tau, indiv.position.z])
                     # TODO : finish here
                 else:
-                    indiv.trajectory.add([goal.x, goal.y, 0.])
+                    indiv.trajectory.extend([goal.x, goal.y, 0.])
                     continue
