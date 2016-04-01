@@ -216,11 +216,6 @@ class TestGeometricTools(unittest.TestCase):
         self.assertAlmostEqual(result.x, answer.x, places=2)
         self.assertAlmostEqual(result.y, answer.y, places=2)
 
-
-    def test_dist_theta(self):
-        """Test the dist_theta function"""
-        return True
-
         
 class AffichePolygon():
     """Plot a polygon"""

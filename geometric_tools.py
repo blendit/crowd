@@ -14,8 +14,8 @@ def intersection_not_empty(obj1, obj2):
 
 def find_closest_to_optimal(vopt, obj1, center, angle):
     """Find the point of the polygone obj1 (authorised speeds) at angle that is the closest to vopt"""
-    xopt = math.cos(angle)
-    yopt = math.sin(angle)
+    xopt = vopt*math.cos(angle)
+    yopt = vopt*math.sin(angle)
     p_opt = S.Point(xopt, yopt)
     if obj1.contains(p_opt):
         return p_opt
@@ -37,14 +37,14 @@ def dist_theta(vopt, obj1, center, angle, tau, indiv, p_goal):
     return energy
 
 
-def best_angle(vopt, obj1, center, tau, dtheta, indiv, goal):
+def best_angle(vopt, obj1, center, tau, dtheta, indiv):
     """Find the best angle and the speed vector corresponding"""
     act_ang = 0
-    min_energy = dist_theta(vopt, obj1, center, act_ang, tau, indiv, goal)
+    min_energy = dist_theta(vopt, obj1, center, act_ang, tau, indiv)
     best_ang = 0
     while (ang < 2 * math.pi):  # If angles are not in degree
         act_ang += dtheta
-        energy = dist_theta(vopt, obj1, center, act_ang, tau, indiv, goal)
+        energy = dist_theta(vopt, obj1, center, act_ang, tau, indiv)
         if energy < min_energy:
             min_energy = energy
             best_ang = act_ang
