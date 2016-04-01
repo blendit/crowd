@@ -2,6 +2,15 @@ import bpy
 from mathutils import *
 from decimal import Decimal
 
+# bla
+import numpy as np
+import shapely.geometry as S
+import math
+
+import blendit.GraphPLE as G
+import blendit.classes as C
+import blendit.geometric_tools as GT
+
 
 class point_info:
     def __init__(point, recurrence, location):
@@ -148,9 +157,21 @@ def get_points(path):
     return points
 
 
-data = [[[0, 0, 1], [5, 0, 1], [5, 0, 1], [5, 0, 1], [5, 0, 1], [5, 0, 5], [0, 0, 5], [0, 0, 1]],
-        [[0, 0, 1], [-2, 0, -2], [-3, 0, -13], [-3, 0, -13], [-3, 0, -13], [-3, 0, -13], [-3, 0, -13], [-3, 0, -13]],
-        [[-1, -2, -1], [0, -10, 0], [0, -12, 0], [0, -13, 0], [0, -13, 0], [0, -13, 0], [0, -14, 0], [0, -15, 0]]]
+# crados
+es = 2.23
+ew = 1.26
+
+ind1 = C.Individual(0, 0, 0, 5, 2, es, ew, 2, S.Point(40, 50))
+
+graph = G.Graph(d=0.5, sizeX=100, sizeY=100, posX=0, posY=0)
+
+cr = C.Crowd(graph, 0.5)
+
+cr.add_indiv(ind1)
+
+cr.animate(0.1)
+
+data = cr.to_list_of_point()
 
 
 def main(data, dt, prec):

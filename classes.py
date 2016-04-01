@@ -16,6 +16,7 @@ class Individual:
         # See the PLEdestrian paper for the meaning of this notations
         self.es = es
         self.ew = ew
+        self.v = S.Point(0, 0, 0)
         self.radius = radius
         self.trajectory = list()
         self.goal = goal
@@ -48,7 +49,7 @@ class Crowd:
                 else:
                     v = GT.best_angle(indiv.vopt, V.field, S.Point(0, 0), self.tau, dtheta, indiv, indiv.goal)
                 print(v.x, v.y, indiv.position, indiv.goal)
-                
+                indiv.v = v
                 if GT.distance(indiv.position, indiv.goal) > 0.1:
                     continu = True
                     indiv.position = S.Point(indiv.position.x + v.x * self.tau, indiv.position.y + v.y * self.tau, indiv.position.z)

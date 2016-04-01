@@ -20,9 +20,9 @@ class VelocityField:
         
     def is_far_away(self, neighboor, tau):
         """Detect if two individuals are to far away to meet in the time tau"""
-        dx = neighboor.x - self.individual.x
-        dy = neighboor.y - self.individual.y
-        dz = neighboor.z - self.individual.z
+        dx = neighboor.position.x - self.individual.position.x
+        dy = neighboor.position.y - self.individual.position.y
+        dz = neighboor.position.z - self.individual.position.z
         distance = math.sqrt(dx ** 2 + dy ** 2 + dz ** 2)
         if distance > self.individual.vmax * tau + neighboor.vmax * tau + self.individual.radius + neighboor.radius:
             return True
@@ -34,12 +34,12 @@ class VelocityField:
         """Computes the ORCA hyperplane between the two individual (cf Reciprocal n-body collision avoidance)"""
         # We define some parameters
         vmax = self.individual.vmax
-        point_us = S.Point(self.individual.x, self.individual.y)
-        point_him = S.Point(neighboor.x, neighboor.y)
+        point_us = S.Point(self.individual.position.x, self.individual.position.y)
+        point_him = S.Point(neighboor.position.x, neighboor.position.y)
         
-        if distance(self.individual, self.neighboor) == self.individual.radius + self.neighboor.radius:
+        if distance(self.individual.position, neighboor.position) == self.individual.radius + neighboor.radius:
             return half_plane(Point(0,0), v_opt, vmax)
-        elif distance(self.individual, self.neighboor) < self.individual.radius + self.neighboor.radius:
+        elif distance(self.individual.position, neighboor.position) < self.individual.radius + neighboor.radius:
             return S.Polygon([(-vmax,-vmax), (vmax, -vmax), (vmax, vmax), (-vmax, vmax)])
         
         v_opt = difference(self.individual.v, neighboor.v)
@@ -51,6 +51,7 @@ class VelocityField:
         
         u = difference(u_end, v_opt)
         origin = S.Point(self.individual.v.x + 1.0 / 2.0 * u.x, self.individual.v.y + 1.0 / 2.0 * u.y)
+        print("half ", origin, u, vmax, u_end, v_opt)
         # We return the right half plane
         return half_plane(origin, u, vmax)
 
@@ -59,9 +60,11 @@ class VelocityField:
         for neighboor in others:
             if neighboor == self.individual:  # we only consider the others individual
                 continue
-            if is_far_away(neighboor):   # we do not do computation for to far away individuals
+            if self.is_far_away(neighboor, tau):   # we do not do computation for to far away individuals
                 continue
-            self.field = self.field.intersection(self.orca(neighboor, tau))
+            orc = self.orca(neighboor, tau)
+            print(orc)
+            self.field = self.field.intersection(orc)
         for mine in minefield:
             self.field = self.field.difference(mine)
         # TODO : Take the environment into account
