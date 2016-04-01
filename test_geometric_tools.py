@@ -206,12 +206,12 @@ class TestGeometricTools(unittest.TestCase):
         circle1 = p0.buffer(1)
         circle2 = p0.buffer(3)
         # Test 1 :
-        result = find_closest_to_optimal(vopt, circle1, p0, angle)
+        result = find_closest_to_optimal(vopt, circle1, p0, angle, 5)
         answer = S.Point(1/2, math.sqrt(3)/2)
         self.assertAlmostEqual(result.x, answer.x, places=2)
         self.assertAlmostEqual(result.y, answer.y, places=2)
         # Test 2 :
-        result = find_closest_to_optimal(vopt, circle2, p0, angle)
+        result = find_closest_to_optimal(vopt, circle2, p0, angle, 5)
         answer = S.Point(1, math.sqrt(3))
         self.assertAlmostEqual(result.x, answer.x, places=2)
         self.assertAlmostEqual(result.y, answer.y, places=2)
@@ -250,4 +250,4 @@ class AfficheLineString():
 
 
 #TestGeometricTools().test_intersection_not_empty()
-TestGeometricTools().test_find_closest_to_optimal()
+#TestGeometricTools().test_find_closest_to_optimal()
