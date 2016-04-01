@@ -41,13 +41,17 @@ class Crowd:
             for indiv in self.individuals:
                 V = T.VelocityField(indiv, self.tau)
                 V.compute_field(self.tau, self.individuals, [])
-                print(V.field)
+                print("Field :", V.field)
                 
-                if S.Point((indiv.goal.x - indiv.position.x) / self.tau, (indiv.goal.y - indiv.position.y) / self.tau) in V.field.exterior.coords:
-                    v = S.Point((indiv.goal.x - indiv.position.x) / self.tau, (indiv.goal.y - indiv.position.y) / self.tau)
-                    print("bla")
-                else:
-                    v = GT.best_angle(indiv.vopt, V.field, S.Point(0, 0), self.tau, dtheta, indiv, indiv.goal)
+                if V.field.is_empty:
+                    v = S.Point(0,0)
+                else: 
+                    if V.field.contains(S.Point((indiv.goal.x - indiv.position.x) / self.tau, (indiv.goal.y - indiv.position.y) / self.tau)):
+                        v = S.Point((indiv.goal.x - indiv.position.x) / self.tau, (indiv.goal.y - indiv.position.y) / self.tau)
+                        print("bla")
+                    else:
+                        v = GT.best_angle(indiv.vopt, V.field, S.Point(0, 0), self.tau, dtheta, indiv, indiv.goal)
+                        v = S.Point(v.x * self.tau, v.y * self.tau)
                 print(v.x, v.y, indiv.position, indiv.goal)
                 indiv.v = v
                 if GT.distance(indiv.position, indiv.goal) > 0.1:

@@ -11,11 +11,11 @@ def intersection_not_empty(obj1, obj2):
     else:
         return True
 
-
+# TODO : correct this for later
 def find_closest_to_optimal(vopt, obj1, center, angle):
     """Find the point of the polygone obj1 (authorised speeds) at angle that is the closest to vopt"""
-    xopt = vopt*math.cos(angle)
-    yopt = vopt*math.sin(angle)
+    xopt = vopt * math.cos(angle)
+    yopt = vopt * math.sin(angle)
     p_opt = S.Point(xopt, yopt)
     if obj1.contains(p_opt):
         return p_opt
@@ -148,12 +148,11 @@ class TruncatedCone:
         theta_c = argument(center)
         norm = distance(center, S.Point(0, 0))
         r = rA + rB
-        
         if norm > 0:
             # Trigonometric formulas
             cos_theta = math.sqrt(norm ** 2 - r ** 2) / norm
             sin_theta = r / norm
-            
+            print(cos_theta, sin_theta)
             norm2 = math.sqrt(norm ** 2 - r ** 2) / tau
             
             # Define the two limits point
@@ -252,8 +251,8 @@ def half_plane(origin, orthogonal, vmax):
     """Create the intersection of the half plane starting at point facing the direction given by orthogonal with the square  of 'radius' vmax"""
     # We first verify that zero is in the half_plane
     zero = S.Point(0, 0)
-    if not in_half_plane(origin, orthogonal, zero):
-        print("in_half_plane : Failed sanity check")
+    # if not in_half_plane(origin, orthogonal, zero):
+    #     print("in_half_plane : Failed sanity check")
     # Boundaries of the square
     end_points = [S.Point(-vmax, -vmax), S.Point(vmax, -vmax), S.Point(vmax, vmax), S.Point(-vmax, vmax)]
     points = []
@@ -267,4 +266,6 @@ def half_plane(origin, orthogonal, vmax):
             points.append(p)
     # We order the points by there argument (0 is in the half plane by construction)
     points.sort(key=lambda x: argument(x))
+    poly = S.Polygon([point_to_tuple(x) for x in points])
+    print(poly)
     return S.Polygon([point_to_tuple(x) for x in points])

@@ -15,8 +15,8 @@ class VelocityField:
     def init_field(self, tau):
         """Create an initial velocity field for the individual"""
         vmax = self.individual.vmax  # Maximum velocity of the individual
-        radius = vmax * tau  # We compute the "radius" of the square
-        self.field = S.Polygon([(- radius, - radius), (radius, - radius), (- radius, radius), (radius, radius)])
+        radius = vmax  # We compute the "radius" of the square
+        self.field = S.Polygon([(- radius, - radius), (radius, - radius), (radius, radius), (-radius, radius)])
         
     def is_far_away(self, neighboor, tau):
         """Detect if two individuals are to far away to meet in the time tau"""
@@ -43,15 +43,13 @@ class VelocityField:
             return S.Polygon([(-vmax,-vmax), (vmax, -vmax), (vmax, vmax), (-vmax, vmax)])
         
         v_opt = difference(self.individual.v, neighboor.v)
-        
         # We create the trucated cone
         cone = TruncatedCone(point_us, self.individual.radius, point_him, neighboor.radius, vmax * tau, tau)
+        #print(cone.arc)
         # We get a point we have to find
         u_end = cone.find_closest((v_opt.x, v_opt.y))
-        
         u = difference(u_end, v_opt)
         origin = S.Point(self.individual.v.x + 1.0 / 2.0 * u.x, self.individual.v.y + 1.0 / 2.0 * u.y)
-        print("half ", origin, u, vmax, u_end, v_opt)
         # We return the right half plane
         return half_plane(origin, u, vmax)
 
@@ -63,7 +61,6 @@ class VelocityField:
             if self.is_far_away(neighboor, tau):   # we do not do computation for to far away individuals
                 continue
             orc = self.orca(neighboor, tau)
-            print(orc)
             self.field = self.field.intersection(orc)
         for mine in minefield:
             self.field = self.field.difference(mine) # TODO : IT will bug
