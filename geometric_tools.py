@@ -48,7 +48,7 @@ def best_angle(vopt, obj1, center, tau, dtheta, indiv, goal):
         if energy < min_energy:
             min_energy = energy
             best_ang = act_ang
-    v = find_closest_to_optimal(vopt, obj1, center, best_angle)
+    v = find_closest_to_optimal(vopt, obj1, center, best_ang)
     return (best_ang, v)
 
 
