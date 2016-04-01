@@ -30,21 +30,21 @@ def dist_theta(vopt, obj1, center, angle, tau, indiv, p_goal):
     p_ind = find_closest_to_optimal(vopt, obj1, center, angle)
     vind = math.sqrt(p_ind.x * p_ind.x + p_ind.y * p_ind.y)
     dist = vind * tau
-    xnew = center.x + dist * math.cos(angle)
-    ynew = center.y + dist * math.sin(angle)
+    xnew = indiv.position.x + dist * math.cos(angle)
+    ynew = indiv.position.y + dist * math.sin(angle)
     L = math.sqrt((xnew - p_goal.x) * (xnew - p_goal.x) + (ynew - p_goal.y) * (ynew - p_goal.y))  # Result of A*
     energy = tau * (indiv.es + indiv.ew * vind * vind) + 2 * L * math.sqrt(indiv.es * indiv.ew)
     return energy
 
 
-def best_angle(vopt, obj1, center, tau, dtheta, indiv):
+def best_angle(vopt, obj1, center, tau, dtheta, indiv, goal):
     """Find the best angle and the speed vector corresponding"""
     act_ang = 0.
     min_energy = dist_theta(vopt, obj1, center, act_ang, tau, indiv, goal)
     best_ang = 0.
     while (act_ang < 2 * math.pi):  # If angles are not in degree
         act_ang += dtheta
-        energy = dist_theta(vopt, obj1, center, act_ang, tau, indiv)
+        energy = dist_theta(vopt, obj1, center, act_ang, tau, indiv, goal)
         if energy < min_energy:
             min_energy = energy
             best_ang = act_ang
