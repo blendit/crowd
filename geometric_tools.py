@@ -286,7 +286,7 @@ def half_plane(origin, orthogonal, vmax):
     print("\thalf_plane :\n\t\t origin = ", origin, "\n\t\t ortho = ", orthogonal, "\n\t\t vmax = ", vmax, "\n\t\t points:")
     points.sort(key=lambda x: argument(x))
     # for x in points:
-        # print("\n\t\t\t", x)
+    # print("\n\t\t\t", x)
     poly = S.Polygon([point_to_tuple(x) for x in points])
     print(poly)
     return S.Polygon([point_to_tuple(x) for x in points])

@@ -37,7 +37,7 @@ class TestGeometricTools(unittest.TestCase):
         # Test 5 :
         self.assertAlmostEqual(angle(p3, p6), 3 * pi / 2)
         self.assertAlmostEqual(angle(p6, p3), pi / 2)
-    
+
     def test_find_projection_segment(self):
         """Test the find_projection_segment function"""
         p1 = (1, 0)
@@ -85,7 +85,7 @@ class TestGeometricTools(unittest.TestCase):
         self.assertEqual(result[1], answer[1])
 
     # TODO : automatic test for the create_truncated_cone (no idea how for now)
-  
+
     def test_find_projection_half_line(self):
         p1 = (1, 0)
         p2 = (0, 1)
@@ -199,15 +199,15 @@ class TestGeometricTools(unittest.TestCase):
 
     def test_find_closest_to_optimal(self):
         """Test the find_closest_to_optimal function"""
-        individual = C.Individual(0, 0, 0, 5, 2, 2.23, 1.26, 2, S.Point(10,20))
+        individual = C.Individual(0, 0, 0, 5, 2, 2.23, 1.26, 2, S.Point(10, 20))
         vopt = 2
         p0 = S.Point(0, 0)
-        angle = math.pi/3
+        angle = math.pi / 3
         circle1 = p0.buffer(1)
         circle2 = p0.buffer(3)
         # Test 1 :
         result = find_closest_to_optimal(vopt, circle1, p0, angle, 5)
-        answer = S.Point(1/2, math.sqrt(3)/2)
+        answer = S.Point(1 / 2, math.sqrt(3) / 2)
         self.assertAlmostEqual(result.x, answer.x, places=2)
         self.assertAlmostEqual(result.y, answer.y, places=2)
         # Test 2 :
@@ -216,12 +216,12 @@ class TestGeometricTools(unittest.TestCase):
         self.assertAlmostEqual(result.x, answer.x, places=2)
         self.assertAlmostEqual(result.y, answer.y, places=2)
 
-        
+
 class AffichePolygon():
     """Plot a polygon"""
     def plot_poly(self, poly, xrange=[-10, 10], yrange=[-10, 10]):
         x, y = poly.exterior.xy
-        
+
         fig = plt.figure(1, figsize=(5, 5), dpi=90)
         ax = fig.add_subplot(111)
         ax.plot(x, y)
@@ -237,7 +237,7 @@ class AfficheLineString():
     """Plot a LineString"""
     def plot_poly(self, poly, xrange=[-10, 10], yrange=[-10, 10]):
         x, y = poly.exterior.xy
-        
+
         fig = plt.figure(1, figsize=(5, 5), dpi=90)
         ax = fig.add_subplot(111)
         ax.plot(x, y)
