@@ -58,8 +58,8 @@ def best_angle(vopt, obj1, center, tau, dtheta, indiv, goal):
 def argument(point):
     """Gives the complex argument of a point in the plane"""
     return math.atan2(point.y, point.x)
-   
- 
+
+
 def angle(p1, p2):
     """Gives the value of the angle represented by the two points as if they were vectors. The value is in [0, 2*Pi]"""
     theta1 = argument(p1)
@@ -89,8 +89,8 @@ def distance_tuple(point1, point2):
     d = (point1[0] - point2[0])**2 + (point1[1] - point2[1])**2
     d = math.sqrt(d)
     return d
-    
- 
+
+
 def point_to_tuple(point):
     """Transform a list of Points into a list of tuples"""
     return (point.x, point.y)
@@ -103,12 +103,12 @@ def find_projection_segment(pA, pB, pM):
     if vectAB == (0, 0):
         return pA  # Special case
     vectAM = (pM[0] - pA[0], pM[1] - pA[1])
-    
+
     # Find the scalar product between the two
     scalar = vectAB[0] * vectAM[0] + vectAB[1] * vectAM[1]
     # Compute the norm of AB
     dist_square = vectAB[0] * vectAB[0] + vectAB[1] * vectAB[1]
-    
+
     # Return the point
     if 0 > scalar:
         return pA  # Outside of the segment
@@ -126,26 +126,26 @@ def find_projection_half_line(pA, pB, pM):
     if vectAB == (0, 0):
         return pA  # Special case
     vectAM = (pM[0] - pA[0], pM[1] - pA[1])
-    
+
     # Find the scalar product between the two
     scalar = vectAB[0] * vectAM[0] + vectAB[1] * vectAM[1]
     # Compute the norm of AB
     dist_square = vectAB[0] * vectAB[0] + vectAB[1] * vectAB[1]
-    
+
     # Return the point
     if scalar < 0:
         scalar = scalar / dist_square
         return (pA[0] + vectAB[0] * scalar, pA[1] + vectAB[1] * scalar)
     else:
         return pA
-        
-        
+
+
 class TruncatedCone:
     """Represent the truncated cone"""
-    
+
     def __init__(self, pA, rA, pB, rB, dmax, tau):
         """Create a truncated cone for the ORCA algorithm"""
-        
+
         # Usefull geometric datas
         center = S.Point(pB.x - pA.x, pB.y - pA.y)
         theta_c = argument(center)
@@ -157,14 +157,14 @@ class TruncatedCone:
             sin_theta = r / norm
             print(cos_theta, sin_theta)
             norm2 = math.sqrt(norm ** 2 - r ** 2) / tau
-            
+
             # Define the two limits point
             point1 = S.Point(norm2 * (math.cos(theta_c) * cos_theta + sin_theta * math.sin(theta_c)), norm2 * (math.sin(theta_c) * cos_theta - sin_theta * math.cos(theta_c)))
             point2 = S.Point(norm2 * (math.cos(theta_c) * cos_theta - sin_theta * math.sin(theta_c)), norm2 * (math.sin(theta_c) * cos_theta + sin_theta * math.cos(theta_c)))
-            
+
         else:
             raise Blendit('Same Position Between Two Peaple')
-        
+
         self.limit_points = [point1, point2]
 
         # Define the arc
@@ -184,46 +184,61 @@ class TruncatedCone:
         theta = np.linspace(start_angle, end_angle, numsegments)
         x = center.x + radius * np.cos(theta)
         y = center.y + radius * np.sin(theta)
-        
+
         # The arc
         self.arc = S.LineString(np.column_stack([x, y]))
+
+    def in_cone(self, point):
+        point1 = self.limit_points[0]
+        point2 = self.limit_points[1]
+        angle_ref = angle(point1, point2)
+        if angle_ref > math.pi :
+            point1, point2 = point2, point1
+        angle_ref = angle(point1, point2)
+        angle1 = angle(point1, point)
+        if angle1 > angle_ref:
+            return False
+        # The point is in the cone but might not be in the truncated cone
+        line1 = S.LineString([(point.x, point.y), (0, 0)])
+        if intersection_not_empty(line1, self.arc):
+            return True
+        return False
 
     def find_closest(self, point):
         """Find the closest point of the boundaries of our truncated cone to the point passed as second parameter"""
         # We get back the list of vertices
         point_list = list(self.arc.coords)
-        
+
         # We compute the projection on the first half line
         minimum = [find_projection_half_line(point_to_tuple(self.limit_points[0]), (0, 0), point)]
         minimum.append(distance_tuple(point, minimum[0]))
-        
+
         # And the second
         proj = find_projection_half_line(point_to_tuple(self.limit_points[1]), (0, 0), point)
         dist = distance_tuple(point, proj)
         if dist < minimum[1]:
                 minimum = [proj, dist]
-        
+
         # For each segment within the list we check the projection
         for i in range(len(point_list) - 1):
             first = point_list[i]
             second = point_list[i + 1]
-            
+
             proj = find_projection_segment(first, second, point)
             dist = distance_tuple(point, proj)
-            
+
             if dist < minimum[1]:
                 minimum = [proj, dist]
-        
+
         # We return the result
         return S.Point(minimum[0][0], minimum[0][1])
-        
 
 def in_half_plane(origin, orthogonal, point):
     if (point.x - origin.x) * orthogonal.x + (point.y - origin.y) * orthogonal.y >= -0.000001:
         return True
     return False
-   
-    
+
+
 def intersection_line_line(origin1, ortho, point1, point2, vmax):
     """This function makes an intersection between two lines with the following representations:
     line1 : origin1 + ortho (vector that is normal to the line)
@@ -248,7 +263,7 @@ def intersection_line_line(origin1, ortho, point1, point2, vmax):
     else:
         return []
 
-    
+
 # TODO : Find a way to not bug if the two individual are in colision at the begining. (I.e. : if there is a bug at the begining then find a way to correct it in the end)
 def half_plane(origin, orthogonal, vmax):
     """Create the intersection of the half plane starting at point facing the direction given by orthogonal with the square  of 'radius' vmax"""
