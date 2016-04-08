@@ -11,6 +11,7 @@ def intersection_not_empty(obj1, obj2):
     else:
         return True
 
+
 # TODO : correct this for later
 def find_closest_to_optimal(vopt, obj1, center, angle, vmax):
     """Find the point of the polygon obj1 (authorised speeds) at angle that is the closest to vopt"""
@@ -20,38 +21,50 @@ def find_closest_to_optimal(vopt, obj1, center, angle, vmax):
     if obj1.contains(p_opt):
         return p_opt
     else:
-        line1 = S.LineString([(p_opt.x, p_opt.y), (center.x, center.y)])
-        line2 = S.LineString([(p_opt.x, p_opt.y), (vmax * math.cos(angle), vmax * math.sin(angle))])
-        int1 = obj1.intersection(line1)
-        int2 = obj1.intersection(line2)
-        obj1_ext = obj1.exterior
-        return line.intersection(obj1_ext)
+        line = S.LineString([(center.x, center.y), (vmax * math.cos(angle), vmax * math.sin(angle))])
+        inter = obj1.intersection(line)
+        if inter.is_empty:
+            return 0  # Case where there is no solution
+        x, y = inter.xy
+        minimum = float("inf")
+        q = S.Point(0, 0)
+        for i in range(len(x)):
+            p = S.Point(x[i], y[i])
+            if distance(p_opt, p) < minimum:
+                q = p
+                minimum = distance(p_opt, p)
+        if q == S.Point(0, 0):
+            return 0
+        else:
+            return q
 
 
-def dist_theta(vopt, obj1, center, angle, tau, indiv, p_goal):
+def dist_theta(vopt, obj1, center, angle, tau, indiv, p_goal, graph):
     """Find the energy used if the individual goes in the direction theta"""
     p_ind = find_closest_to_optimal(vopt, obj1, center, angle, indiv.vmax)
+    if p_ind == 0:
+        return float("inf"), S.Point(0,0)
     vind = math.sqrt(p_ind.x * p_ind.x + p_ind.y * p_ind.y)
     dist = vind * tau
     xnew = indiv.position.x + dist * math.cos(angle)
     ynew = indiv.position.y + dist * math.sin(angle)
     L = math.sqrt((xnew - p_goal.x) * (xnew - p_goal.x) + (ynew - p_goal.y) * (ynew - p_goal.y))  # Result of A*
+    # L = graph.find_graph_distance(p_ind, p_goal)
+    # FIXME : This minimization function causes problems since it does not take into account the fact that we cannot go strait forward.
     energy = tau * (indiv.es + indiv.ew * vind * vind) + 2 * L * math.sqrt(indiv.es * indiv.ew)
-    return energy
+    return energy, p_ind
 
 
-def best_angle(vopt, obj1, center, tau, dtheta, indiv, goal):
+def best_angle(vopt, obj1, center, tau, dtheta, indiv, goal, graph):
     """Find the best angle and the speed vector corresponding"""
     act_ang = 0.
-    min_energy = dist_theta(vopt, obj1, center, act_ang, tau, indiv, goal)
-    best_ang = 0.
-    while (act_ang < 2 * math.pi):  # If angles are not in degree
+    min_energy, v = dist_theta(vopt, obj1, center, act_ang, tau, indiv, goal, graph)
+    while (act_ang < 2 * math.pi):
         act_ang += dtheta
-        energy = dist_theta(vopt, obj1, center, act_ang, tau, indiv, goal)
+        energy, v_poss = dist_theta(vopt, obj1, center, act_ang, tau, indiv, goal, graph)
         if energy < min_energy:
             min_energy = energy
-            best_ang = act_ang
-    v = find_closest_to_optimal(vopt, obj1, center, best_ang, indiv.vmax)
+            v = v_poss
     return v
 
 
@@ -79,14 +92,14 @@ def difference(p1, p2):
 
 def distance(point1, point2):
     """Euclidian Distance between two points"""
-    d = (point1.x - point2.x)**2 + (point1.y - point2.y)**2
+    d = (point1.x - point2.x) ** 2 + (point1.y - point2.y) ** 2
     d = math.sqrt(d)
     return d
 
 
 def distance_tuple(point1, point2):
     """Euclidian Distance between two points"""
-    d = (point1[0] - point2[0])**2 + (point1[1] - point2[1])**2
+    d = (point1[0] - point2[0]) ** 2 + (point1[1] - point2[1]) ** 2
     d = math.sqrt(d)
     return d
 
@@ -155,7 +168,6 @@ class TruncatedCone:
             # Trigonometric formulas
             cos_theta = math.sqrt(norm ** 2 - r ** 2) / norm
             sin_theta = r / norm
-            print(cos_theta, sin_theta)
             norm2 = math.sqrt(norm ** 2 - r ** 2) / tau
 
             # Define the two limits point
@@ -258,7 +270,7 @@ def intersection_line_line(origin1, ortho, point1, point2, vmax):
     py = (origin1.y * origin2.x - origin1.x * origin2.y) * (point1.y - point2.y) - (point1.y * point2.x - point1.x * point2.y) * (origin1.y - origin2.y)
     py /= (origin1.y - origin2.y) * (point1.x - point2.x) - (origin1.x - origin2.x) * (point1.y - point2.y)
     # Test if our intersection is within our range or not
-    if abs(px) <= vmax and abs(py) <= vmax:
+    if abs(px) <= vmax + 0.00001 and abs(py) <= vmax + 0.00001:  # Needed to add an error to make sure the rest behave well
         return [S.Point(px, py)]
     else:
         return []
@@ -280,10 +292,16 @@ def half_plane(origin, orthogonal, vmax):
             points.append(p)
     # We add the intersection points between the separation line and the sides of the square
     for i in range(4):
+        # print("#intersection: ", end_points[i], end_points[(i + 1) % 4])
         for p in intersection_line_line(origin, orthogonal, end_points[i], end_points[(i + 1) % 4], vmax):
             points.append(p)
     # We order the points by there argument (0 is in the half plane by construction)
+    print("\thalf_plane :\n\t\t origin = ", origin, "\n\t\t ortho = ", orthogonal, "\n\t\t vmax = ", vmax, "\n\t\t points:")
     points.sort(key=lambda x: argument(x))
+    for x in points:
+        print("\t\t\t", x)
+    if points == []:
+        return S.Point(0, 0).buffer(0.0)
     poly = S.Polygon([point_to_tuple(x) for x in points])
     print(poly)
     return S.Polygon([point_to_tuple(x) for x in points])

@@ -17,13 +17,13 @@ class Node:
         d = (self.x - node2.x) ** 2 + (self.y - node2.y) ** 2 + (self.z - node2.z) ** 2
         d = math.sqrt(d)
         return d
-        
+
 
 def distance(node1, node2):
     """Distance used in the A* algorithm"""
     return node1.distance_euclidian(node2)
-        
-        
+
+
 class Edge:
     """Edge from the approximation graph of the PLE algorithm"""
     def __init__(self, node1, node2, base_distance=distance, disable=False):
@@ -32,21 +32,21 @@ class Edge:
         self.nodes = [node1, node2]
         self.disable = disable
         self.influence = 0
-        
+
     def base_distance_gen(self, coef=1.):
         self.base_distance = distance(self.nodes[0], self.nodes[1]) * coef
-        
+
     def base_distance_set(self, base_distance):
         self.base_distance = base_distance
-        
+
     def init_distance(self):
         self.distance = self.base_distance
 
-        
+
 def default_calc_base_distance(edge):
         edge.base_distance_gen()
 
-        
+
 class Graph:
     """The class reprensenting the approximation graph for the PLE algorithm"""
     def __init__(self, d=0., sizeX=0., sizeY=0., posX=0., posY=0., calc_base_distance=default_calc_base_distance):
@@ -66,7 +66,7 @@ class Graph:
         self.nX = 0
         self.nY = 0
         self.create(calc_base_distance)
-        
+
     def create(self, calc_base_distance=default_calc_base_distance):
         """Create a grid plane graph according to parameters"""
         self.nX = math.floor(self.sizeX / self.d) + 1
@@ -145,14 +145,14 @@ class Graph:
             new_edge.init_distance()
             self.edges[me][neighbor] = new_edge
             self.edges[neighbor][me] = new_edge
-    
+
     def remove_entry_point(self):
         """Remove the individual position"""
         indiv = self.nodes[0]
         for neighbor in self.edges[indiv].keys():
             self.edges[neighbor].pop(indiv)
         self.edges.pop(indiv)
-        
+
     def add_goal_point(self, posX, posY, posZ=0.):
         """Add the individual in the graph"""
         my_neighbors = self.find_neighbors(posX, posY)
@@ -166,7 +166,7 @@ class Graph:
             new_edge.init_distance()
             self.edges[me][neighbor] = new_edge
             self.edges[neighbor][me] = new_edge
-    
+
     def remove_goal_point(self):
         """Remove the individual position"""
         goal = self.nodes[1 + self.nX * self.nY]
@@ -174,26 +174,26 @@ class Graph:
             self.edges[neighbor].pop(goal)
         self.edges.pop(goal)
         self.nodes.pop()
-            
+
     def smallest_path_a_star(self):
         """A* algorithm"""
         start = self.nodes[0]
         goal = self.nodes[1 + self.nX * self.nY]
         to_evaluate = {start: distance(start, goal)}  # Dictionary of the nodes to evaluate and the approximated distance to the goal
         start.score = 0.  # Distance to the goal
-        
+
         while len(to_evaluate) > 0:
             current = min(to_evaluate.items(), key=lambda x: x[1])[0]  # Get the minimum node of to_evaluate
             # print('Je vois (%.2f,%.2f) à %.2f' %(current.x,current.y,score[current]))
-            
+
             if current == goal:  # It is over
                 for node in self.nodes:
                     node.seen = False
                 return goal.score
-                
+
             to_evaluate.pop(current)
             current.seen = True  # Adding current into the dictionary (the value doesn't interest us)
-            
+
             for (neighbor, edge) in self.edges[current].items():
                 if neighbor.disable or edge.disable:
                     continue
@@ -203,22 +203,22 @@ class Graph:
                 if neighbor in to_evaluate:
                     if local_score >= neighbor.score:
                         continue
-                
+
                 to_evaluate[neighbor] = local_score + distance(neighbor, goal)  # Distance so far + heuristic distance
                 neighbor.score = local_score
         # Error -> TODO
-        
+
     def reset_graph(self):
         for node in self.nodes:
             node.seen = False
             node.score = 0.
-            
-    def find_graph_distance(indv, goal):
+
+    def find_graph_distance(self, indv, goal):
         """Find the distance in the graph"""
         self.add_entry_point(indv.x, indv.y)
         self.add_goal_point(goal.x, goal.y)
         path = self.smallest_path_a_star()
         self.remove_entry_point()
-        self.emove_goal_point()
+        self.remove_goal_point()
         self.reset_graph()
         return path

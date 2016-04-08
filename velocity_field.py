@@ -38,21 +38,20 @@ class VelocityField:
         point_him = S.Point(neighboor.position.x, neighboor.position.y)
 
         if distance(self.individual.position, neighboor.position) == self.individual.radius + neighboor.radius:
-            return half_plane(Point(0,0), v_opt, vmax)
+            return half_plane(Point(0, 0), v_opt, vmax)
         elif distance(self.individual.position, neighboor.position) < self.individual.radius + neighboor.radius:
             return S.Polygon([(-vmax,-vmax), (vmax, -vmax), (vmax, vmax), (-vmax, vmax)])
 
         v_opt = difference(self.individual.v, neighboor.v)
         # We create the trucated cone
         cone = TruncatedCone(point_us, self.individual.radius, point_him, neighboor.radius, vmax * tau, tau)
-        #print(cone.arc)
+
         # We get a point we have to find
         u_end = cone.find_closest((v_opt.x, v_opt.y))
         if cone.in_cone(v_opt):
             u = difference(u_end, v_opt)
         else:
             u = difference(v_opt, u_end)
-
         origin = S.Point(self.individual.v.x + 1.0 / 2.0 * u.x, self.individual.v.y + 1.0 / 2.0 * u.y)
         # We return the right half plane
         return half_plane(origin, u, vmax)
@@ -67,5 +66,5 @@ class VelocityField:
             orc = self.orca(neighboor, tau)
             self.field = self.field.intersection(orc)
         for mine in minefield:
-            self.field = self.field.difference(mine) # TODO : IT will bug
+            self.field = self.field.difference(mine)  # TODO : IT will bug
         # TODO : Take the environment into account
