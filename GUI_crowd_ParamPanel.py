@@ -1,9 +1,38 @@
 import bpy
+import os
+import sys
+import subprocess
+import ast
+
+script_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(script_dir)
+
+# Get system's python path
+proc = subprocess.Popen('python3 blender/path.py', stdout=subprocess.PIPE, shell=True)
+out, err = proc.communicate()
+print(out)
+print(err)
+paths = ast.literal_eval(out.decode("utf-8"))
+sys.path += (paths)
+
 from bpy.types import Menu, Panel
 from bpy.props import *
 
-S = []
-Index = 0
+from mathutils import *
+from decimal import Decimal
+
+import numpy as np
+import shapely.geometry as S
+import math
+
+import blendit.GraphPLE as G
+import blendit.classes as C
+import blendit.geometric_tools as GT
+
+Individuals = []
+Graph = C.Graph(d=0.5, sizeX=100, sizeY=100, posX=0, posY=0)
+es = 2.23
+ew = 1.26
 
 
 def initSceneProperties(scn):
@@ -208,6 +237,17 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
     def execute(self, context):
         scn = bpy.context.scene
         view = bpy.context.space_data
+        for i in range(scn.NumN):
+            Individuals.append(C.Individual(scn.InitX,
+                                            scn.InitY,
+                                            0,
+                                            scn.VMax,
+                                            scn.VOpt,
+                                            es,
+                                            ew,
+                                            scn.SizeT,
+                                            S.Point(scn.GoalX, scn.GoalY)))
+        
         return{'FINISHED'}
     
 
@@ -218,6 +258,15 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
     def execute(self, context):
         scn = bpy.context.scene
         view = bpy.context.space_data
+        Individuals[i]=C.Individual(scn.InitX,
+                                    scn.InitY,
+                                    0,
+                                    scn.VMax,
+                                    scn.VOpt,
+                                    es,
+                                    ew,
+                                    scn.SizeT,
+                                    S.Point(scn.GoalX, scn.GoalY))
         return{'FINISHED'}
 
 

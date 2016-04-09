@@ -2,6 +2,20 @@ import bpy
 from bpy.types import Menu, Panel
 from bpy.props import *
 
+import os
+import sys
+import subprocess
+import ast
+
+script_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(script_dir)
+
+# Get system's python path
+proc = subprocess.Popen('python3 path.py', stdout=subprocess.PIPE, shell=True)
+out, err = proc.communicate()
+paths = ast.literal_eval(out.decode("utf-8"))
+sys.path += (paths)
+
 S = []
 Index = 0
 
@@ -35,8 +49,8 @@ def initSceneProperties(scn):
         name="P",
         description="Grid precision",
         subtype='PERCENTAGE',
-        min=1.03,
-        max=99.96)
+        min=0,
+        max=100)
     scn['GridP'] = 0
     bpy.types.Scene.SelectString = StringProperty(
         name="Input",
@@ -78,12 +92,12 @@ class MapOrigin_Tools(ToolsButtonsPanel, Panel):
     def draw(self, context):
         layout = self.layout
         scn = context.scene
-        layout.operator("env.origin")
         layout.label(text="Initial Position:")
         row = layout.row(align=True)
         row.alignment = 'EXPAND'
         row.prop(scn, 'PosX')
         row.prop(scn, 'PosY')
+        layout.operator("env.origin")
         layout.operator("env.set")
         
         

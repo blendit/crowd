@@ -2,6 +2,31 @@ import bpy
 from bpy.types import Menu, Panel
 from bpy.props import *
 
+from mathutils import *
+from decimal import Decimal
+
+import numpy as np
+import shapely.geometry as S
+import math
+
+import blendit.GraphPLE as G
+import blendit.classes as C
+import blendit.geometric_tools as GT
+
+import os
+import sys
+import subprocess
+import ast
+
+script_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(script_dir)
+
+# Get system's python path
+proc = subprocess.Popen('python3 path.py', stdout=subprocess.PIPE, shell=True)
+out, err = proc.communicate()
+paths = ast.literal_eval(out.decode("utf-8"))
+sys.path += (paths)
+
 S = []
 Index = 0
 
