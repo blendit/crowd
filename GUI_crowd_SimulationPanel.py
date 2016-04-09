@@ -11,6 +11,10 @@ def initSceneProperties(scn):
         name="dt",
         description="Time quantum for the simulation")
     scn['DeltaT'] = 1.0
+    bpy.types.Scene.Theta = FloatProperty(
+        name="d\N{GREEK CAPITAL LETTER THETA}",
+        description="Angle quantum for the simulation")
+    scn['Theta'] = 1.0
     bpy.types.Scene.NumF = IntProperty(
         name="N",
         description="Number of frames to compute")
@@ -40,7 +44,7 @@ class SimulButtonsPanel(Panel):
 
 
 class Time_Tools(SimulButtonsPanel, Panel):
-    bl_label = "Time parameters"
+    bl_label = "Parameters"
 #    COMPAT_ENGINES = {'BLENDER_RENDER'}
 
     def draw(self, context):
@@ -48,6 +52,8 @@ class Time_Tools(SimulButtonsPanel, Panel):
         scn = context.scene
         layout.label(text="Time Quantum:")
         layout.prop(scn, 'DeltaT', text="dt")
+        layout.label(text="Angle Quantum:")
+        layout.prop(scn, 'Theta', text="d\N{GREEK CAPITAL LETTER THETA}")
 
 
 class Offline_Computation_Tools (SimulButtonsPanel, Panel):
@@ -62,17 +68,17 @@ class Offline_Computation_Tools (SimulButtonsPanel, Panel):
         layout.operator("simul.set_offline")
 
 
-class Online_Computation_Tools (SimulButtonsPanel, Panel):
-    bl_label = "Online computation"
-
-    def draw(self, context):
-        layout = self.layout
-        scn = context.scene
-        layout.operator("simul.online_start")
-        layout.prop(scn, "CountF", text="Counter")
-        layout.operator("simul.online_stop")
-
-
+#class Online_Computation_Tools (SimulButtonsPanel, Panel):
+#    bl_label = "Online computation"
+#
+#    def draw(self, context):
+#        layout = self.layout
+#        scn = context.scene
+#        layout.operator("simul.online_start")
+#        layout.prop(scn, "CountF", text="Counter")
+#        layout.operator("simul.online_stop")
+#
+#
 class Save_Tools(SimulButtonsPanel, Panel):
     bl_label = "Save"
 #    COMPAT_ENGINES = {'BLENDER_RENDER'}

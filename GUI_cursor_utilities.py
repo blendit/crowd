@@ -22,6 +22,7 @@ def initSceneProperties(scn):
 
 initSceneProperties(bpy.context.scene)
 
+
 class ToolsPanel (bpy.types.Panel):
     bl_category = "Cursor"
     bl_label = "Cursor Utilities Panel"

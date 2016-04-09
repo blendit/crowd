@@ -5,7 +5,7 @@ from bpy.props import *
 S = []
 Index = 0
 
-#CACA????
+
 def initSceneProperties(scn):
     bpy.types.Scene.PosX = FloatProperty(
         name="X",
@@ -15,20 +15,28 @@ def initSceneProperties(scn):
         name="Y",
         description="position of the origin")
     scn['PosY'] = 0
-    bpy.types.Scene.SizeX = FloatProperty(
-        name="X",
-        description="Size of the map")
-    scn['SizeX'] = 0
-    bpy.types.Scene.SizeY = FloatProperty(
-        name="Y",
-        description="Size of the map")
-    scn['SizeY'] = 0
+    bpy.types.Scene.MinX = FloatProperty(
+        name="Min",
+        description="Bound of the map")
+    scn['MinX'] = -float("inf")
+    bpy.types.Scene.MaxX = FloatProperty(
+        name="Max",
+        description="Bound of the map")
+    scn['MaxX'] = float("inf")
+    bpy.types.Scene.MinY = FloatProperty(
+        name="Max",
+        description="Bound of the map")
+    scn['MinY'] = -float("inf")
+    bpy.types.Scene.MaxY = FloatProperty(
+        name="Max",
+        description="Bound of the map")
+    scn['MaxY'] = float("inf")
     bpy.types.Scene.GridP = FloatProperty(
         name="P",
         description="Grid precision",
         subtype='PERCENTAGE',
-        min=0,
-        max=99.93754)
+        min=1.03,
+        max=99.96)
     scn['GridP'] = 0
     bpy.types.Scene.SelectString = StringProperty(
         name="Input",
@@ -71,19 +79,30 @@ class MapOrigin_Tools(ToolsButtonsPanel, Panel):
         layout = self.layout
         scn = context.scene
         layout.operator("env.origin")
-        layout.prop(scn, 'PosX')
-        layout.prop(scn, 'PosY')
+        layout.label(text="Initial Position:")
+        row = layout.row(align=True)
+        row.alignment = 'EXPAND'
+        row.prop(scn, 'PosX')
+        row.prop(scn, 'PosY')
         layout.operator("env.set")
         
         
 class MapSize_Tools(ToolsButtonsPanel, Panel):
-    bl_label = "Map Size"
+    bl_label = "Map Bounds"
 
     def draw(self, context):
         layout = self.layout
         scn = context.scene
-        layout.prop(scn, 'SizeX')
-        layout.prop(scn, 'SizeY')
+        layout.label(text="X bounds:")
+        row = layout.row(align=True)
+        row.alignment = 'EXPAND'
+        row.prop(scn, 'MinX', text="Min")
+        row.prop(scn, 'MaxX', text="Max")
+        layout.label(text="Y bounds:")
+        row = layout.row(align=True)
+        row.alignment = 'EXPAND'
+        row.prop(scn, 'MinY', text="Min")
+        row.prop(scn, 'MaxY', text="Max")
         layout.operator("env.size")
 
         

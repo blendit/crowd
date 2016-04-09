@@ -169,6 +169,16 @@ class Specific_Tools(ParamButtonsPanel, Panel):
 
         layout.label(text="Change settings of individual i")
         layout.operator("crowd.indiv")
+
+class Generation_Tools(ParamButtonsPanel, Panel):
+    bl_label = "Generate the crowd"
+#    COMPAT_ENGINES = {'BLENDER_RENDER'}
+
+    def draw(self, context):
+        layout = self.layout
+        scn = context.scene
+        layout.operator("crowd.generate")
+
         
         
 class OBJECT_OT_ToolsButton(bpy.types.Operator):
@@ -236,6 +246,16 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         bpy.context.scene.GoalX = Pcursor[0]
         bpy.context.scene.GoalY = Pcursor[1]
         scn.cursor_location = (scn.GoalX, scn.GoalY, 0)
+        return{'FINISHED'}
+
+
+class OBJECT_OT_ToolsButton(bpy.types.Operator):
+    bl_idname = "crowd.generate"
+    bl_label = "Generate"
+
+    def execute(self, context):
+        scn = bpy.context.scene
+        view = bpy.context.space_data
         return{'FINISHED'}
     
     
