@@ -43,7 +43,7 @@ def dist_theta(vopt, obj1, center, angle, tau, indiv, p_goal, graph):
     """Find the energy used if the individual goes in the direction theta"""
     p_ind = find_closest_to_optimal(vopt, obj1, center, angle, indiv.vmax)
     if p_ind == 0:
-        return float("inf"), S.Point(0,0)
+        return float("inf"), S.Point(0, 0)
     vind = math.sqrt(p_ind.x * p_ind.x + p_ind.y * p_ind.y)
     dist = vind * tau
     xnew = indiv.position.x + dist * math.cos(angle)
@@ -204,7 +204,7 @@ class TruncatedCone:
         point1 = self.limit_points[0]
         point2 = self.limit_points[1]
         angle_ref = angle(point1, point2)
-        if angle_ref > math.pi :
+        if angle_ref > math.pi:
             point1, point2 = point2, point1
         angle_ref = angle(point1, point2)
         angle1 = angle(point1, point)
@@ -244,6 +244,7 @@ class TruncatedCone:
 
         # We return the result
         return S.Point(minimum[0][0], minimum[0][1])
+
 
 def in_half_plane(origin, orthogonal, point):
     if (point.x - origin.x) * orthogonal.x + (point.y - origin.y) * orthogonal.y >= -0.000001:

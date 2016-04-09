@@ -33,17 +33,18 @@ class Crowd:
         """Add one individual to the crowd"""
         self.individuals.add(indiv)
 
-    def animate(self, dtheta):
+    def animate(self, dtheta, N, minefield):
         """Animate the crowd"""
         continu = True
         count = 0
-        while continu and count <= 100:
-            # count += 1
+        while continu and (count <= N or N == -1):
+            if N != -1:
+                count += 1
             continu = False
             for indiv in self.individuals:
                 print("\nNext:")
                 V = T.VelocityField(indiv, self.tau)
-                V.compute_field(self.tau, self.individuals, [])
+                V.compute_field(self.tau, self.individuals, minefield)
                 print("Field :", V.field)
 
                 if V.field.is_empty:

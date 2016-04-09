@@ -161,18 +161,20 @@ def get_points(path):
 es = 2.23
 ew = 1.26
 
-ind1 = C.Individual(0, 0, 0, 5, 2, es, ew, 2, S.Point(40, 50))
+ind1 = C.Individual(0, 0, 0, 3, 2, es, ew, 1, S.Point(40, 50))
+ind2 = C.Individual(40, 50, 0, 3, 2, es, ew, 1, S.Point(0, 0))
 
 graph = G.Graph(d=0.5, sizeX=100, sizeY=100, posX=0, posY=0)
 
-cr = C.Crowd(graph, 0.5)
-
+cr = C.Crowd(graph, 1)
+# minefield = [S.Polygon([(20,10), (20, 40), (30, 50), (20,10)])]
+minefield = []
 cr.add_indiv(ind1)
+cr.add_indiv(ind2)
 
-cr.animate(0.1)
+cr.animate(0.1, -1, minefield)
 
 data = cr.to_list_of_point()
-
 
 def main(data, dt, prec):
     paths_info = get_paths(data)
@@ -189,7 +191,7 @@ def main(data, dt, prec):
     for path_info in paths_info:
         path = bpy.data.curves[path_info.d_name]
         path.path_duration = duration
-        bpy.ops.mesh.primitive_cube_add(radius=1, view_align=False, enter_editmode=False, location=(0, 0, 0))
+        bpy.ops.mesh.primitive_cube_add(radius=0.5, view_align=False, enter_editmode=False, location=(0, 0, 0))
         bpy.ops.object.constraint_add(type='FOLLOW_PATH')
         bpy.context.object.constraints["Follow Path"].target = bpy.data.objects[path_info.name]
     

@@ -247,7 +247,3 @@ class AfficheLineString():
         ax.set_ylim(*yrange)
         ax.set_aspect(1)
         plt.show()
-
-
-#TestGeometricTools().test_intersection_not_empty()
-#TestGeometricTools().test_find_closest_to_optimal()
