@@ -28,11 +28,11 @@ def initSceneProperties(scn):
         description="Goal of the individual")
     scn['GoalX'] = 0
     bpy.types.Scene.GoalY = FloatProperty(
-        name="GoalY",
+        name="Y",
         description="Goal of the individual")
     scn['GoalY'] = 0
     bpy.types.Scene.SizeT = FloatProperty(
-        name="SizeT",
+        name="T",
         description="Size exclusion zone around the individual, can be seen as the size of the individual")
     scn['SizeT'] = 1
     bpy.types.Scene.VMax = FloatProperty(
@@ -44,7 +44,7 @@ def initSceneProperties(scn):
         description="Optimal Speed of the individual (the algorithm makes the difference between maximal and optimal speed)")
     scn['VOpt'] = 1
     bpy.types.Scene.SelectSk = StringProperty(
-        name="Armature",
+        name="Mesh",
         description="Select a mesh/skeleton for the individual (otherwise the individual will be a simple cube)",
         subtype='FILE_PATH')
     scn['SelectSk'] = "filename.py"
@@ -54,12 +54,12 @@ def initSceneProperties(scn):
         subtype='FILE_PATH')
     scn['SelectAnim'] = "filename.py"
     bpy.types.Scene.SelectString = StringProperty(
-        name="SelectFile",
+        name="Input",
         description="Enter an input file",
         subtype='FILE_PATH')
     scn['SelectString'] = "filename.py"
     bpy.types.Scene.SaveString = StringProperty(
-        name="SaveFile",
+        name="Output",
         description="Enter an output file",
         subtype='FILE_PATH')
     scn['SaveString'] = "filename.py"

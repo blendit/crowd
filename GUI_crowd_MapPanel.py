@@ -5,35 +5,38 @@ from bpy.props import *
 S = []
 Index = 0
 
-
+#CACA????
 def initSceneProperties(scn):
     bpy.types.Scene.PosX = FloatProperty(
-        name="PosX",
+        name="X",
         description="position of the origin")
     scn['PosX'] = 0
     bpy.types.Scene.PosY = FloatProperty(
-        name="PosY",
+        name="Y",
         description="position of the origin")
     scn['PosY'] = 0
     bpy.types.Scene.SizeX = FloatProperty(
-        name="SizeX",
+        name="X",
         description="Size of the map")
     scn['SizeX'] = 0
     bpy.types.Scene.SizeY = FloatProperty(
-        name="SizeY",
+        name="Y",
         description="Size of the map")
     scn['SizeY'] = 0
     bpy.types.Scene.GridP = FloatProperty(
-        name="GridP",
-        description="Grid precision")
+        name="P",
+        description="Grid precision",
+        subtype='PERCENTAGE',
+        min=0,
+        max=99.93754)
     scn['GridP'] = 0
     bpy.types.Scene.SelectString = StringProperty(
-        name="SelectFile",
+        name="Input",
         description="Enter an input file",
         subtype='FILE_PATH')
     scn['SelectString'] = "filename.py"
     bpy.types.Scene.SaveString = StringProperty(
-        name="SaveFile",
+        name="Output",
         description="Enter an output file",
         subtype='FILE_PATH')
     scn['SaveString'] = "filename.py"
