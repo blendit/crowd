@@ -40,7 +40,7 @@ class VelocityField:
         if distance(self.individual.position, neighboor.position) == self.individual.radius + neighboor.radius:
             return half_plane(Point(0, 0), v_opt, vmax)
         elif distance(self.individual.position, neighboor.position) < self.individual.radius + neighboor.radius:
-            return S.Polygon([(-vmax,-vmax), (vmax, -vmax), (vmax, vmax), (-vmax, vmax)])
+            return S.Polygon([(-vmax, -vmax), (vmax, -vmax), (vmax, vmax), (-vmax, vmax)])
 
         v_opt = difference(self.individual.v, neighboor.v)
         # We create the trucated cone
