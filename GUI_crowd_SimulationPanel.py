@@ -28,6 +28,7 @@ def initSceneProperties(scn):
 
 initSceneProperties(bpy.context.scene)
 
+
 class SimulButtonsPanel(Panel):
     bl_category = 'Simulation'
     bl_space_type = 'VIEW_3D'
@@ -46,7 +47,7 @@ class Time_Tools(SimulButtonsPanel, Panel):
         layout = self.layout
         scn = context.scene
         layout.label(text="Time Quantum:")
-        layout.prop(scn,'DeltaT', text="dt")
+        layout.prop(scn, 'DeltaT', text="dt")
 
 
 class Offline_Computation_Tools (SimulButtonsPanel, Panel):
@@ -72,7 +73,6 @@ class Online_Computation_Tools (SimulButtonsPanel, Panel):
         layout.operator("simul.online_stop")
 
 
-
 class Save_Tools(SimulButtonsPanel, Panel):
     bl_label = "Save"
 #    COMPAT_ENGINES = {'BLENDER_RENDER'}
@@ -81,7 +81,7 @@ class Save_Tools(SimulButtonsPanel, Panel):
         layout = self.layout
         scn = context.scene
         layout.prop(scn, 'SelectSaveFile')
-        layout.operator("simul.save")       
+        layout.operator("simul.save")
         
 
 class OBJECT_OT_ToolsButton(bpy.types.Operator):

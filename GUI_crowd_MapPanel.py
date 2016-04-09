@@ -116,11 +116,15 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
             
 class OBJECT_OT_ToolsButton(bpy.types.Operator):
     bl_idname = "env.origin"
-    bl_label = "Get coordinates"
+    bl_label = "From cursor"
 
     def execute(self, context):
         scn = bpy.context.scene
         view = bpy.context.space_data
+        Pcursor = view.cursor_location
+        bpy.context.scene.PosX = Pcursor[0]
+        bpy.context.scene.PosY = Pcursor[1]
+        scn.cursor_location = (scn.PosX, scn.PosY, 0)
         return{'FINISHED'}
     
 

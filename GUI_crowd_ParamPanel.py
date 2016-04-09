@@ -107,7 +107,6 @@ class Default_Tools(ParamButtonsPanel, Panel):
         row.prop(scn, 'InitX', text="X")
         row.prop(scn, 'InitY', text="Y")
         layout.operator("crowd.cursor_init")
-        
 
         layout.label(text="Goal:")
         row = layout.row(align=True)
@@ -149,7 +148,6 @@ class Specific_Tools(ParamButtonsPanel, Panel):
         row.prop(scn, 'InitY', text="Y")
         layout.operator("crowd.cursor_init")
         
-
         layout.label(text="Goal:")
         row = layout.row(align=True)
         row.alignment = 'EXPAND'
