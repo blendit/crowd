@@ -19,6 +19,11 @@ def initSceneProperties(scn):
         name="Count",
         description="Number of frames computed")
     scn['CountF'] = 0
+    bpy.types.Scene.SelectSaveFile = StringProperty(
+        name="File",
+        description="Enter a file",
+        subtype='FILE_PATH')
+    scn['SelectSaveFile'] = "filename.py"
     return
 
 initSceneProperties(bpy.context.scene)
@@ -65,7 +70,18 @@ class Online_Computation_Tools (SimulButtonsPanel, Panel):
         layout.operator("simul.online_start")
         layout.prop(scn, "CountF", text="Counter")
         layout.operator("simul.online_stop")
-        
+
+
+
+class Save_Tools(SimulButtonsPanel, Panel):
+    bl_label = "Save"
+#    COMPAT_ENGINES = {'BLENDER_RENDER'}
+
+    def draw(self, context):
+        layout = self.layout
+        scn = context.scene
+        layout.prop(scn, 'SelectSaveFile')
+        layout.operator("simul.save")       
         
 
 class OBJECT_OT_ToolsButton(bpy.types.Operator):
@@ -106,8 +122,16 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         scn = bpy.context.scene
         view = bpy.context.space_data
         return{'FINISHED'}
-#simul.online_start
-#simul.online_stop
-    
+
+
+class OBJECT_OT_ToolsButton(bpy.types.Operator):
+    bl_idname = "simul.save"
+    bl_label = "Save"
+
+    def execute(self, context):
+        scn = bpy.context.scene
+        view = bpy.context.space_data
+        return{'FINISHED'}
+
 
 bpy.utils.register_module(__name__)
