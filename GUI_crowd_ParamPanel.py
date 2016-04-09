@@ -106,12 +106,15 @@ class Default_Tools(ParamButtonsPanel, Panel):
         row.alignment = 'EXPAND'
         row.prop(scn, 'InitX', text="X")
         row.prop(scn, 'InitY', text="Y")
+        layout.operator("crowd.cursor_init")
+        
 
         layout.label(text="Goal:")
         row = layout.row(align=True)
         row.alignment = 'EXPAND'
         row.prop(scn, 'GoalX', text="X")
         row.prop(scn, 'GoalY', text="Y")
+        layout.operator("crowd.cursor_goal")
 
         layout.label(text="Size of exclusion zone:")
         layout.prop(scn, 'SizeT', text="T")
@@ -144,12 +147,15 @@ class Specific_Tools(ParamButtonsPanel, Panel):
         row.alignment = 'EXPAND'
         row.prop(scn, 'InitX', text="X")
         row.prop(scn, 'InitY', text="Y")
+        layout.operator("crowd.cursor_init")
+        
 
         layout.label(text="Goal:")
         row = layout.row(align=True)
         row.alignment = 'EXPAND'
         row.prop(scn, 'GoalX', text="X")
         row.prop(scn, 'GoalY', text="Y")
+        layout.operator("crowd.cursor_goal")
 
         layout.label(text="Size of exclusion zone:")
         layout.prop(scn, 'SizeT', text="T")
@@ -205,5 +211,34 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         scn = bpy.context.scene
         view = bpy.context.space_data
         return{'FINISHED'}
+
+
+class OBJECT_OT_ToolsButton(bpy.types.Operator):
+    bl_idname = "crowd.cursor_init"
+    bl_label = "From Cursor"
+
+    def execute(self, context):
+        scn = bpy.context.scene
+        view = bpy.context.space_data
+        Pcursor = view.cursor_location
+        bpy.context.scene.InitX = Pcursor[0]
+        bpy.context.scene.InitY = Pcursor[1]
+        scn.cursor_location = (scn.InitX, scn.InitY, 0)
+        return{'FINISHED'}
+
+
+class OBJECT_OT_ToolsButton(bpy.types.Operator):
+    bl_idname = "crowd.cursor_goal"
+    bl_label = "From Cursor"
+
+    def execute(self, context):
+        scn = bpy.context.scene
+        view = bpy.context.space_data
+        Pcursor = view.cursor_location
+        bpy.context.scene.GoalX = Pcursor[0]
+        bpy.context.scene.GoalY = Pcursor[1]
+        scn.cursor_location = (scn.GoalX, scn.GoalY, 0)
+        return{'FINISHED'}
+    
     
 bpy.utils.register_module(__name__)
