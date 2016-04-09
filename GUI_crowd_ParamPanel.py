@@ -67,7 +67,7 @@ def initSceneProperties(scn):
 
 initSceneProperties(bpy.context.scene)
 
-class ToolsButtonsPanel(Panel):
+class ParamButtonsPanel(Panel):
     bl_category = 'Parameters'
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'TOOLS' 
@@ -78,15 +78,33 @@ class ToolsButtonsPanel(Panel):
 #        scene = context.scene
 #        return scene and (scene.render.engine in cls.COMPAT_ENGINES)
 
+class File_Tools(ParamButtonsPanel, Panel):
+    bl_label = "Select from file / Save"
+#    COMPAT_ENGINES = {'BLENDER_RENDER'}
+
+    def draw(self, context):
+        layout = self.layout
+        scn = context.scene
+        layout.prop(scn, 'SelectString')
+        layout.operator("crowd.select")
+        layout.prop(scn, 'SaveString')
+        layout.operator("crowd.save")
 
 
-class Default_Tools(ToolsButtonsPanel, Panel):
+        
+        
+        
+
+class Default_Tools(ParamButtonsPanel, Panel):
     bl_label = "Set default settings"
 #    COMPAT_ENGINES = {'BLENDER_RENDER'}
 
     def draw(self, context):
         layout = self.layout
         scn = context.scene
+        layout.label(text="Size of the crowd:")
+        layout.prop(scn, 'NumC', text="N")
+        
         layout.label(text="Initial Position:")
         row = layout.row(align=True)
         row.alignment = 'EXPAND'
@@ -108,39 +126,55 @@ class Default_Tools(ToolsButtonsPanel, Panel):
         row.prop(scn, 'VMax', text="Max")
         row.prop(scn, 'VOpt', text="Opt")
         
+        layout.prop(scn, 'SelectSk', text="Mesh")
+        layout.prop(scn, 'SelectAnim', text="Animation")
+
+        layout.label(text="Generate default crowd")
+        layout.operator("crowd.default")
 
         
-class Generate_Tools(ToolsButtonsPanel, Panel):
-    bl_label = "Select/Save"
+
+        
+
+        
+        
+class Specific_Tools(ParamButtonsPanel, Panel):
+    bl_label = "Individual Settings"
 #    COMPAT_ENGINES = {'BLENDER_RENDER'}
 
     def draw(self, context):
         layout = self.layout
         scn = context.scene
-        layout.prop(scn, 'SelectString')
-        layout.operator("crowd.select")
-        layout.prop(scn, 'SaveString')
-        layout.operator("crowd.save")
+        layout.label(text="Select index of individual")
+        layout.prop(scn, 'Ind', text="i")
         
+        layout.label(text="Initial Position:")
+        row = layout.row(align=True)
+        row.alignment = 'EXPAND'
+        row.prop(scn, 'PosX', text="X")
+        row.prop(scn, 'PosY', text="Y")
 
+        layout.label(text="Goal:")
+        row = layout.row(align=True)
+        row.alignment = 'EXPAND'
+        row.prop(scn, 'ObjX', text="X")
+        row.prop(scn, 'ObjY', text="Y")
+
+        layout.label(text="Size of exclusion zone:")
+        layout.prop(scn, 'SizeT', text="T")
+
+        layout.label(text="Speed of individual")
+        row = layout.row(align=True)
+        row.alignment = 'EXPAND'
+        row.prop(scn, 'VMax', text="Max")
+        row.prop(scn, 'VOpt', text="Opt")
         
+        layout.prop(scn, 'SelectSk', text="Mesh")
+        layout.prop(scn, 'SelectAnim', text="Animation")
+
+        layout.label(text="Change settings of individual i")
+        layout.operator("crowd.indiv")
         
-class MapSize_Tools(ToolsButtonsPanel, Panel):
-    bl_label = "Map Size"
-#    COMPAT_ENGINES = {'BLENDER_RENDER'}
-
-    def draw(self, context):
-        layout = self.layout
-        scn = context.scene
-        layout.prop(scn, 'PosX')
-         
-class GridSize_Tools (ToolsButtonsPanel, Panel):
-    bl_label = "Grid Size"
-
-    def draw(self, context):
-        layout = self.layout
-        scn = context.scene
-        layout.prop(scn, 'PosX') 
         
 
 class OBJECT_OT_ToolsButton(bpy.types.Operator):
@@ -164,8 +198,8 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
     
             
 class OBJECT_OT_ToolsButton(bpy.types.Operator):
-    bl_idname = "env.origin"
-    bl_label = "Get coordinates"
+    bl_idname = "crowd.default"
+    bl_label = "Default"
 
     def execute(self, context):
         scn = bpy.context.scene
@@ -174,8 +208,8 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
     
 
 class OBJECT_OT_ToolsButton(bpy.types.Operator):
-    bl_idname = "env.set"
-    bl_label = "Set map origin"
+    bl_idname = "crowd.indiv"
+    bl_label = "Set Specific"
 
     def execute(self, context):
         scn = bpy.context.scene
@@ -183,21 +217,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         return{'FINISHED'}
     
 
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
-    bl_idname = "env.size"
-    bl_label = "Set map size"
 
-    def execute(self, context):
-        scn = bpy.context.scene
-        return{'FINISHED'}
     
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
-    bl_idname = "env.grid"
-    bl_label = "Set Grid size"
-
-    def execute(self, context):
-        scn = bpy.context.scene
-        return{'FINISHED'}
-
 
 bpy.utils.register_module(__name__)
