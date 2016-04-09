@@ -2,9 +2,9 @@ import numpy as np
 import shapely.geometry as S
 import math
 
-import GraphPLE as G
+import blendit.GraphPLE as G
 import velocity_field as T
-import geometric_tools as GT
+import blendit.geometric_tools as GT
 
 
 class Individual:

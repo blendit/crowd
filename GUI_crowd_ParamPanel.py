@@ -4,14 +4,14 @@ import sys
 import subprocess
 import ast
 
-script_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+script_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(script_dir)
+print("MYPATH = " + str(sys.path))
+print("\n\n\n")
 
 # Get system's python path
 proc = subprocess.Popen('python3 blender/path.py', stdout=subprocess.PIPE, shell=True)
 out, err = proc.communicate()
-print(out)
-print(err)
 paths = ast.literal_eval(out.decode("utf-8"))
 sys.path += (paths)
 
@@ -30,7 +30,7 @@ import blendit.classes as C
 import blendit.geometric_tools as GT
 
 Individuals = []
-Graph = C.Graph(d=0.5, sizeX=100, sizeY=100, posX=0, posY=0)
+Graph = G.Graph(d=0.5, sizeX=100, sizeY=100, posX=0, posY=0)
 es = 2.23
 ew = 1.26
 

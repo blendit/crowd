@@ -1,6 +1,6 @@
 import shapely.geometry as S
 import math
-from geometric_tools import *
+from blendit.geometric_tools import *
 
 
 class VelocityField:
