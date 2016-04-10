@@ -171,26 +171,6 @@ def get_points(path):
     
     return points
 
-
-# crados
-es = 2.23
-ew = 1.26
-
-ind1 = C.Individual(0, 0, 0, 3, 2, es, ew, 1, S.Point(40, 50))
-ind2 = C.Individual(40, 50, 0, 3, 2, es, ew, 1, S.Point(0, 0))
-
-graph = G.Graph(d=0.5, sizeX=100, sizeY=100, posX=0, posY=0)
-
-cr = C.Crowd(graph, 1)
-# minefield = [S.Polygon([(20,10), (20, 40), (30, 50), (20,10)])]
-minefield = []
-cr.add_indiv(ind1)
-cr.add_indiv(ind2)
-
-cr.animate(0.1, -1, minefield)
-
-data = cr.to_list_of_point()
-
 def main(data, dt, prec):
     paths_info = get_paths(data)
     n = len(data[0]) - 1
@@ -224,4 +204,24 @@ def main(data, dt, prec):
                
             current_frame += dt * 10 ** prec
            
-main(data, 20, 0)
+
+if __name__ == "__main__":
+    # crados
+    es = 2.23
+    ew = 1.26
+    
+    ind1 = C.Individual(0, 0, 0, 3, 2, es, ew, 1, S.Point(40, 50))
+    ind2 = C.Individual(40, 50, 0, 3, 2, es, ew, 1, S.Point(0, 0))
+    
+    graph = G.Graph(d=0.5, sizeX=100, sizeY=100, posX=0, posY=0)
+
+    cr = C.Crowd(graph, 1)
+    # minefield = [S.Polygon([(20,10), (20, 40), (30, 50), (20,10)])]
+    minefield = []
+    cr.add_indiv(ind1)
+    cr.add_indiv(ind2)
+    
+    cr.animate(0.1, -1, minefield)
+
+    data = cr.to_list_of_point()
+    main(data, 20, 0)
