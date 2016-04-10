@@ -140,7 +140,7 @@ def get_points(path):
     count = 1
     
     if n == 1:
-        return [point(path[0], 1, 0)]
+        return [point_info(1,path[0])]
     
     for i in range(n - 1):
         if path[i] == path[i + 1]:
