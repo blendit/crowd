@@ -29,6 +29,7 @@ import blendit.GraphPLE as G
 import blendit.classes as C
 import blendit.geometric_tools as GT
 import blendit.SimulationData as Sim
+import blendit.Animation as A
 
 S = []
 Index = 0
@@ -128,6 +129,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         Sim.tau = scn.DeltaT
         Sim.theta = scn.Theta
         Sim.N = scn.NumF
+        Sim.cr.animate(Sim.theta, Sim.N, Sim.Minefield)        
         return{'FINISHED'}
 
 
@@ -138,6 +140,8 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
     def execute(self, context):
         scn = bpy.context.scene
         view = bpy.context.space_data
+        Sim.data= cr.to_list_of_points()
+        A.main(Sim.data, 20, 0) # what the fuck are the two last arguments?
         return{'FINISHED'}
 
 

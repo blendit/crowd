@@ -1,6 +1,7 @@
 import blendit.GraphPLE as G
 import blendit.classes as C
 import blendit.geometric_tools as GT
+import blendit.length_beziers.py as B
 
 Individuals = []
 graph = G.Graph(d=0.5, sizeX=100, sizeY=100, posX=0, posY=0)
