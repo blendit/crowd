@@ -6,11 +6,11 @@ import ast
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(script_dir)
-print("MYPATH = " + str(sys.path))
-print("\n\n\n")
+#print("MYPATH = " + str(sys.path))
+#print("\n\n\n")
 
 # Get system's python path
-proc = subprocess.Popen('python3 blender/path.py', stdout=subprocess.PIPE, shell=True)
+proc = subprocess.Popen('python3 -c "import sys; print(sys.path)"', stdout=subprocess.PIPE, shell=True)
 out, err = proc.communicate()
 paths = ast.literal_eval(out.decode("utf-8"))
 sys.path += (paths)

@@ -1,3 +1,18 @@
+import os
+import sys
+import subprocess
+import ast
+
+script_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(script_dir)
+
+# Get system's python path
+proc = subprocess.Popen('python3 -c "import sys; print(sys.path)"', stdout=subprocess.PIPE, shell=True)
+out, err = proc.communicate()
+paths = ast.literal_eval(out.decode("utf-8"))
+sys.path += (paths)
+
+
 import bpy
 from mathutils import *
 from decimal import Decimal
