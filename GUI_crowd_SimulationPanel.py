@@ -133,7 +133,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         Sim.tau = scn.DeltaT
         Sim.theta = scn.Theta
         Sim.N = scn.NumF
-        Sim.cr.animate(Sim.theta, Sim.N, Sim.minefield)        
+        Sim.cr.animate(Sim.theta, Sim.N, Sim.minefield)
         return{'FINISHED'}
 
 
@@ -145,7 +145,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         scn = bpy.context.scene
         view = bpy.context.space_data
         Sim.data= Sim.cr.to_list_of_point()
-        A.main(Sim.data, 20, 1) # what the fuck are the two last arguments?
+        A.main(Sim.data, 20, 0) # what the fuck are the two last arguments?
         return{'FINISHED'}
 
 

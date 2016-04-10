@@ -9,6 +9,6 @@ ew = 1.26
 tau = 0.5
 theta = 1
 cr = C.Crowd(graph,tau)
-N = 1
+N = -1
 data = cr.to_list_of_point()
 minefield = []

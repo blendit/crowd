@@ -34,6 +34,7 @@ class VelocityField:
         """Computes the ORCA hyperplane between the two individual (cf Reciprocal n-body collision avoidance)"""
         # We define some parameters
         vmax = self.individual.vmax
+        v_opt = difference(self.individual.v, neighboor.v)
         point_us = S.Point(self.individual.position.x, self.individual.position.y)
         point_him = S.Point(neighboor.position.x, neighboor.position.y)
 
@@ -42,8 +43,7 @@ class VelocityField:
         elif distance(self.individual.position, neighboor.position) < self.individual.radius + neighboor.radius:
             return S.Polygon([(-vmax, -vmax), (vmax, -vmax), (vmax, vmax), (-vmax, vmax)])
 
-        v_opt = difference(self.individual.v, neighboor.v)
-        # We create the trucated cone
+                # We create the trucated cone
         cone = TruncatedCone(point_us, self.individual.radius, point_him, neighboor.radius, vmax * tau, tau)
 
         # We get a point we have to find
