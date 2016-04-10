@@ -29,7 +29,7 @@ import blendit.GraphPLE as G
 import blendit.classes as C
 import blendit.geometric_tools as GT
 import blendit.SimulationData as Sim
-import blendit.Animation as A
+import blendit.AnimationFunctions as A
 
 S = []
 Index = 0
@@ -145,7 +145,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         scn = bpy.context.scene
         view = bpy.context.space_data
         Sim.data= Sim.cr.to_list_of_point()
-        A.main(Sim.data, 20, 0) # what the fuck are the two last arguments?
+        A.main(Sim.data, 20, 1) # what the fuck are the two last arguments?
         return{'FINISHED'}
 
 
