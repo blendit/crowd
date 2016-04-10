@@ -66,6 +66,10 @@ class SimulButtonsPanel(Panel):
     bl_category = 'Simulation'
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'TOOLS'
+
+    def draw(self, context):
+        layout = self.layout
+        scn = context.scene
 #    @classmethod
 #    def poll(cls, context):
 #        scene = context.scene
@@ -129,7 +133,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         Sim.tau = scn.DeltaT
         Sim.theta = scn.Theta
         Sim.N = scn.NumF
-        Sim.cr.animate(Sim.theta, Sim.N, Sim.Minefield)        
+        Sim.cr.animate(Sim.theta, Sim.N, Sim.minefield)        
         return{'FINISHED'}
 
 
@@ -140,7 +144,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
     def execute(self, context):
         scn = bpy.context.scene
         view = bpy.context.space_data
-        Sim.data= cr.to_list_of_points()
+        Sim.data= Sim.cr.to_list_of_point()
         A.main(Sim.data, 20, 0) # what the fuck are the two last arguments?
         return{'FINISHED'}
 
@@ -172,6 +176,9 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
     def execute(self, context):
         scn = bpy.context.scene
         view = bpy.context.space_data
+        output_file=open(scn.SelectSaveFile, "wb")
+        pic.dump(Sim.cr, output_file)
+        output_file.close()
         return{'FINISHED'}
 
 

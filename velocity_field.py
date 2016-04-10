@@ -38,7 +38,7 @@ class VelocityField:
         point_him = S.Point(neighboor.position.x, neighboor.position.y)
 
         if distance(self.individual.position, neighboor.position) == self.individual.radius + neighboor.radius:
-            return half_plane(Point(0, 0), v_opt, vmax)
+            return half_plane(S.Point(0, 0), v_opt, vmax)
         elif distance(self.individual.position, neighboor.position) < self.individual.radius + neighboor.radius:
             return S.Polygon([(-vmax, -vmax), (vmax, -vmax), (vmax, vmax), (-vmax, vmax)])
 

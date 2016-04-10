@@ -32,6 +32,7 @@ import blendit.SimulationData as Sim
 
 
 
+
 def initSceneProperties(scn):
     bpy.types.Scene.NumN = IntProperty(
         name="N",
@@ -220,7 +221,9 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
     def execute(self, context):
         scn = bpy.context.scene
         view = bpy.context.space_data
-        #S.cr=pic.load(scn.SelectString)
+        input_file=open(scn.SelectString, "rb")
+        S.imcr=pic.load(input_file)
+        input_file.close()
         return{'FINISHED'}
     
     
@@ -231,7 +234,9 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
     def execute(self, context):
         scn = bpy.context.scene
         view = bpy.context.space_data
-        #pic.dump(S.cr, scn.SaveString)
+        output_file=open(scn.SaveString, "wb")
+        pic.dump(Sim.cr, output_file)
+        output_file.close()
         return{'FINISHED'}
     
             
@@ -251,7 +256,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
                                             Sim.es,
                                             Sim.ew,
                                             scn.SizeT,
-                                            S.Point(scn.GoalX, scn.GoalY)))
+                                            S.Point(scn.GoalX, scn.GoalY,0)))
         
         return{'FINISHED'}
     
@@ -263,7 +268,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
     def execute(self, context):
         scn = bpy.context.scene
         view = bpy.context.space_data
-        Sim.Individuals[i]=C.Individual(scn.InitX,
+        Sim.Individuals[scn.Ind]=C.Individual(scn.InitX,
                                     scn.InitY,
                                     0,
                                     scn.VMax,
@@ -271,7 +276,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
                                     Sim.es,
                                     Sim.ew,
                                     scn.SizeT,
-                                    S.Point(scn.GoalX, scn.GoalY))
+                                    S.Point(scn.GoalX, scn.GoalY, 0))
         return{'FINISHED'}
 
 
@@ -310,7 +315,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
     def execute(self, context):
         scn = bpy.context.scene
         view = bpy.context.space_data
-        for x in Individuals:
+        for x in Sim.Individuals:
             Sim.cr.add_indiv(x)
             
         return{'FINISHED'}
