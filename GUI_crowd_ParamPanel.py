@@ -28,12 +28,8 @@ import pickle as pic
 import blendit.GraphPLE as G
 import blendit.classes as C
 import blendit.geometric_tools as GT
+import blendit.SimulationData as Sim
 
-Individuals = []
-graph = G.Graph(d=0.5, sizeX=100, sizeY=100, posX=0, posY=0)
-es = 2.23
-ew = 1.26
-cr = C.Crowd(graph,0.5)
 
 
 def initSceneProperties(scn):
@@ -224,7 +220,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
     def execute(self, context):
         scn = bpy.context.scene
         view = bpy.context.space_data
-        #cr=pic.load(scn.SelectString)
+        #S.cr=pic.load(scn.SelectString)
         return{'FINISHED'}
     
     
@@ -235,7 +231,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
     def execute(self, context):
         scn = bpy.context.scene
         view = bpy.context.space_data
-        #pic.dump(cr, scn.SaveString)
+        #pic.dump(S.cr, scn.SaveString)
         return{'FINISHED'}
     
             
@@ -247,13 +243,13 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         scn = bpy.context.scene
         view = bpy.context.space_data
         for i in range(scn.NumN):
-            Individuals.append(C.Individual(scn.InitX,
+            Sim.Individuals.append(C.Individual(scn.InitX,
                                             scn.InitY,
                                             0,
                                             scn.VMax,
                                             scn.VOpt,
-                                            es,
-                                            ew,
+                                            Sim.es,
+                                            Sim.ew,
                                             scn.SizeT,
                                             S.Point(scn.GoalX, scn.GoalY)))
         
@@ -267,13 +263,13 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
     def execute(self, context):
         scn = bpy.context.scene
         view = bpy.context.space_data
-        Individuals[i]=C.Individual(scn.InitX,
+        Sim.Individuals[i]=C.Individual(scn.InitX,
                                     scn.InitY,
                                     0,
                                     scn.VMax,
                                     scn.VOpt,
-                                    es,
-                                    ew,
+                                    Sim.es,
+                                    Sim.ew,
                                     scn.SizeT,
                                     S.Point(scn.GoalX, scn.GoalY))
         return{'FINISHED'}
@@ -315,7 +311,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         scn = bpy.context.scene
         view = bpy.context.space_data
         for x in Individuals:
-            cr.add_indiv(x)
+            Sim.cr.add_indiv(x)
             
         return{'FINISHED'}
     
