@@ -125,7 +125,7 @@ class Save_Tools(SimulButtonsPanel, Panel):
 
 class OBJECT_OT_ToolsButton(bpy.types.Operator):
     bl_idname = "simul.offline"
-    bl_label = "Compute next N frames"
+    bl_label = "Compute N frames"
 
     def execute(self, context):
         scn = bpy.context.scene
@@ -180,6 +180,16 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         pic.dump(Sim.cr, output_file)
         output_file.close()
         return{'FINISHED'}
+
+
+class OBJECT_OT_ToolsButton(bpy.types.Operator):
+    bl_idname = "simul.reset"
+    bl_label = "Reset Animation"
+
+    def execute(self, context):
+        scn = bpy.context.scene
+        view = bpy.context.space_data
+        retun{'FINISHED'}
 
 
 bpy.utils.register_module(__name__)

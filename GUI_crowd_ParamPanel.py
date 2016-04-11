@@ -439,6 +439,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
     def execute(self, context):
         scn = bpy.context.scene
         view = bpy.context.space_data
+        Sim.Individuals = []
         for i in range(scn.NumN):
             Sim.Individuals.append(C.Individual(scn.DefaultInitX,
                                             scn.DefaultInitY,
@@ -459,19 +460,20 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
     def execute(self, context):
         scn = bpy.context.scene
         view = bpy.context.space_data
+        Sim.Individuals = []
         for i in range(scn.NumN):
-            x = rand(scn.MinInitX, scn.MaxInitX)
-            y = rand(scn.MinInitY, scn.MinInitY)
+            x = rd.uniform(scn.MinInitX, scn.MaxInitX)
+            y = rd.uniform(scn.MinInitY, scn.MinInitY)
             z = 0
-            vm = rand(scn.MinVMax, scn.MaxVMax)
-            vo = rand(scn.MinVOpt, scn.MaxVOpt)
+            vm = rd.uniform(scn.MinVMax, scn.MaxVMax)
+            vo = rd.uniform(scn.MinVOpt, scn.MaxVOpt)
             es = Sim.es
             ew = Sim.ew
-            t = rand(scn.MinSize, scn.MaxSize)
-            gx = rand(scn.MinGoalX, scn.MaxGoalX)
-            gy = rand(scn.MinGoalY, scn.MaxGoalY)
+            t = rd.uniform(scn.MinSize, scn.MaxSize)
+            gx = rd.uniform(scn.MinGoalX, scn.MaxGoalX)
+            gy = rd.uniform(scn.MinGoalY, scn.MaxGoalY)
             gz = 0
-            Sim.Individuals.append(C.Individual(x,y,z,vw,vo,es,ew,t,S.Point(gx,gy,gz)))
+            Sim.Individuals.append(C.Individual(x,y,z,vm,vo,es,ew,t,S.Point(gx,gy,gz)))
         return{'FINISHED'}
     
 
