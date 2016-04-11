@@ -44,18 +44,16 @@ class path_info:
 
 # Computing a lenght of a path
 
-# cubic bezier value
-# Input four points p defining a curve and a parameter t
-# Coordinates of a point parameterd by t on the curve
-
 
 def cubic(p, t):
+    """cubic bezier value
+    Input four points p defining a curve and a parameter t
+    Coordinates of a point parameterd by t on the curve"""
     return p[0] * (1.0 - t) ** 3.0 + 3.0 * p[1] * t * (1.0 - t) ** 2.0 + 3.0 * p[2] * (t ** 2.0) * (1.0 - t) + p[3] * t ** 3.0
 
 
-# Gets a bezier segment's control points on global coordinates
-
 def getbezpoints(spl, mt, seg=0):
+    """Gets a bezier segment's control points on global coordinates"""
     points = spl.bezier_points
     p0 = mt * points[seg].co
     p1 = mt * points[seg].handle_right
@@ -64,11 +62,9 @@ def getbezpoints(spl, mt, seg=0):
     return p0, p1, p2, p3
 
 
-# Computes segments lengths, precision can be chosen, this is the same precision
-# for every segment
-
-
 def seg_lengths(obj, points):
+    """Computes segments lengths, precision can be chosen, this is the same precision
+    for every segment"""
     prec = 10000
     inc = 1 / prec
         
@@ -105,12 +101,10 @@ def seg_lengths(obj, points):
         return False
     return total_length, seg_lengths
 
-# Creates a path given its points and outputs paths name
-# At the an active object is a curve in an object mode
-
 
 def create_path(points):
-
+    """Creates a path given its points and outputs paths name
+    At the end active object is a curve in an object mode"""
     bpy.ops.curve.primitive_bezier_curve_add(enter_editmode=True, location=(points[0].loc[0] - 1, points[0].loc[1], points[0].loc[2]))
     
     bpy.ops.curve.select_all()
@@ -127,11 +121,9 @@ def create_path(points):
     
     return [bpy.context.active_object.name, bpy.context.active_object.data.name]
 
-# Creates paths and outputs their names, lengths and lengths of their segments
-
 
 def get_paths(paths):
-    
+    """Creates paths and outputs their names, lengths and lengths of their segments"""
     paths_info = []
     for path in paths:
         points = get_points(path)
@@ -155,6 +147,7 @@ def get_points(path):
     count = 1
     
     if n == 1:
+        print("ABADABOUM")
         return [point(path[0], 1, 0)]
     
     for i in range(n - 1):
@@ -170,6 +163,7 @@ def get_points(path):
         points.append(point_info(1, path[n - 1]))
     
     return points
+
 
 def main(data, dt, prec):
     paths_info = get_paths(data)
