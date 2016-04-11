@@ -22,6 +22,7 @@ from mathutils import *
 from decimal import Decimal
 
 import numpy as np
+import random as rd
 import shapely.geometry as S
 import math
 import pickle as pic
@@ -31,7 +32,7 @@ import blendit.geometric_tools as GT
 import blendit.SimulationData as Sim
 
 
-
+rd.seed()
 
 def initSceneProperties(scn):
     bpy.types.Scene.NumN = IntProperty(
@@ -42,6 +43,125 @@ def initSceneProperties(scn):
         name="i",
         description="Index of the individual")
     scn['Ind'] = 0
+    #
+    # data for the Random Generation Pannel
+    bpy.types.Scene.MinInitX = FloatProperty(
+        name="X",
+        description="Initial position of the individual")
+    scn['MinInitX'] = 0
+    bpy.types.Scene.MinInitY = FloatProperty(
+        name="Y",
+        description="Initial position of the individual")
+    scn['MinInitY'] = 0
+    bpy.types.Scene.MinGoalX = FloatProperty(
+        name="X",
+        description="Goal of the individual")
+    scn['MinGoalX'] = 0
+    bpy.types.Scene.MinGoalY = FloatProperty(
+        name="Y",
+        description="Goal of the individual")
+    scn['MinGoalY'] = 0
+    bpy.types.Scene.MinSize = FloatProperty(
+        name="T",
+        description="Size exclusion zone around the individual, can be seen as the size of the individual",
+        default= 1.0)
+    scn['MinSize'] = 1
+    bpy.types.Scene.MinVMax = FloatProperty(
+        name="Max Speed",
+        description="Maximum Speed of the individual",
+        default=3)
+    scn['MinVMax'] = 3
+    bpy.types.Scene.MinVOpt = FloatProperty(
+        name="Optimal Speed",
+        description="Optimal Speed of the individual (the algorithm makes the difference between maximal and optimal speed)",
+        default=2)
+    scn['MinVOpt'] = 2
+    bpy.types.Scene.RandomMesh = StringProperty(
+        name="Mesh",
+        description="Select a mesh/skeleton for the individual (otherwise the individual will be a simple cube)",
+        subtype='FILE_PATH')
+    scn['RandomMesh'] = "filename.py"
+    bpy.types.Scene.RandomAnim = StringProperty(
+        name="Animation",
+        description="Select an animation for the individual (otherwise no animation)",
+        subtype='FILE_PATH')
+    scn['RandomAnim'] = "filename.py"
+    bpy.types.Scene.MaxInitX = FloatProperty(
+        name="X",
+        description="Initial position of the individual")
+    scn['MaxInitX'] = 0
+    bpy.types.Scene.MaxInitY = FloatProperty(
+        name="Y",
+        description="Initial position of the individual")
+    scn['MaxInitY'] = 0
+    bpy.types.Scene.MaxGoalX = FloatProperty(
+        name="X",
+        description="Goal of the individual")
+    scn['MaxGoalX'] = 0
+    bpy.types.Scene.MaxGoalY = FloatProperty(
+        name="Y",
+        description="Goal of the individual")
+    scn['MaxGoalY'] = 0
+    bpy.types.Scene.MaxSize = FloatProperty(
+        name="T",
+        description="Size exclusion zone around the individual, can be seen as the size of the individual",
+        default= 1.0)
+    scn['SizeT'] = 1
+    bpy.types.Scene.MaxVMax = FloatProperty(
+        name="Max Speed",
+        description="Maximum Speed of the individual",
+        default=3)
+    scn['MaxVMax'] = 3
+    bpy.types.Scene.MaxVOpt = FloatProperty(
+        name="Optimal Speed",
+        description="Optimal Speed of the individual (the algorithm makes the difference between maximal and optimal speed)",
+        default=2)
+    scn['MaxVOpt'] = 2
+    #
+    # Data for the default panel
+    bpy.types.Scene.DefaultInitX = FloatProperty(
+        name="X",
+        description="Initial position of the individual")
+    scn['DefaultInitX'] = 0
+    bpy.types.Scene.DefaultInitY = FloatProperty(
+        name="Y",
+        description="Initial position of the individual")
+    scn['DefaultInitY'] = 0
+    bpy.types.Scene.DefaultGoalX = FloatProperty(
+        name="X",
+        description="Goal of the individual")
+    scn['DefaultGoalX'] = 0
+    bpy.types.Scene.DefaultGoalY = FloatProperty(
+        name="Y",
+        description="Goal of the individual")
+    scn['DefaultGoalY'] = 0
+    bpy.types.Scene.DefaultSize = FloatProperty(
+        name="T",
+        description="Size exclusion zone around the individual, can be seen as the size of the individual",
+        default= 1.0)
+    scn['DefaultSize'] = 1
+    bpy.types.Scene.DefaultVMax = FloatProperty(
+        name="Max Speed",
+        description="Maximum Speed of the individual",
+        default=3)
+    scn['DefaultVMax'] = 3
+    bpy.types.Scene.DefaultVOpt = FloatProperty(
+        name="Optimal Speed",
+        description="Optimal Speed of the individual (the algorithm makes the difference between maximal and optimal speed)",
+        default=2)
+    scn['DefaultVOpt'] = 2
+    bpy.types.Scene.DefaultMesh = StringProperty(
+        name="Mesh",
+        description="Select a mesh/skeleton for the individual (otherwise the individual will be a simple cube)",
+        subtype='FILE_PATH')
+    scn['DefaultMesh'] = "filename.py"
+    bpy.types.Scene.DefaultAnim = StringProperty(
+        name="Animation",
+        description="Select an animation for the individual (otherwise no animation)",
+        subtype='FILE_PATH')
+    scn['DefaultAnim'] = "filename.py"
+    #
+    # Data for the specificity pannel
     bpy.types.Scene.InitX = FloatProperty(
         name="X",
         description="Initial position of the individual")
@@ -142,14 +262,14 @@ class Default_Tools(ParamButtonsPanel, Panel):
         row.alignment = 'EXPAND'
         row.prop(scn, 'DefaultInitX', text="X")
         row.prop(scn, 'DefaultInitY', text="Y")
-        layout.operator("crowd.cursor_init")
+        layout.operator("crowd.default_init")
 
         layout.label(text="Goal:")
         row = layout.row(align=True)
         row.alignment = 'EXPAND'
         row.prop(scn, 'DefaultGoalX', text="X")
         row.prop(scn, 'DefaultGoalY', text="Y")
-        layout.operator("crowd.cursor_goal")
+        layout.operator("crowd.default_goal")
 
         layout.label(text="Size of exclusion zone:")
         layout.prop(scn, 'DefaultSize', text="T")
@@ -202,8 +322,10 @@ class Random_Tools(ParamButtonsPanel, Panel):
         row.prop(scn, 'MaxGoalY', text="Max")
 
         layout.label(text="Size of exclusion zone:")
-        layout.prop(scn, 'MinSize', text="Min")
-        layout.prop(scn, 'MaxSize', text="Max")
+        row = layout.row(align=True)
+        row.alignment = 'EXPAND'
+        row.prop(scn, 'MinSize', text="Min")
+        row.prop(scn, 'MaxSize', text="Max")
 
         layout.label(text="Maximal speed of individual")
         row = layout.row(align=True)
@@ -263,6 +385,7 @@ class Specific_Tools(ParamButtonsPanel, Panel):
         layout.label(text="Change settings of individual i")
         layout.operator("crowd.indiv")
 
+        
 class Generation_Tools(ParamButtonsPanel, Panel):
     bl_label = "Generate the crowd"
 #    COMPAT_ENGINES = {'BLENDER_RENDER'}
@@ -326,9 +449,9 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
                                             Sim.ew,
                                             scn.DefaultSize,
                                             S.Point(scn.DefaultGoalX, scn.DefaultGoalY,0)))
-        
         return{'FINISHED'}
 
+    
 class OBJECT_OT_ToolsButton(bpy.types.Operator):
     bl_idname = "crowd.random"
     bl_label = "Random"
@@ -349,7 +472,6 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
             gy = rand(scn.MinGoalY, scn.MaxGoalY)
             gz = 0
             Sim.Individuals.append(C.Individual(x,y,z,vw,vo,es,ew,t,S.Point(gx,gy,gz)))
-        
         return{'FINISHED'}
     
 
@@ -378,7 +500,6 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         scn.GoalY = scn.DefaultGoalY
         return{'FINISHED'}
 
-
 class OBJECT_OT_ToolsButton(bpy.types.Operator):
     bl_idname = "crowd.cursor_init"
     bl_label = "From Cursor"
@@ -390,6 +511,34 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         bpy.context.scene.InitX = Pcursor[0]
         bpy.context.scene.InitY = Pcursor[1]
         scn.cursor_location = (scn.InitX, scn.InitY, 0)
+        return{'FINISHED'}
+
+    
+class OBJECT_OT_ToolsButton(bpy.types.Operator):
+    bl_idname = "crowd.default_init"
+    bl_label = "From Cursor"
+
+    def execute(self, context):
+        scn = bpy.context.scene
+        view = bpy.context.space_data
+        Pcursor = view.cursor_location
+        bpy.context.scene.DefaultInitX = Pcursor[0]
+        bpy.context.scene.DefaultInitY = Pcursor[1]
+        scn.cursor_location = (scn.DefaultInitX, scn.DefaultInitY, 0)
+        return{'FINISHED'}
+
+    
+class OBJECT_OT_ToolsButton(bpy.types.Operator):
+    bl_idname = "crowd.default_goal"
+    bl_label = "From Cursor"
+
+    def execute(self, context):
+        scn = bpy.context.scene
+        view = bpy.context.space_data
+        Pcursor = view.cursor_location
+        bpy.context.scene.DefaultGoalX = Pcursor[0]
+        bpy.context.scene.DefaultGoalY = Pcursor[1]
+        scn.cursor_location = (scn.DefaultGoalX, scn.DefaultGoalY, 0)
         return{'FINISHED'}
 
 
@@ -417,7 +566,6 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         Sim.reset_crowd(Sim.cr)
         for x in Sim.Individuals:
             Sim.cr.add_indiv(x)
-            
         return{'FINISHED'}
 
 
