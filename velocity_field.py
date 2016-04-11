@@ -43,7 +43,7 @@ class VelocityField:
         elif distance(self.individual.position, neighboor.position) < self.individual.radius + neighboor.radius:
             return S.Polygon([(-vmax, -vmax), (vmax, -vmax), (vmax, vmax), (-vmax, vmax)])
 
-                # We create the trucated cone
+        # We create the trucated cone
         cone = TruncatedCone(point_us, self.individual.radius, point_him, neighboor.radius, vmax * tau, tau)
 
         # We get a point we have to find

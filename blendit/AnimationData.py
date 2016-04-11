@@ -176,6 +176,7 @@ cr.animate(0.1, -1, minefield)
 
 data = cr.to_list_of_point()
 
+
 def main(data, dt, prec):
     paths_info = get_paths(data)
     n = len(data[0]) - 1

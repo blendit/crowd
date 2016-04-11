@@ -9,13 +9,13 @@ es = 2.23
 ew = 1.26
 tau = 1
 theta = 1
-cr = C.Crowd(graph,tau)
+cr = C.Crowd(graph, tau)
+
 
 def reset_crowd(crowd):
-    crowd = C.Crowd(graph,tau)
+    crowd = C.Crowd(graph, tau)
 
     
 N = -1
 data = cr.to_list_of_point()
 minefield = []
-

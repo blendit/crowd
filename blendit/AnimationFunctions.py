@@ -140,7 +140,7 @@ def get_points(path):
     count = 1
     
     if n == 1:
-        return [point_info(1,path[0])]
+        return [point_info(1, path[0])]
     
     for i in range(n - 1):
         if path[i] == path[i + 1]:
@@ -155,7 +155,6 @@ def get_points(path):
         points.append(point_info(1, path[n - 1]))
     
     return points
-
 
 
 def main(data, dt, prec):
@@ -190,5 +189,3 @@ def main(data, dt, prec):
                 path.keyframe_insert('eval_time', frame=current_frame)
                
             current_frame += dt * 10 ** prec
-           
-
