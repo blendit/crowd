@@ -45,13 +45,11 @@ class path_info:
 # Computing a lenght of a path
 
 
-
 def cubic(p, t):
     """cubic bezier value
     Input four points p defining a curve and a parameter t
     Coordinates of a point parameterd by t on the curve"""
     return p[0] * (1.0 - t) ** 3.0 + 3.0 * p[1] * t * (1.0 - t) ** 2.0 + 3.0 * p[2] * (t ** 2.0) * (1.0 - t) + p[3] * t ** 3.0
-
 
 
 def getbezpoints(spl, mt, seg=0):
@@ -62,7 +60,6 @@ def getbezpoints(spl, mt, seg=0):
     p2 = mt * points[seg + 1].handle_left
     p3 = mt * points[seg + 1].co
     return p0, p1, p2, p3
-
 
 
 def seg_lengths(obj, points):
@@ -103,7 +100,6 @@ def seg_lengths(obj, points):
         print("THIS SHOULD BE BEZIER CURVE!")
         return False
     return total_length, seg_lengths
-
 
 
 def create_path(points):
@@ -167,6 +163,7 @@ def get_points(path):
         points.append(point_info(1, path[n - 1]))
     
     return points
+
 
 def main(data, dt, prec):
     paths_info = get_paths(data)
