@@ -213,7 +213,7 @@ if __name__ == "__main__":
     Pos = S.Point(0, 0).buffer(0)
     Goal = S.Point(0, 0).buffer(0)
     random.seed()
-    for i in range(20):
+    for i in range(40):
         p = S.Point(0, 0)
         while True:
             x = random.random() * 30
@@ -232,7 +232,7 @@ if __name__ == "__main__":
                 break
         Pos = Pos.union(p.buffer(1))
         Goal = Goal.union(g.buffer(1))
-        ind = C.Individual(p.x, p.y, 0, 5, 2, es, ew, 1, g)
+        ind = C.Individual(p.x, p.y, 0, 3, 2, es, ew, 1, g)
         cr.add_indiv(ind)
 
     # ind1 = C.Individual(0, 0, 0, 5, 2, es, ew, 1, S.Point(40, 40))

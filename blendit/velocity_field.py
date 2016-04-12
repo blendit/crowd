@@ -35,7 +35,7 @@ class VelocityField:
         """Computes the ORCA hyperplane between the two individual (cf Reciprocal n-body collision avoidance)"""
         # We define some parameters
         vmax = self.individual.vmax
-        # v_opt = difference(neighboor.v, self.individual.v)
+        # v_opt = S.Point(0, 0)
         v_opt = difference(self.individual.v, neighboor.v)
         point_us = S.Point(self.individual.position.x, self.individual.position.y)
         point_him = S.Point(neighboor.position.x, neighboor.position.y)
@@ -67,8 +67,9 @@ class VelocityField:
                 continue
             if self.is_far_away(neighboor, tau):   # we do not do computation for to far away individuals
                 continue
-            orc = self.orca(neighboor, tau)
-            self.field = self.field.intersection(orc)
+            orc = self.orca(neighboor, tau).buffer(0)
+            if not self.field.is_empty and not orc.is_empty:
+                self.field = self.field.intersection(orc).buffer(0)
 
         for mine in minefield:
             if not mine.is_empty:
