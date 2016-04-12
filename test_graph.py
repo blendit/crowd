@@ -1,5 +1,5 @@
 import unittest
-from GraphPLE import Node, Edge, Graph, distance
+from blendit.GraphPLE import Node, Edge, Graph, distance
 from random import randint
 from math import sqrt
 
