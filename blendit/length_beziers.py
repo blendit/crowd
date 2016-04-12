@@ -212,16 +212,18 @@ if __name__ == "__main__":
 
     graph = G.Graph(d=0.5, sizeX=100, sizeY=100, posX=0, posY=0)
 
-    cr = C.Crowd(graph, 1)
-    # minefield = [S.Polygon([(20,10), (20, 40), (30, 50), (20,10)])]
-    minefield = []
+    tau = 1
+    cr = C.Crowd(graph, tau)
+    # minefield = [S.Polygon([(10, 0), (15, 0), (10, 15)])]
+    # minefield = [S.Polygon([(7.5, 10), (10, 12.5), (12.5, 10), (10, 7.5)])]
+    # minefield = []
     cr.add_indiv(ind1)
     cr.add_indiv(ind2)
     cr.add_indiv(ind3)
     cr.add_indiv(ind4)
     # cr.add_indiv(ind5)
-
-    cr.animate(0.01, -1, minefield)
+    N = 100
+    cr.animate(0.05, N, minefield)
 
     data = cr.to_list_of_point()
     main(data, 20, 0)

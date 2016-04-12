@@ -1,3 +1,4 @@
+import shapely.affinity as A
 import shapely.geometry as S
 import math
 from blendit.geometric_tools import *
@@ -68,6 +69,32 @@ class VelocityField:
                 continue
             orc = self.orca(neighboor, tau)
             self.field = self.field.intersection(orc)
+
         for mine in minefield:
-            self.field = self.field.difference(mine)  # TODO : IT will bug
-        # TODO : Take the environment into account
+            if not mine.is_empty:
+                epsilon = 0.
+                mine_p = mine.buffer(self.individual.radius + epsilon)
+                x, y = mine_p.exterior.xy
+                minimum = float("inf")
+                q = -1
+                n = len(x)
+                p_opt = S.Point(self.individual.position.x, self.individual.position.y)
+                for i in range(len(x)):
+                    p1 = (x[i], y[i])
+                    p2 = (x[(i + 1) % n], y[(i + 1) % n])
+                    p3 = find_projection_segment(p1, p2, (self.individual.position.x, self.individual.position.y))
+                    if distance(p_opt, S.Point(p3[0], p3[1])) < minimum:
+                        q = i
+                        minimum = distance(p_opt, S.Point(p3[0], p3[1]))
+                if n == 1 or q == -1:
+                    continue
+                p1 = (x[q], y[q])
+                p2 = (x[(q + 1) % n], y[(q + 1) % n])
+                p3 = find_projection_segment(p1, p2, (self.individual.position.x, self.individual.position.y))
+                u = S.Point((-p_opt.x + p3[0]) / 2, (-p_opt.y + p3[1]) / 2)
+                if mine_p.contains(p_opt):
+                    ortho = u
+                else:
+                    ortho = S.Point(p_opt.x - p3[0], p_opt.y - p3[1])
+                orc = half_plane(u, ortho, self.individual.vmax)
+                self.field = self.field.intersection(orc)
