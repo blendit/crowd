@@ -6,8 +6,8 @@ import ast
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(script_dir)
-#print("MYPATH = " + str(sys.path))
-#print("\n\n\n")
+# print("MYPATH = " + str(sys.path))
+# print("\n\n\n")
 
 # Get system's python path
 proc = subprocess.Popen('python3 -c "import sys; print(sys.path)"', stdout=subprocess.PIPE, shell=True)
@@ -101,7 +101,8 @@ class Offline_Computation_Tools (SimulButtonsPanel, Panel):
         layout.operator("simul.set_offline")
 
 
-#class Online_Computation_Tools (SimulButtonsPanel, Panel):
+# Put on standby because the core of code is not compatible wih online computation
+# class Online_Computation_Tools (SimulButtonsPanel, Panel):
 #    bl_label = "Online computation"
 #
 #    def draw(self, context):
@@ -144,8 +145,8 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
     def execute(self, context):
         scn = bpy.context.scene
         view = bpy.context.space_data
-        Sim.data= Sim.cr.to_list_of_point()
-        A.main(Sim.data, 20, 0) # what the fuck are the two last arguments?
+        Sim.data = Sim.cr.to_list_of_point()
+        A.main(Sim.data, 20, 0) 
         return{'FINISHED'}
 
 
@@ -176,7 +177,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
     def execute(self, context):
         scn = bpy.context.scene
         view = bpy.context.space_data
-        output_file=open(scn.SelectSaveFile, "wb")
+        output_file = open(scn.SelectSaveFile, "wb")
         pic.dump(Sim.cr, output_file)
         output_file.close()
         return{'FINISHED'}
