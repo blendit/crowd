@@ -170,9 +170,13 @@ def get_points(path):
 data = [[[0, 0, 1], [5, 0, 1], [5, 0, 1], [5, 0, 1], [5, 0, 1], [5, 0, 5], [0, 0, 5], [0, 0, 1]], [[0, 0, 2], [0, 0, 4], [0, 0, 4], [0, 0, 6], [0, 0, 8], [0, 0, 10], [0, 0, 12], [0, 0, 14], [0, 0, 18], [0, 0, 20]], [[0, 0, 1], [-2, 0, -2], [-3, 0, -13], [-3, 0, -13], [-3, 0, -13], [-3, 0, -13], [-3, 0, -13], [-3, 0, -13]], [[-1, -2, -1], [0, -10, 0], [0, -12, 0], [0, -13, 0], [0, -13, 0], [0, -13, 0], [0, -14, 0], [0, -15, 0]]]
 
 
-def main(data, dt, prec=0, approx=False, names=[]):
-    # Input: data obtained from the crowd program defining the paths, dt timelapse between two points on the paths
+def points_to_curves(data, dt, prec=0, approx=False, names=[]):
+    # Input: data obtained from the crowd program defining the paths, dt timelapse between two points of the paths
     # prec = 0 and approximation = False, check function evaluation_times for the meaning of these variables
+    # If names == [], then len(data) cubes will be created and they will follow the curves
+    # Otherwise it is possible to add manually len(data) = m objects [obj_1, ..., obj_m] to the CENTER of the scene pass them with
+    # names = [obj_1.name, ..., obj_m.name] and thus move them along the curves
+    
     paths_info = get_paths(data)
     n = len(data[0]) - 1
     duration = n * dt * 10 ** prec
@@ -215,4 +219,4 @@ def main(data, dt, prec=0, approx=False, names=[]):
                 
             current_frame += dt * 10 ** prec
            
-main(data, 10)
+points_to_curves(data, 10)
