@@ -2,9 +2,9 @@ import numpy as np
 import shapely.geometry as S
 import math
 
-import GraphPLE as G
-import classes as C
-import geometric_tools as GT
+import blendit.GraphPLE as G
+import blendit.classes as C
+import blendit.geometric_tools as GT
 
 es = 2.23
 ew = 1.26
@@ -20,6 +20,6 @@ cr.add_indiv(ind1)
 cr.add_indiv(ind2)
 
 
-cr.animate(0.1)
+# cr.animate(0.1)
 
-print(cr.to_list_of_point())
+# print(cr.to_list_of_point())

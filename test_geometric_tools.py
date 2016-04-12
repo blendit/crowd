@@ -1,12 +1,12 @@
 import shapely.geometry as S
 import math
-from geometric_tools import *
+from blendit.geometric_tools import *
 import unittest
 import random
 from math import pi
 from matplotlib import pyplot as plt
-from velocity_field import *
-import classes as C
+from blendit.velocity_field import *
+import blendit.classes as C
 
 # random.seed()
 
