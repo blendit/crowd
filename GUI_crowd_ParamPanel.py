@@ -414,7 +414,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         scn = bpy.context.scene
         view = bpy.context.space_data
         input_file=open(scn.SelectString, "rb")
-        S.imcr=pic.load(input_file)
+        Sim.cr=pic.load(input_file)
         input_file.close()
         return{'FINISHED'}
     
