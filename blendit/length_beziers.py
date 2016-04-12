@@ -204,8 +204,11 @@ if __name__ == "__main__":
     es = 2.23
     ew = 1.26
 
-    ind1 = C.Individual(0, 0, 0, 3, 2, es, ew, 1, S.Point(40, 50))
-    ind2 = C.Individual(40, 50, 0, 3, 2, es, ew, 1, S.Point(0, 0))
+    ind1 = C.Individual(0, 0, 0, 5, 2, es, ew, 1, S.Point(40, 40))
+    ind2 = C.Individual(40, 40, 0, 5, 2, es, ew, 1, S.Point(0, 0))
+    ind3 = C.Individual(40, 0, 0, 5, 2, es, ew, 1, S.Point(0, 40))
+    ind4 = C.Individual(0, 40, 0, 5, 2, es, ew, 1, S.Point(40, 0))
+    # ind5 = C.Individual(40, 50, 0, 5, 2, es, ew, 1, S.Point(0, 0))
 
     graph = G.Graph(d=0.5, sizeX=100, sizeY=100, posX=0, posY=0)
 
@@ -214,6 +217,9 @@ if __name__ == "__main__":
     minefield = []
     cr.add_indiv(ind1)
     cr.add_indiv(ind2)
+    cr.add_indiv(ind3)
+    cr.add_indiv(ind4)
+    # cr.add_indiv(ind5)
 
     cr.animate(0.01, -1, minefield)
 

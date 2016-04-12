@@ -42,7 +42,7 @@ class Crowd:
                 count += 1
             continu = False
             for indiv in self.individuals:
-                print("\nNext:")
+                print("#########################\nNext:")
                 V = T.VelocityField(indiv, self.tau)
                 V.compute_field(self.tau, self.individuals, minefield)
                 print("Field :", V.field)
@@ -50,7 +50,7 @@ class Crowd:
                 if V.field.is_empty:
                     v = S.Point(0, 0)
                 else:
-                    if V.field.contains(S.Point((indiv.goal.x - indiv.position.x) / self.tau, (indiv.goal.y - indiv.position.y) / self.tau)):
+                    if V.field.intersection(S.Point(0, 0).buffer(indiv.vopt)).contains(S.Point((indiv.goal.x - indiv.position.x) / self.tau, (indiv.goal.y - indiv.position.y) / self.tau)):
                         v = S.Point((indiv.goal.x - indiv.position.x) / self.tau, (indiv.goal.y - indiv.position.y) / self.tau)
                         print("Fin ?")
                     else:
