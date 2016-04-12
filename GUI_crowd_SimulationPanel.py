@@ -189,7 +189,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
     def execute(self, context):
         scn = bpy.context.scene
         view = bpy.context.space_data
-        retun{'FINISHED'}
+        return{'FINISHED'}
 
 
 bpy.utils.register_module(__name__)
