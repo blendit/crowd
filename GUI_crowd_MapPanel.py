@@ -16,8 +16,6 @@ out, err = proc.communicate()
 paths = ast.literal_eval(out.decode("utf-8"))
 sys.path += (paths)
 
-S = []
-Index = 0
 
 
 def initSceneProperties(scn):
