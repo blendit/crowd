@@ -23,7 +23,7 @@ from decimal import Decimal
 
 import numpy as np
 import random as rd
-import shapely.geometry as S
+import shapely.geometry as Sha
 import math
 import pickle as pic
 import blendit.GraphPLE as G
@@ -447,7 +447,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
                                                 Sim.es,
                                                 Sim.ew,
                                                 scn.DefaultSize,
-                                                S.Point(scn.DefaultGoalX, scn.DefaultGoalY, 0)))
+                                                Sha.Point(scn.DefaultGoalX, scn.DefaultGoalY, 0)))
         return{'FINISHED'}
 
     
@@ -471,7 +471,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
             gx = rd.uniform(scn.MinGoalX, scn.MaxGoalX)
             gy = rd.uniform(scn.MinGoalY, scn.MaxGoalY)
             gz = 0
-            Sim.Individuals.append(C.Individual(x, y, z, vm, vo, es, ew, t, S.Point(gx, gy, gz)))
+            Sim.Individuals.append(C.Individual(x, y, z, vm, vo, es, ew, t, Sha.Point(gx, gy, gz)))
         return{'FINISHED'}
     
 
@@ -490,7 +490,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
                                                 Sim.es,
                                                 Sim.ew,
                                                 scn.SizeT,
-                                                S.Point(scn.GoalX, scn.GoalY, 0))
+                                                Sha.Point(scn.GoalX, scn.GoalY, 0))
         scn.InitX = scn.DefaultInitX
         scn.InitY = scn.DefaultInitY
         scn.VMax = scn.DefaultVMax
@@ -577,8 +577,8 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
     def execute(self, context):
         scn = bpy.context.scene
         view = bpy.context.space_data
-        ind1 = C.Individual(0, 0, 0, 3, 2, Sim.es, Sim.ew, 1, S.Point(40, 50))
-        ind2 = C.Individual(40, 50, 0, 3, 2, Sim.es, Sim.ew, 1, S.Point(0, 0))
+        ind1 = C.Individual(0, 0, 0, 3, 2, Sim.es, Sim.ew, 1, Sha.Point(40, 50))
+        ind2 = C.Individual(40, 50, 0, 3, 2, Sim.es, Sim.ew, 1, Sha.Point(0, 0))
         Sim.cr = C.Crowd(Sim.graph, 1)
         Sim.cr.add_indiv(ind1)
         Sim.cr.add_indiv(ind2)
