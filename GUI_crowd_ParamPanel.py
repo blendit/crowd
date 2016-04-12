@@ -6,8 +6,8 @@ import ast
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(script_dir)
-#print("MYPATH = " + str(sys.path))
-#print("\n\n\n")
+# print("MYPATH = " + str(sys.path))
+# print("\n\n\n")
 
 # Get system's python path
 proc = subprocess.Popen('python3 -c "import sys; print(sys.path)"', stdout=subprocess.PIPE, shell=True)
@@ -33,6 +33,7 @@ import blendit.SimulationData as Sim
 
 
 rd.seed()
+
 
 def initSceneProperties(scn):
     bpy.types.Scene.NumN = IntProperty(
@@ -64,7 +65,7 @@ def initSceneProperties(scn):
     bpy.types.Scene.MinSize = FloatProperty(
         name="T",
         description="Size exclusion zone around the individual, can be seen as the size of the individual",
-        default= 1.0)
+        default=1.0)
     scn['MinSize'] = 1
     bpy.types.Scene.MinVMax = FloatProperty(
         name="Max Speed",
@@ -105,7 +106,7 @@ def initSceneProperties(scn):
     bpy.types.Scene.MaxSize = FloatProperty(
         name="T",
         description="Size exclusion zone around the individual, can be seen as the size of the individual",
-        default= 1.0)
+        default=1.0)
     scn['SizeT'] = 1
     bpy.types.Scene.MaxVMax = FloatProperty(
         name="Max Speed",
@@ -138,7 +139,7 @@ def initSceneProperties(scn):
     bpy.types.Scene.DefaultSize = FloatProperty(
         name="T",
         description="Size exclusion zone around the individual, can be seen as the size of the individual",
-        default= 1.0)
+        default=1.0)
     scn['DefaultSize'] = 1
     bpy.types.Scene.DefaultVMax = FloatProperty(
         name="Max Speed",
@@ -181,7 +182,7 @@ def initSceneProperties(scn):
     bpy.types.Scene.SizeT = FloatProperty(
         name="T",
         description="Size exclusion zone around the individual, can be seen as the size of the individual",
-        default= 1.0)
+        default=1.0)
     scn['SizeT'] = 1
     bpy.types.Scene.VMax = FloatProperty(
         name="Max Speed",
@@ -291,8 +292,6 @@ class Random_Tools(ParamButtonsPanel, Panel):
     bl_label = "Set random settings"
 #    COMPAT_ENGINES = {'BLENDER_RENDER'}
 
-
-
     def draw(self, context):
         layout = self.layout
         scn = context.scene
@@ -396,14 +395,13 @@ class Generation_Tools(ParamButtonsPanel, Panel):
         layout.operator("crowd.generate")
 
 
-class Example_Tools(ParamButtonsPanel,Panel):
+class Example_Tools(ParamButtonsPanel, Panel):
     bl_label = "Example crowd"
 
-    def draw(self,context):
-        layout=self.layout
+    def draw(self, context):
+        layout = self.layout
         scn = context.scene
         layout.operator("crowd.example")
-
         
         
 class OBJECT_OT_ToolsButton(bpy.types.Operator):
@@ -413,8 +411,8 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
     def execute(self, context):
         scn = bpy.context.scene
         view = bpy.context.space_data
-        input_file=open(scn.SelectString, "rb")
-        Sim.cr=pic.load(input_file)
+        input_file = open(scn.SelectString, "rb")
+        Sim.cr = pic.load(input_file)
         input_file.close()
         return{'FINISHED'}
     
@@ -426,7 +424,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
     def execute(self, context):
         scn = bpy.context.scene
         view = bpy.context.space_data
-        output_file=open(scn.SaveString, "wb")
+        output_file = open(scn.SaveString, "wb")
         pic.dump(Sim.cr, output_file)
         output_file.close()
         return{'FINISHED'}
@@ -442,14 +440,14 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         Sim.Individuals = []
         for i in range(scn.NumN):
             Sim.Individuals.append(C.Individual(scn.DefaultInitX,
-                                            scn.DefaultInitY,
-                                            0,
-                                            scn.DefaultVMax,
-                                            scn.DefaultVOpt,
-                                            Sim.es,
-                                            Sim.ew,
-                                            scn.DefaultSize,
-                                            S.Point(scn.DefaultGoalX, scn.DefaultGoalY,0)))
+                                                scn.DefaultInitY,
+                                                0,
+                                                scn.DefaultVMax,
+                                                scn.DefaultVOpt,
+                                                Sim.es,
+                                                Sim.ew,
+                                                scn.DefaultSize,
+                                                S.Point(scn.DefaultGoalX, scn.DefaultGoalY, 0)))
         return{'FINISHED'}
 
     
@@ -473,7 +471,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
             gx = rd.uniform(scn.MinGoalX, scn.MaxGoalX)
             gy = rd.uniform(scn.MinGoalY, scn.MaxGoalY)
             gz = 0
-            Sim.Individuals.append(C.Individual(x,y,z,vm,vo,es,ew,t,S.Point(gx,gy,gz)))
+            Sim.Individuals.append(C.Individual(x, y, z, vm, vo, es, ew, t, S.Point(gx, gy, gz)))
         return{'FINISHED'}
     
 
@@ -484,15 +482,15 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
     def execute(self, context):
         scn = bpy.context.scene
         view = bpy.context.space_data
-        Sim.Individuals[scn.Ind]=C.Individual(scn.InitX,
-                                    scn.InitY,
-                                    0,
-                                    scn.VMax,
-                                    scn.VOpt,
-                                    Sim.es,
-                                    Sim.ew,
-                                    scn.SizeT,
-                                    S.Point(scn.GoalX, scn.GoalY, 0))
+        Sim.Individuals[scn.Ind] = C.Individual(scn.InitX,
+                                                scn.InitY,
+                                                0,
+                                                scn.VMax,
+                                                scn.VOpt,
+                                                Sim.es,
+                                                Sim.ew,
+                                                scn.SizeT,
+                                                S.Point(scn.GoalX, scn.GoalY, 0))
         scn.InitX = scn.DefaultInitX
         scn.InitY = scn.DefaultInitY
         scn.VMax = scn.DefaultVMax
@@ -501,6 +499,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         scn.GoalX = scn.DefaultGoalX
         scn.GoalY = scn.DefaultGoalY
         return{'FINISHED'}
+
 
 class OBJECT_OT_ToolsButton(bpy.types.Operator):
     bl_idname = "crowd.cursor_init"
@@ -587,7 +586,4 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         return{'FINISHED'}
 
 
-    
-    
-    
 bpy.utils.register_module(__name__)
