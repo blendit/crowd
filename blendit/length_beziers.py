@@ -33,7 +33,7 @@ class point_info:
         point.loc = location
         point.length = 0
         point.eval_time = 0
-        
+
 
 class path_info:
     def __init__(path, name, data_name, total_length, points):
@@ -67,7 +67,7 @@ def seg_lengths(obj, points):
     for every segment"""
     prec = 10000
     inc = 1 / prec
-        
+
     spl = None
     mw = obj.matrix_world
     if obj.data.splines.active is None:
@@ -78,12 +78,12 @@ def seg_lengths(obj, points):
 
     if spl is None:
         return False
-            
+
     # Working Part
-    
+
     if spl.type == "BEZIER":
         total_length = 0.0
-        
+
         for seg in range(0, len(points) - 1):
             segment_length = 0.0
             p = getbezpoints(spl, mw, seg)
@@ -106,7 +106,7 @@ def create_path(points):
     """Creates a path given its points and outputs paths name
     At the end active object is a curve in an object mode"""
     bpy.ops.curve.primitive_bezier_curve_add(enter_editmode=True, location=(points[0].loc[0] - 1, points[0].loc[1], points[0].loc[2]))
-    
+
     bpy.ops.curve.select_all()
     bpy.ops.curve.de_select_last()
 
@@ -118,7 +118,7 @@ def create_path(points):
     bpy.ops.curve.delete()
 
     bpy.ops.object.editmode_toggle()
-    
+
     return [bpy.context.active_object.name, bpy.context.active_object.data.name]
 
 
@@ -145,23 +145,23 @@ def get_points(path):
     points = []
     n = len(path)
     count = 1
-    
+
     if n == 1:
         print("ABADABOUM")
         return [point(path[0], 1, 0)]
-    
+
     for i in range(n - 1):
         if path[i] == path[i + 1]:
             count = count + 1
         else:
             points.append(point_info(count, path[i]))
             count = 1
-    
+
     if path[n - 1] == path[n - 2]:
         points.append(point_info(count, path[n - 1]))
     else:
         points.append(point_info(1, path[n - 1]))
-    
+
     return points
 
 
@@ -169,12 +169,12 @@ def main(data, dt, prec):
     paths_info = get_paths(data)
     n = len(data[0]) - 1
     duration = n * dt * 10 ** prec
-    
+
     scn = bpy.context.scene
     scn.frame_start = 0
     scn.frame_end = duration
 
-    bpy.context.scene.render.frame_map_old = 10**prec
+    bpy.context.scene.render.frame_map_old = 10 ** prec
     bpy.context.scene.render.frame_map_new = 1
 
     for path_info in paths_info:
@@ -183,30 +183,30 @@ def main(data, dt, prec):
         bpy.ops.mesh.primitive_cube_add(radius=0.5, view_align=False, enter_editmode=False, location=(0, 0, 0))
         bpy.ops.object.constraint_add(type='FOLLOW_PATH')
         bpy.context.object.constraints["Follow Path"].target = bpy.data.objects[path_info.name]
-    
+
         current_frame = 0
-        
+
         evaluation_times(path_info.p, duration, path_info.l, prec)
-    
+
         for i in range(0, len(path_info.p)):
-            path.eval_time = (path_info.p[i].eval_time) * 10**prec
+            path.eval_time = (path_info.p[i].eval_time) * 10 ** prec
             # print([path.eval_time, current_frame])
             path.keyframe_insert('eval_time', frame=current_frame)
             if (path_info.p[i].rec != 1):
-                current_frame += (path_info.p[i].rec - 1) * dt * 10**prec
+                current_frame += (path_info.p[i].rec - 1) * dt * 10 ** prec
                 path.keyframe_insert('eval_time', frame=current_frame)
-               
+
             current_frame += dt * 10 ** prec
-           
+
 
 if __name__ == "__main__":
     # crados
     es = 2.23
     ew = 1.26
-    
+
     ind1 = C.Individual(0, 0, 0, 3, 2, es, ew, 1, S.Point(40, 50))
     ind2 = C.Individual(40, 50, 0, 3, 2, es, ew, 1, S.Point(0, 0))
-    
+
     graph = G.Graph(d=0.5, sizeX=100, sizeY=100, posX=0, posY=0)
 
     cr = C.Crowd(graph, 1)
@@ -214,8 +214,8 @@ if __name__ == "__main__":
     minefield = []
     cr.add_indiv(ind1)
     cr.add_indiv(ind2)
-    
-    cr.animate(0.1, -1, minefield)
+
+    cr.animate(0.01, -1, minefield)
 
     data = cr.to_list_of_point()
     main(data, 20, 0)
