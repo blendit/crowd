@@ -34,6 +34,7 @@ class VelocityField:
         """Computes the ORCA hyperplane between the two individual (cf Reciprocal n-body collision avoidance)"""
         # We define some parameters
         vmax = self.individual.vmax
+        # v_opt = difference(neighboor.v, self.individual.v)
         v_opt = difference(self.individual.v, neighboor.v)
         point_us = S.Point(self.individual.position.x, self.individual.position.y)
         point_him = S.Point(neighboor.position.x, neighboor.position.y)
@@ -48,13 +49,15 @@ class VelocityField:
 
         # We get a point we have to find
         u_end = cone.find_closest((v_opt.x, v_opt.y))
+        u = difference(u_end, v_opt)
         if cone.in_cone(v_opt):
-            u = difference(u_end, v_opt)
+            ortho = difference(u_end, v_opt)
         else:
-            u = difference(v_opt, u_end)
+            ortho = difference(v_opt, u_end)
         origin = S.Point(self.individual.v.x + 1.0 / 2.0 * u.x, self.individual.v.y + 1.0 / 2.0 * u.y)
+        print("ORCA:\n\torigin = ", origin, "\n\t u = ", u, "\n\t vA = ", self.individual.v, "\n\t ortho =", ortho)
         # We return the right half plane
-        return half_plane(origin, u, vmax)
+        return half_plane(origin, ortho, vmax)
 
     def compute_field(self, tau, others, minefield):  # TODO: This function has to be tested
         """This function computes a velocity_field for self.individual which is collision free with the others individuals"""

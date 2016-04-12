@@ -3,7 +3,7 @@ import shapely.geometry as S
 import math
 
 import blendit.GraphPLE as G
-import velocity_field as T
+import blendit.velocity_field as T
 import blendit.geometric_tools as GT
 
 
@@ -18,7 +18,7 @@ class Individual:
         self.ew = ew
         self.v = S.Point(0, 0, 0)
         self.radius = radius
-        self.trajectory = list()
+        self.trajectory = [[x, y, z]]
         self.goal = goal
 
 

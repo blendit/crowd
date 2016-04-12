@@ -185,7 +185,7 @@ class TruncatedCone:
         start_angle = argument(difference(point1, center))
         end_angle = argument(difference(point2, center))
         numsegments = 65
-
+        print("Truncated cone :\n\t center ", center, "\n\t radius =", radius)
         # We format the angle so that we get the smaller one of the two possible
         if start_angle - end_angle > math.pi:
             start_angle -= 2 * math.pi
