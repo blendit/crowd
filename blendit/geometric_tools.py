@@ -160,15 +160,15 @@ class TruncatedCone:
         """Create a truncated cone for the ORCA algorithm"""
 
         # Usefull geometric datas
-        center = S.Point(pB.x - pA.x, pB.y - pA.y)
+        center = S.Point((pB.x - pA.x) / tau, (pB.y - pA.y) / tau)
         theta_c = argument(center)
         norm = distance(center, S.Point(0, 0))
-        r = rA + rB
+        r = (rA + rB ) / tau
         if norm > 0:
             # Trigonometric formulas
             cos_theta = math.sqrt(norm ** 2 - r ** 2) / norm
             sin_theta = r / norm
-            norm2 = math.sqrt(norm ** 2 - r ** 2) / tau
+            norm2 = math.sqrt(norm ** 2 - r ** 2)
 
             # Define the two limits point
             point1 = S.Point(norm2 * (math.cos(theta_c) * cos_theta + sin_theta * math.sin(theta_c)), norm2 * (math.sin(theta_c) * cos_theta - sin_theta * math.cos(theta_c)))
@@ -180,8 +180,7 @@ class TruncatedCone:
         self.limit_points = [point1, point2]
 
         # Define the arc
-        center = S.Point(center.x / tau, center.y / tau)
-        radius = r / tau
+        radius = r
         start_angle = argument(difference(point1, center))
         end_angle = argument(difference(point2, center))
         numsegments = 65

@@ -41,7 +41,7 @@ class VelocityField:
         point_him = S.Point(neighboor.position.x, neighboor.position.y)
 
         if distance(self.individual.position, neighboor.position) == self.individual.radius + neighboor.radius:
-            return half_plane(S.Point(0, 0), v_opt, vmax)
+            return half_plane(S.Point(0, 0), difference(individual.position, neighboor.position), vmax)
         elif distance(self.individual.position, neighboor.position) < self.individual.radius + neighboor.radius:
             return S.Polygon([(-vmax, -vmax), (vmax, -vmax), (vmax, vmax), (-vmax, vmax)])
 
@@ -68,9 +68,9 @@ class VelocityField:
                 continue
             if self.is_far_away(neighboor, tau):   # we do not do computation for to far away individuals
                 continue
-            orc = self.orca(neighboor, tau) # .buffer(0)
+            orc = self.orca(neighboor, tau)  # .buffer(0)
             # if not self.field.is_empty and not orc.is_empty:
-            self.field = self.field.intersection(orc) # .buffer(0)
+            self.field = self.field.intersection(orc)  # .buffer(0)
 
         for mine in minefield:
             if not mine.is_empty:
