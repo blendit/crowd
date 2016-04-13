@@ -16,6 +16,8 @@ out, err = proc.communicate()
 paths = ast.literal_eval(out.decode("utf-8"))
 sys.path += (paths)
 
+import blendit.SimulationData as Sim
+import pickle as pic
 
 
 def initSceneProperties(scn):
@@ -65,13 +67,17 @@ def initSceneProperties(scn):
 initSceneProperties(bpy.context.scene)
 
 
-class ToolsButtonsPanel(Panel):
+class MapButtonsPanel(Panel):
     bl_category = 'Map'
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'TOOLS'
 
+    def draw(self, context):
+        layout = self.layout
+        scn = context.scene
+
     
-class InputFile_Tools(ToolsButtonsPanel, Panel):
+class InputFile_Tools(MapButtonsPanel, Panel):
     bl_label = "Input File"
 
     def draw(self, context):
@@ -83,14 +89,14 @@ class InputFile_Tools(ToolsButtonsPanel, Panel):
         layout.operator("env.save")
 
         
-class MapOrigin_Tools(ToolsButtonsPanel, Panel):
+class MapOrigin_Tools(MapButtonsPanel, Panel):
     bl_label = "Map Origin"
 #    COMPAT_ENGINES = {'BLENDER_RENDER'}
 
     def draw(self, context):
         layout = self.layout
         scn = context.scene
-        layout.label(text="Initial Position:")
+        layout.label(text="Origin Position:")
         row = layout.row(align=True)
         row.alignment = 'EXPAND'
         row.prop(scn, 'PosX')
@@ -99,7 +105,7 @@ class MapOrigin_Tools(ToolsButtonsPanel, Panel):
         layout.operator("env.set")
         
         
-class MapSize_Tools(ToolsButtonsPanel, Panel):
+class MapSize_Tools(MapButtonsPanel, Panel):
     bl_label = "Map Bounds"
 
     def draw(self, context):
@@ -118,7 +124,7 @@ class MapSize_Tools(ToolsButtonsPanel, Panel):
         layout.operator("env.size")
 
         
-class GridSize_Tools (ToolsButtonsPanel, Panel):
+class GridSize_Tools (MapButtonsPanel, Panel):
     bl_label = "Grid Size"
 
     def draw(self, context):
@@ -126,6 +132,15 @@ class GridSize_Tools (ToolsButtonsPanel, Panel):
         scn = context.scene
         layout.prop(scn, 'GridP')
         layout.operator("env.grid")
+
+        
+class Generate_Tools (MapButtonsPanel, Panel):
+    bl_label = "Generate Map"
+
+    def draw(self, context):
+        layout = self.layout
+        scn = context.scene
+        layout.operator("env.generate")
         
 
 class OBJECT_OT_ToolsButton(bpy.types.Operator):
@@ -135,6 +150,9 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
     def execute(self, context):
         scn = bpy.context.scene
         view = bpy.context.space_data
+        ic = open(SelectString, "rb")
+        Sim.graph = pic.load(ic)
+        ic.close()
         return{'FINISHED'}
     
     
@@ -145,6 +163,9 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
     def execute(self, context):
         scn = bpy.context.scene
         view = bpy.context.space_data
+        oc = open(SaveString, "wb")
+        pic.dump(Sim.graph, oc)
+        oc.close()
         return{'FINISHED'}
     
             
@@ -169,6 +190,8 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
     def execute(self, context):
         scn = bpy.context.scene
         view = bpy.context.space_data
+        Sim.OriginX = PosX
+        Sim.OriginY = PosY
         return{'FINISHED'}
     
 
@@ -178,6 +201,10 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
 
     def execute(self, context):
         scn = bpy.context.scene
+        Sim.MinX = MinX
+        Sim.MaxX = MaxX
+        Sim.MinY = MinY
+        Sim.MaxY = MaxY
         return{'FINISHED'}
 
     
@@ -187,6 +214,18 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
 
     def execute(self, context):
         scn = bpy.context.scene
+        coefficient = 5 - (GridP / 20)
+        Sim.Grid = Sim.MinGrid * (10 ** coefficient)
+        return{'FINISHED'}
+
+
+class OBJECT_OT_ToolsButton(bpy.types.Operator):
+    bl_idname = "env.generate"
+    bl_label = "Generate"
+
+    def execute(self, context):
+        scn = bpy.context.scene
+        Sim.renew_graph()
         return{'FINISHED'}
 
 

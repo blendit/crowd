@@ -4,7 +4,7 @@ from decimal import Decimal
 
 # bla
 import numpy as np
-import shapely.geometry as S
+import shapely.geometry as Sha
 import math
 
 import blendit.GraphPLE as G
