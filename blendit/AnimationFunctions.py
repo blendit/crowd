@@ -176,9 +176,6 @@ def get_points(path):
     return points
 
 
-data = [[[0, 0, 1], [5, 0, 1], [5, 0, 1], [5, 0, 1], [5, 0, 1], [5, 0, 5], [0, 0, 5], [0, 0, 1]], [[0, 0, 2], [0, 0, 4], [0, 0, 4], [0, 0, 6], [0, 0, 8], [0, 0, 10], [0, 0, 12], [0, 0, 14], [0, 0, 18], [0, 0, 20]], [[0, 0, 1], [-2, 0, -2], [-3, 0, -13], [-3, 0, -13], [-3, 0, -13], [-3, 0, -13], [-3, 0, -13], [-3, 0, -13]], [[-1, -2, -1], [0, -10, 0], [0, -12, 0], [0, -13, 0], [0, -13, 0], [0, -13, 0], [0, -14, 0], [0, -15, 0]]]
-
-
 def points_to_curves(data, dt, prec=0, approx=False, names=[]):
     # Input: data obtained from the crowd program defining the paths, dt timelapse between two points of the paths
     # prec = 0 and approximation = False, check function evaluation_times for the meaning of these variables
@@ -228,5 +225,3 @@ def points_to_curves(data, dt, prec=0, approx=False, names=[]):
                 path.keyframe_insert('eval_time', frame=current_frame)
                 
             current_frame += dt * 10 ** prec
-           
-points_to_curves(data, 10)
