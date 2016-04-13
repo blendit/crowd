@@ -214,8 +214,8 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
 
     def execute(self, context):
         scn = bpy.context.scene
-        coefficient = 5 - (GridP/20)
-        Sim.Grid = Sim.MinGrid*(10**coefficient)
+        coefficient = 5 - (GridP / 20)
+        Sim.Grid = Sim.MinGrid * (10 ** coefficient)
         return{'FINISHED'}
 
 

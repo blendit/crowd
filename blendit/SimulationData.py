@@ -16,18 +16,18 @@ MinX = -10
 MinY = -10
 
 graph = G.Graph(d=Grid,
-                sizeX=MaxX-MinX,
-                sizeY=MaxY-MinY,
-                posX=OriginX+MinX,
-                posY=OriginY+MinY)
+                sizeX=MaxX - MinX,
+                sizeY=MaxY - MinY,
+                posX=OriginX + MinX,
+                posY=OriginY + MinY)
 
 
 def renew_graph():
     graph = G.Graph(d=Grid,
-                    sizeX=MaxX-MinX,
-                    sizeY=MaxY-MinY,
-                    posX=OriginX+MinX,
-                    posY=OriginY+MinY)
+                    sizeX=MaxX - MinX,
+                    sizeY=MaxY - MinY,
+                    posX=OriginX + MinX,
+                    posY=OriginY + MinY)
 
 es = 2.23
 ew = 1.26
