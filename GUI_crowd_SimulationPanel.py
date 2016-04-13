@@ -59,22 +59,25 @@ def initSceneProperties(scn):
 initSceneProperties(bpy.context.scene)
 
 
-class SimulButtonsPanel(Panel):
-    bl_category = 'Simulation'
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'TOOLS'
-
-    def draw(self, context):
-        layout = self.layout
-        scn = context.scene
+# class SimulButtonsPanel(Panel):
+#     bl_category = 'Simulation'
+#     bl_space_type = 'VIEW_3D'
+#     bl_region_type = 'TOOLS'
+#
+#     def draw(self, context):
+#         layout = self.layout
+#        scn = context.scene
 #    @classmethod
 #    def poll(cls, context):
 #        scene = context.scene
 #        return scene and (scene.render.engine in cls.COMPAT_ENGINES)
-
-
-class Time_Tools(SimulButtonsPanel, Panel):
+#
+#
+class Time_Tools(Panel):
     bl_label = "Parameters"
+    bl_category = 'Simulation'
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'TOOLS'
 #    COMPAT_ENGINES = {'BLENDER_RENDER'}
 
     def draw(self, context):
@@ -86,8 +89,11 @@ class Time_Tools(SimulButtonsPanel, Panel):
         layout.prop(scn, 'Theta', text="d\N{GREEK CAPITAL LETTER THETA}")
 
 
-class Offline_Computation_Tools (SimulButtonsPanel, Panel):
+class Offline_Computation_Tools (Panel):
     bl_label = "Offline computation"
+    bl_category = 'Simulation'
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'TOOLS'
 
     def draw(self, context):
         layout = self.layout
@@ -98,8 +104,11 @@ class Offline_Computation_Tools (SimulButtonsPanel, Panel):
         layout.operator("simul.set_offline")
 
 
-class Overall_Tools (SimulButtonsPanel, Panel):
+class Overall_Tools (Panel):
     bl_label = " Reset"
+    bl_category = 'Simulation'
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'TOOLS'
 
     def draw(self, context):
         layout = self.layout

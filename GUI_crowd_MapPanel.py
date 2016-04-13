@@ -65,20 +65,23 @@ def initSceneProperties(scn):
     return
 
 initSceneProperties(bpy.context.scene)
-
-
-class MapButtonsPanel(Panel):
-    bl_category = 'Map'
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'TOOLS'
-
-    def draw(self, context):
-        layout = self.layout
-        scn = context.scene
+#
+#
+# class MapButtonsPanel(Panel):
+#     bl_category = 'Map'
+#     bl_space_type = 'VIEW_3D'
+#     bl_region_type = 'TOOLS'
+#
+#     def draw(self, context):
+#         layout = self.layout
+#         scn = context.scene
 
     
-class InputFile_Tools(MapButtonsPanel, Panel):
+class InputFile_Tools(Panel):
     bl_label = "Input File"
+    bl_category = "Map"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "TOOLS"
 
     def draw(self, context):
         layout = self.layout
@@ -89,8 +92,11 @@ class InputFile_Tools(MapButtonsPanel, Panel):
         layout.operator("env.save")
 
         
-class MapOrigin_Tools(MapButtonsPanel, Panel):
+class MapOrigin_Tools(Panel):
     bl_label = "Map Origin"
+    bl_category = "Map"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "TOOLS"
 #    COMPAT_ENGINES = {'BLENDER_RENDER'}
 
     def draw(self, context):
@@ -105,8 +111,11 @@ class MapOrigin_Tools(MapButtonsPanel, Panel):
         layout.operator("env.set")
         
         
-class MapSize_Tools(MapButtonsPanel, Panel):
+class MapSize_Tools(Panel):
     bl_label = "Map Bounds"
+    bl_category = "Map"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "TOOLS"
 
     def draw(self, context):
         layout = self.layout
@@ -124,8 +133,11 @@ class MapSize_Tools(MapButtonsPanel, Panel):
         layout.operator("env.size")
 
         
-class GridSize_Tools (MapButtonsPanel, Panel):
+class GridSize_Tools (Panel):
     bl_label = "Grid Size"
+    bl_category = "Map"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "TOOLS"
 
     def draw(self, context):
         layout = self.layout
@@ -134,8 +146,11 @@ class GridSize_Tools (MapButtonsPanel, Panel):
         layout.operator("env.grid")
 
         
-class Generate_Tools (MapButtonsPanel, Panel):
+class Generate_Tools (Panel):
     bl_label = "Generate Map"
+    bl_category = "Map"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "TOOLS"
 
     def draw(self, context):
         layout = self.layout

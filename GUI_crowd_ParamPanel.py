@@ -84,7 +84,7 @@ def initSceneProperties(scn):
     scn['RandomMesh'] = "filename.py"
     bpy.types.Scene.RandomAnim = StringProperty(
         name="Animation",
-        description="Select an animation for the individual (otherwise no animation)",
+        description="Select an animation for the individual (otherwise no% animation)",
         subtype='FILE_PATH')
     scn['RandomAnim'] = "filename.py"
     bpy.types.Scene.MaxInitX = FloatProperty(
@@ -219,24 +219,27 @@ def initSceneProperties(scn):
 initSceneProperties(bpy.context.scene)
 
 
-class ParamButtonsPanel(Panel):
-    bl_category = 'Parameters'
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'TOOLS'
-
-    def draw(self, context):
-        layout = self.layout
-        scn = context.scene
-        
-        
+# class ParamButtonsPanel(Panel):
+#     bl_category = 'Parameters'
+#     bl_space_type = 'VIEW_3D'
+#     bl_region_type = 'TOOLS'
+#
+#     def draw(self, context):
+#         layout = self.layout
+#         scn = context.scene
+#        
+#        
 #    @classmethod
 #    def poll(cls, context):
 #        scene = context.scene
 #        return scene and (scene.render.engine in cls.COMPAT_ENGINES)
-
-
-class File_Tools(ParamButtonsPanel, Panel):
+#
+#
+class File_Tools(Panel):
     bl_label = "Select from file / Save"
+    bl_category = 'Parameters'
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'TOOLS'
 #    COMPAT_ENGINES = {'BLENDER_RENDER'}
 
     def draw(self, context):
@@ -248,8 +251,11 @@ class File_Tools(ParamButtonsPanel, Panel):
         layout.operator("crowd.save")
 
 
-class Default_Tools(ParamButtonsPanel, Panel):
+class Default_Tools(Panel):
     bl_label = "Set default settings"
+    bl_category = 'Parameters'
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'TOOLS'
 #    COMPAT_ENGINES = {'BLENDER_RENDER'}
 
     def draw(self, context):
@@ -288,8 +294,11 @@ class Default_Tools(ParamButtonsPanel, Panel):
         layout.operator("crowd.default")
 
 
-class Random_Tools(ParamButtonsPanel, Panel):
+class Random_Tools(Panel):
     bl_label = "Set random settings"
+    bl_category = 'Parameters'
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'TOOLS'
 #    COMPAT_ENGINES = {'BLENDER_RENDER'}
 
     def draw(self, context):
@@ -345,8 +354,11 @@ class Random_Tools(ParamButtonsPanel, Panel):
         layout.operator("crowd.random")
 
         
-class Specific_Tools(ParamButtonsPanel, Panel):
+class Specific_Tools(Panel):
     bl_label = "Individual Settings"
+    bl_category = 'Parameters'
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'TOOLS'
 #    COMPAT_ENGINES = {'BLENDER_RENDER'}
 
     def draw(self, context):
@@ -385,8 +397,11 @@ class Specific_Tools(ParamButtonsPanel, Panel):
         layout.operator("crowd.indiv")
 
         
-class Generation_Tools(ParamButtonsPanel, Panel):
+class Generation_Tools(Panel):
     bl_label = "Generate the crowd"
+    bl_category = 'Parameters'
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'TOOLS'
 #    COMPAT_ENGINES = {'BLENDER_RENDER'}
 
     def draw(self, context):
@@ -395,8 +410,11 @@ class Generation_Tools(ParamButtonsPanel, Panel):
         layout.operator("crowd.generate")
 
 
-class Example_Tools(ParamButtonsPanel, Panel):
+class Example_Tools(Panel):
     bl_label = "Example crowds"
+    bl_category = 'Parameters'
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'TOOLS'
 
     def draw(self, context):
         layout = self.layout
