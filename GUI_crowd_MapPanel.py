@@ -16,7 +16,7 @@ out, err = proc.communicate()
 paths = ast.literal_eval(out.decode("utf-8"))
 sys.path += (paths)
 
-import blendit/SimulationData.py as Sim
+import blendit.SimulationData as Sim
 import pickle as pic
 
 
@@ -67,13 +67,17 @@ def initSceneProperties(scn):
 initSceneProperties(bpy.context.scene)
 
 
-class ToolsButtonsPanel(Panel):
+class MapButtonsPanel(Panel):
     bl_category = 'Map'
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'TOOLS'
 
+    def draw(self, context):
+        layout = self.layout
+        scn = context.scene
+
     
-class InputFile_Tools(ToolsButtonsPanel, Panel):
+class InputFile_Tools(MapButtonsPanel, Panel):
     bl_label = "Input File"
 
     def draw(self, context):
@@ -85,7 +89,7 @@ class InputFile_Tools(ToolsButtonsPanel, Panel):
         layout.operator("env.save")
 
         
-class MapOrigin_Tools(ToolsButtonsPanel, Panel):
+class MapOrigin_Tools(MapButtonsPanel, Panel):
     bl_label = "Map Origin"
 #    COMPAT_ENGINES = {'BLENDER_RENDER'}
 
@@ -101,7 +105,7 @@ class MapOrigin_Tools(ToolsButtonsPanel, Panel):
         layout.operator("env.set")
         
         
-class MapSize_Tools(ToolsButtonsPanel, Panel):
+class MapSize_Tools(MapButtonsPanel, Panel):
     bl_label = "Map Bounds"
 
     def draw(self, context):
@@ -120,7 +124,7 @@ class MapSize_Tools(ToolsButtonsPanel, Panel):
         layout.operator("env.size")
 
         
-class GridSize_Tools (ToolsButtonsPanel, Panel):
+class GridSize_Tools (MapButtonsPanel, Panel):
     bl_label = "Grid Size"
 
     def draw(self, context):
@@ -130,7 +134,7 @@ class GridSize_Tools (ToolsButtonsPanel, Panel):
         layout.operator("env.grid")
 
         
-class Generate_Tools (ToolsButtonsPanel, Panel):
+class Generate_Tools (MapButtonsPanel, Panel):
     bl_label = "Generate Map"
 
     def draw(self, context):
