@@ -152,7 +152,7 @@ class SimulLoadButton(bpy.types.Operator):
         scn = bpy.context.scene
         view = bpy.context.space_data
         Sim.data = Sim.cr.to_list_of_point()
-        A.main(Sim.data, 20, 0)
+        A.points_to_curve(Sim.data, Sim.tau)
         return{'FINISHED'}
 
 
