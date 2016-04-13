@@ -406,7 +406,7 @@ class Example_Tools(ParamButtonsPanel, Panel):
         layout.operator("crowd.example3")
         
         
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class ParamSelectButton(bpy.types.Operator):
     bl_idname = "crowd.select"
     bl_label = "Set input as crowd"
 
@@ -419,7 +419,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         return{'FINISHED'}
     
     
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class ParamSaveButton(bpy.types.Operator):
     bl_idname = "crowd.save"
     bl_label = "Save crowd"
 
@@ -432,7 +432,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         return{'FINISHED'}
     
             
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class ParamDefaultButton(bpy.types.Operator):
     bl_idname = "crowd.default"
     bl_label = "Default"
 
@@ -453,7 +453,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         return{'FINISHED'}
 
     
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class ParamRandomButton(bpy.types.Operator):
     bl_idname = "crowd.random"
     bl_label = "Random"
 
@@ -477,7 +477,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         return{'FINISHED'}
     
 
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class ParamSpecificButton(bpy.types.Operator):
     bl_idname = "crowd.indiv"
     bl_label = "Set Specific"
 
@@ -503,7 +503,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         return{'FINISHED'}
 
 
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class ParamCursorInitButton(bpy.types.Operator):
     bl_idname = "crowd.cursor_init"
     bl_label = "From Cursor"
 
@@ -517,7 +517,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         return{'FINISHED'}
 
     
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class ParamCursorDefaultInitButton(bpy.types.Operator):
     bl_idname = "crowd.default_init"
     bl_label = "From Cursor"
 
@@ -531,7 +531,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         return{'FINISHED'}
 
     
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class ParamCursorDefaultGoalButton(bpy.types.Operator):
     bl_idname = "crowd.default_goal"
     bl_label = "From Cursor"
 
@@ -545,7 +545,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         return{'FINISHED'}
 
 
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class ParamCursorGoalButton(bpy.types.Operator):
     bl_idname = "crowd.cursor_goal"
     bl_label = "From Cursor"
 
@@ -559,7 +559,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         return{'FINISHED'}
 
 
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class ParamGenerationButton(bpy.types.Operator):
     bl_idname = "crowd.generate"
     bl_label = "Generate"
 
@@ -572,7 +572,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         return{'FINISHED'}
 
 
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class ParamExample1Button(bpy.types.Operator):
     bl_idname = "crowd.example"
     bl_label = "Generate example 1"
 
@@ -588,7 +588,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         return{'FINISHED'}
 
 
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class ParamExample2Button(bpy.types.Operator):
     bl_idname = "crowd.example2"
     bl_label = "Generate example 2"
 
@@ -604,7 +604,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         return{'FINISHED'}
 
 
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class ParamExample3Button(bpy.types.Operator):
     bl_idname = "crowd.example3"
     bl_label = "Generate example 3"
 
