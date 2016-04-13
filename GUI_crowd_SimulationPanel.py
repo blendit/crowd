@@ -128,7 +128,7 @@ class Overall_Tools (SimulButtonsPanel, Panel):
 #        scn = context.scene
 #        layout.prop(scn, 'SelectSaveFile')
 #        layout.operator("simul.save")
-#        
+#
 #
 class SimulComputationButton(bpy.types.Operator):
     bl_idname = "simul.offline"
