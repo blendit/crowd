@@ -19,6 +19,7 @@ sys.path += (paths)
 import blendit/SimulationData.py as Sim
 import pickle as pic
 
+
 def initSceneProperties(scn):
     bpy.types.Scene.PosX = FloatProperty(
         name="X",
@@ -145,7 +146,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
     def execute(self, context):
         scn = bpy.context.scene
         view = bpy.context.space_data
-        ic = open(SelectString,"rb")
+        ic = open(SelectString, "rb")
         Sim.graph = pic.load(ic)
         ic.close()
         return{'FINISHED'}

@@ -32,8 +32,6 @@ import blendit.SimulationData as Sim
 import blendit.AnimationFunctions as A
 
 
-
-
 def initSceneProperties(scn):
     bpy.types.Scene.DeltaT = FloatProperty(
         name="dt",

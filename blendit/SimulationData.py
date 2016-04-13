@@ -17,14 +17,15 @@ MinY = -10
 
 graph = G.Graph(d=Grid,
                 sizeX=MaxX-MinX,
-                sizeY=MaxY-MinY ,
+                sizeY=MaxY-MinY,
                 posX=OriginX+MinX,
                 posY=OriginY+MinY)
+
 
 def renew_graph():
     graph = G.Graph(d=Grid,
                     sizeX=MaxX-MinX,
-                    sizeY=MaxY-MinY ,
+                    sizeY=MaxY-MinY,
                     posX=OriginX+MinX,
                     posY=OriginY+MinY)
 
