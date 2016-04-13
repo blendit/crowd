@@ -35,15 +35,23 @@ class VelocityField:
         """Computes the ORCA hyperplane between the two individual (cf Reciprocal n-body collision avoidance)"""
         # We define some parameters
         vmax = self.individual.vmax
-        # v_opt = S.Point(0, 0)
-        v_opt = difference(self.individual.v, neighboor.v)
+        cas = 2
+        if cas == 1:
+            v_opt = S.Point(0, 0)
+        elif cas == 2:
+            v_opt = difference(self.individual.v, neighboor.v)
+        else:
+            v_opt = difference(difference(self.individual.position, self.individual.goal), difference(neighboor.position, neighboor.goal))
+            norm = distance(v_opt, S.Point(0, 0))
+            if norm > 0:
+                v_opt = S.Point(v_opt.x / norm * self.individual.vopt, v_opt.y / norm * self.individual.vopt)
         point_us = S.Point(self.individual.position.x, self.individual.position.y)
         point_him = S.Point(neighboor.position.x, neighboor.position.y)
 
-        if distance(self.individual.position, neighboor.position) == self.individual.radius + neighboor.radius:
-            return half_plane(S.Point(0, 0), difference(individual.position, neighboor.position), vmax)
-        elif distance(self.individual.position, neighboor.position) < self.individual.radius + neighboor.radius:
+        if distance(self.individual.position, neighboor.position) <= 0.001:
             return S.Polygon([(-vmax, -vmax), (vmax, -vmax), (vmax, vmax), (-vmax, vmax)])
+        elif distance(self.individual.position, neighboor.position) <= self.individual.radius + neighboor.radius:
+            return half_plane(S.Point(0, 0), difference(neighboor.position, individual.position), vmax)
 
         # We create the trucated cone
         cone = TruncatedCone(point_us, self.individual.radius, point_him, neighboor.radius, vmax * tau, tau)
@@ -71,7 +79,7 @@ class VelocityField:
             orc = self.orca(neighboor, tau)  # .buffer(0)
             # if not self.field.is_empty and not orc.is_empty:
             self.field = self.field.intersection(orc)  # .buffer(0)
-
+        """
         for mine in minefield:
             if not mine.is_empty:
                 epsilon = 0.
@@ -99,4 +107,4 @@ class VelocityField:
                 else:
                     ortho = S.Point(p_opt.x - p3[0], p_opt.y - p3[1])
                 orc = half_plane(u, ortho, self.individual.vmax)
-                self.field = self.field.intersection(orc)
+                self.field = self.field.intersection(orc)"""

@@ -235,7 +235,7 @@ if __name__ == "__main__":
         Goal = Goal.union(g.buffer(1))
         ind = C.Individual(p.x, p.y, 0, 3, 2, es, ew, 1, g)
         cr.add_indiv(ind)"""
-
+    
     ind1 = C.Individual(0, 0, 0, 5, 2, es, ew, 1, S.Point(40, 40))
     ind2 = C.Individual(40, 40, 0, 5, 2, es, ew, 1, S.Point(0, 0))
     ind3 = C.Individual(40, 0, 0, 5, 2, es, ew, 1, S.Point(0, 40))
@@ -245,7 +245,7 @@ if __name__ == "__main__":
     # minefield = [S.Polygon([(10, 0), (15, 0), (10, 15)])]
     # minefield = [S.Polygon([(7.5, 10), (10, 12.5), (12.5, 10), (10, 7.5)])]
     minefield = []
-
+    
     cr.add_indiv(ind1)
     cr.add_indiv(ind2)
     cr.add_indiv(ind3)

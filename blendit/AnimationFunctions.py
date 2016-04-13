@@ -172,7 +172,7 @@ def main(data, dt, prec):
     for path_info in paths_info:
         path = bpy.data.curves[path_info.d_name]
         path.path_duration = duration
-        bpy.ops.mesh.primitive_cube_add(radius=0.5, view_align=False, enter_editmode=False, location=(0, 0, 0))
+        bpy.ops.mesh.primitive_cylinder_add(radius=1, view_align=False, enter_editmode=False, location=(0, 0, 0))
         bpy.ops.object.constraint_add(type='FOLLOW_PATH')
         bpy.context.object.constraints["Follow Path"].target = bpy.data.objects[path_info.name]
     
