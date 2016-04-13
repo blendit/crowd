@@ -181,7 +181,7 @@ def main(data, dt, prec):
     for path_info in paths_info:
         path = bpy.data.curves[path_info.d_name]
         path.path_duration = duration
-        bpy.ops.mesh.primitive_cube_add(radius=0.5, view_align=False, enter_editmode=False, location=(0, 0, 0))
+        bpy.ops.mesh.primitive_cylinder_add(radius=1, view_align=False, enter_editmode=False, location=(0, 0, 0))
         bpy.ops.object.constraint_add(type='FOLLOW_PATH')
         bpy.context.object.constraints["Follow Path"].target = bpy.data.objects[path_info.name]
 
@@ -212,45 +212,48 @@ if __name__ == "__main__":
 
     Pos = S.Point(0, 0).buffer(0)
     Goal = S.Point(0, 0).buffer(0)
+    taille = 7
     random.seed()
-    for i in range(40):
+    for i in range(5):
         p = S.Point(0, 0)
         while True:
-            x = random.random() * 30
-            y = random.random() * 30
+            x = random.random() * taille
+            y = random.random() * taille
             print("Pos : ", x, y)
             p = S.Point(x, y)
             if Pos.intersection(p.buffer(1)).is_empty or Pos.is_empty:
                 break
         g = S.Point(0, 0)
         while True:
-            x = random.random() * 30
-            y = random.random() * 30
+            x = random.random() * taille
+            y = random.random() * taille
             print("Goal : ", x, y)
             g = S.Point(x, y)
             if Goal.intersection(g.buffer(1)).is_empty or Goal.is_empty:
                 break
-        Pos = Pos.union(p.buffer(1))
+        """Pos = Pos.union(p.buffer(1))
         Goal = Goal.union(g.buffer(1))
         ind = C.Individual(p.x, p.y, 0, 3, 2, es, ew, 1, g)
-        cr.add_indiv(ind)
+        cr.add_indiv(ind)"""
 
-    # ind1 = C.Individual(0, 0, 0, 5, 2, es, ew, 1, S.Point(40, 40))
-    # ind2 = C.Individual(40, 40, 0, 5, 2, es, ew, 1, S.Point(0, 0))
-    # ind3 = C.Individual(40, 0, 0, 5, 2, es, ew, 1, S.Point(0, 40))
-    # ind4 = C.Individual(0, 40, 0, 5, 2, es, ew, 1, S.Point(40, 0))
+    ind1 = C.Individual(0, 0, 0, 5, 2, es, ew, 1, S.Point(40, 40))
+    ind2 = C.Individual(40, 40, 0, 5, 2, es, ew, 1, S.Point(0, 0))
+    ind3 = C.Individual(40, 0, 0, 5, 2, es, ew, 1, S.Point(0, 40))
+    ind4 = C.Individual(0, 40, 0, 5, 2, es, ew, 1, S.Point(40, 0))
     # ind5 = C.Individual(40, 50, 0, 5, 2, es, ew, 1, S.Point(0, 0))
 
     # minefield = [S.Polygon([(10, 0), (15, 0), (10, 15)])]
     # minefield = [S.Polygon([(7.5, 10), (10, 12.5), (12.5, 10), (10, 7.5)])]
     minefield = []
-    # cr.add_indiv(ind1)
-    # cr.add_indiv(ind2)
-    # cr.add_indiv(ind3)
-    # cr.add_indiv(ind4)
+
+    cr.add_indiv(ind1)
+    cr.add_indiv(ind2)
+    cr.add_indiv(ind3)
+    cr.add_indiv(ind4)
+
     # cr.add_indiv(ind5)
-    N = 100
+    N = -1
     cr.animate(0.05, N, minefield)
 
     data = cr.to_list_of_point()
-    main(data, 20, 0)
+    main(data, int(20 * tau), 0)
