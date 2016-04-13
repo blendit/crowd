@@ -10,10 +10,10 @@ MinGrid = 0.1
 Grid = 5
 OriginX = 0
 OriginY = 0
-MaxX = 10
-MaxY = 10
-MinX = -10
-MinY = -10
+MaxX = 100
+MaxY = 100
+MinX = -100
+MinY = -100
 
 graph = G.Graph(d=Grid,
                 sizeX=MaxX - MinX,

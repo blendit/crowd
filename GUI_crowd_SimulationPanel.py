@@ -43,8 +43,9 @@ def initSceneProperties(scn):
     scn['Theta'] = 1.0
     bpy.types.Scene.NumF = IntProperty(
         name="N",
-        description="Number of frames to compute")
-    scn['NumF'] = 1
+        description="Number of frames to compute",
+        default=100)
+    scn['NumF'] = 100
     bpy.types.Scene.CountF = IntProperty(
         name="Count",
         description="Number of frames computed")
@@ -161,7 +162,7 @@ class SimulLoadButton(bpy.types.Operator):
         scn = bpy.context.scene
         view = bpy.context.space_data
         Sim.data = Sim.cr.to_list_of_point()
-        A.points_to_curve(Sim.data, Sim.tau)
+        A.points_to_curves(Sim.data, Sim.tau)
         return{'FINISHED'}
 
 

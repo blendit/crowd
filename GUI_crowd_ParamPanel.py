@@ -599,10 +599,8 @@ class ParamExample1Button(bpy.types.Operator):
         view = bpy.context.space_data
         ind1 = C.Individual(0, 0, 0, 3, 2, Sim.es, Sim.ew, 1, Sha.Point(40, 50))
         ind2 = C.Individual(40, 50, 0, 3, 2, Sim.es, Sim.ew, 1, Sha.Point(0, 0))
-        Sim.cr = C.Crowd(Sim.graph, 1)
-        Sim.cr.add_indiv(ind1)
-        Sim.cr.add_indiv(ind2)
-            
+        Sim.Individuals = [ind1, ind2]
+
         return{'FINISHED'}
 
 
@@ -615,9 +613,7 @@ class ParamExample2Button(bpy.types.Operator):
         view = bpy.context.space_data
         ind1 = C.Individual(0, 0, 0, 3, 2, Sim.es, Sim.ew, 1, Sha.Point(40, 50))
         ind2 = C.Individual(40, 50, 0, 3, 2, Sim.es, Sim.ew, 1, Sha.Point(0, 0))
-        Sim.cr = C.Crowd(Sim.graph, 1)
-        Sim.cr.add_indiv(ind1)
-        Sim.cr.add_indiv(ind2)
+        Sim.Individuals = [ind1, ind2]
             
         return{'FINISHED'}
 
@@ -631,9 +627,7 @@ class ParamExample3Button(bpy.types.Operator):
         view = bpy.context.space_data
         ind1 = C.Individual(0, 0, 0, 3, 2, Sim.es, Sim.ew, 1, Sha.Point(40, 50))
         ind2 = C.Individual(40, 50, 0, 3, 2, Sim.es, Sim.ew, 1, Sha.Point(0, 0))
-        Sim.cr = C.Crowd(Sim.graph, 1)
-        Sim.cr.add_indiv(ind1)
-        Sim.cr.add_indiv(ind2)
+        Sim.Individuals = [ind1, ind2]
             
         return{'FINISHED'}
 
