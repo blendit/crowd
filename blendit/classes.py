@@ -11,12 +11,14 @@ class Individual:
     """The class independant from Blender describing an individual"""
     def __init__(self, x, y, z, vmax, vopt, es, ew, radius, goal):
         self.position = S.Point(x, y, z)
+        self.position_new = S.Point(x, y, z)
         self.vmax = vmax
         self.vopt = vopt
         # See the PLEdestrian paper for the meaning of this notations
         self.es = es
         self.ew = ew
         self.v = S.Point(0, 0, 0)
+        self.v_new = S.Point(0, 0)
         self.radius = radius
         self.trajectory = [[x, y, z]]
         self.goal = goal
@@ -59,18 +61,22 @@ class Crowd:
 
                 print("\tvitesse : ", v, "\n\t indiv :", indiv.position, "\n\t goal :", indiv.goal)
 
-                indiv.v = v
+                indiv.v_new = v
                 if GT.distance(indiv.position, indiv.goal) > 0.1:
                     continu = True
-                    indiv.position = S.Point(indiv.position.x + v.x * self.tau, indiv.position.y + v.y * self.tau, indiv.position.z)
+                    indiv.position_new = S.Point(indiv.position.x + v.x * self.tau, indiv.position.y + v.y * self.tau, indiv.position.z)
                     indiv.trajectory.extend([[indiv.position.x, indiv.position.y, indiv.position.z]])
-                    print("cas1", indiv.position)
+                    print("cas1", indiv.position_new)
                     # TODO : finish here
                 else:
-                    indiv.position = S.Point(indiv.goal.x, indiv.goal.y, indiv.position.z)
+                    indiv.position_new = S.Point(indiv.goal.x, indiv.goal.y, indiv.position.z)
                     indiv.trajectory.extend([[indiv.goal.x, indiv.goal.y, indiv.position.z]])
-                    print("cas2", indiv.position)
+                    print("cas2", indiv.position_new)
                     continue
+            
+            for indiv in self.individuals:
+                indiv.v = indiv.v_new
+                indiv.position = indiv.position_new
 
     def to_list_of_point(self):
         points = list()

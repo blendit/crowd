@@ -213,7 +213,7 @@ if __name__ == "__main__":
     Pos = S.Point(0, 0).buffer(0)
     Goal = S.Point(0, 0).buffer(0)
     random.seed()
-    for i in range(40):
+    for i in range(20):
         p = S.Point(0, 0)
         while True:
             x = random.random() * 30
@@ -230,24 +230,24 @@ if __name__ == "__main__":
             g = S.Point(x, y)
             if Goal.intersection(g.buffer(1)).is_empty or Goal.is_empty:
                 break
-        Pos = Pos.union(p.buffer(1))
-        Goal = Goal.union(g.buffer(1))
-        ind = C.Individual(p.x, p.y, 0, 3, 2, es, ew, 1, g)
-        cr.add_indiv(ind)
+        #Pos = Pos.union(p.buffer(1))
+        #Goal = Goal.union(g.buffer(1))
+        #ind = C.Individual(p.x, p.y, 0, 3, 2, es, ew, 1, g)
+        #cr.add_indiv(ind)
 
-    # ind1 = C.Individual(0, 0, 0, 5, 2, es, ew, 1, S.Point(40, 40))
-    # ind2 = C.Individual(40, 40, 0, 5, 2, es, ew, 1, S.Point(0, 0))
-    # ind3 = C.Individual(40, 0, 0, 5, 2, es, ew, 1, S.Point(0, 40))
-    # ind4 = C.Individual(0, 40, 0, 5, 2, es, ew, 1, S.Point(40, 0))
+    ind1 = C.Individual(0, 0, 0, 5, 2, es, ew, 1, S.Point(40, 40))
+    ind2 = C.Individual(40, 40, 0, 5, 2, es, ew, 1, S.Point(0, 0))
+    ind3 = C.Individual(40, 0, 0, 5, 2, es, ew, 1, S.Point(0, 40))
+    ind4 = C.Individual(0, 40, 0, 5, 2, es, ew, 1, S.Point(40, 0))
     # ind5 = C.Individual(40, 50, 0, 5, 2, es, ew, 1, S.Point(0, 0))
 
     # minefield = [S.Polygon([(10, 0), (15, 0), (10, 15)])]
     # minefield = [S.Polygon([(7.5, 10), (10, 12.5), (12.5, 10), (10, 7.5)])]
     minefield = []
-    # cr.add_indiv(ind1)
-    # cr.add_indiv(ind2)
-    # cr.add_indiv(ind3)
-    # cr.add_indiv(ind4)
+    cr.add_indiv(ind1)
+    cr.add_indiv(ind2)
+    cr.add_indiv(ind3)
+    cr.add_indiv(ind4)
     # cr.add_indiv(ind5)
     N = 100
     cr.animate(0.05, N, minefield)
