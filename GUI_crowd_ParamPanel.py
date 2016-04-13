@@ -396,12 +396,14 @@ class Generation_Tools(ParamButtonsPanel, Panel):
 
 
 class Example_Tools(ParamButtonsPanel, Panel):
-    bl_label = "Example crowd"
+    bl_label = "Example crowds"
 
     def draw(self, context):
         layout = self.layout
         scn = context.scene
         layout.operator("crowd.example")
+        layout.operator("crowd.example2")
+        layout.operator("crowd.example3")
         
         
 class OBJECT_OT_ToolsButton(bpy.types.Operator):
@@ -572,7 +574,39 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
 
 class OBJECT_OT_ToolsButton(bpy.types.Operator):
     bl_idname = "crowd.example"
-    bl_label = "Generate example"
+    bl_label = "Generate example 1"
+
+    def execute(self, context):
+        scn = bpy.context.scene
+        view = bpy.context.space_data
+        ind1 = C.Individual(0, 0, 0, 3, 2, Sim.es, Sim.ew, 1, Sha.Point(40, 50))
+        ind2 = C.Individual(40, 50, 0, 3, 2, Sim.es, Sim.ew, 1, Sha.Point(0, 0))
+        Sim.cr = C.Crowd(Sim.graph, 1)
+        Sim.cr.add_indiv(ind1)
+        Sim.cr.add_indiv(ind2)
+            
+        return{'FINISHED'}
+
+
+class OBJECT_OT_ToolsButton(bpy.types.Operator):
+    bl_idname = "crowd.example2"
+    bl_label = "Generate example 2"
+
+    def execute(self, context):
+        scn = bpy.context.scene
+        view = bpy.context.space_data
+        ind1 = C.Individual(0, 0, 0, 3, 2, Sim.es, Sim.ew, 1, Sha.Point(40, 50))
+        ind2 = C.Individual(40, 50, 0, 3, 2, Sim.es, Sim.ew, 1, Sha.Point(0, 0))
+        Sim.cr = C.Crowd(Sim.graph, 1)
+        Sim.cr.add_indiv(ind1)
+        Sim.cr.add_indiv(ind2)
+            
+        return{'FINISHED'}
+
+
+class OBJECT_OT_ToolsButton(bpy.types.Operator):
+    bl_idname = "crowd.example3"
+    bl_label = "Generate example 3"
 
     def execute(self, context):
         scn = bpy.context.scene
