@@ -22,7 +22,7 @@ from mathutils import *
 from decimal import Decimal
 
 import numpy as np
-import shapely.geometry as S
+import shapely.geometry as Sha
 import math
 import pickle as pic
 import blendit.GraphPLE as G
@@ -31,8 +31,7 @@ import blendit.geometric_tools as GT
 import blendit.SimulationData as Sim
 import blendit.AnimationFunctions as A
 
-S = []
-Index = 0
+
 
 
 def initSceneProperties(scn):
