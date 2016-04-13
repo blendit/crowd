@@ -59,22 +59,25 @@ def initSceneProperties(scn):
 initSceneProperties(bpy.context.scene)
 
 
-class SimulButtonsPanel(Panel):
-    bl_category = 'Simulation'
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'TOOLS'
-
-    def draw(self, context):
-        layout = self.layout
-        scn = context.scene
+# class SimulButtonsPanel(Panel):
+#     bl_category = 'Simulation'
+#     bl_space_type = 'VIEW_3D'
+#     bl_region_type = 'TOOLS'
+#
+#     def draw(self, context):
+#         layout = self.layout
+#        scn = context.scene
 #    @classmethod
 #    def poll(cls, context):
 #        scene = context.scene
 #        return scene and (scene.render.engine in cls.COMPAT_ENGINES)
-
-
-class Time_Tools(SimulButtonsPanel, Panel):
+#
+#
+class Time_Tools(Panel):
     bl_label = "Parameters"
+    bl_category = 'Simulation'
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'TOOLS'
 #    COMPAT_ENGINES = {'BLENDER_RENDER'}
 
     def draw(self, context):
@@ -86,8 +89,11 @@ class Time_Tools(SimulButtonsPanel, Panel):
         layout.prop(scn, 'Theta', text="d\N{GREEK CAPITAL LETTER THETA}")
 
 
-class Offline_Computation_Tools (SimulButtonsPanel, Panel):
+class Offline_Computation_Tools (Panel):
     bl_label = "Offline computation"
+    bl_category = 'Simulation'
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'TOOLS'
 
     def draw(self, context):
         layout = self.layout
@@ -96,6 +102,18 @@ class Offline_Computation_Tools (SimulButtonsPanel, Panel):
         layout.prop(scn, 'NumF', text="N")
         layout.operator("simul.offline")
         layout.operator("simul.set_offline")
+
+
+class Overall_Tools (Panel):
+    bl_label = " Reset"
+    bl_category = 'Simulation'
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'TOOLS'
+
+    def draw(self, context):
+        layout = self.layout
+        scn = context.scene
+        layout.operator("simul.reset")
 
 
 # Put on standby because the core of code is not compatible wih online computation
@@ -110,18 +128,18 @@ class Offline_Computation_Tools (SimulButtonsPanel, Panel):
 #        layout.operator("simul.online_stop")
 #
 #
-class Save_Tools(SimulButtonsPanel, Panel):
-    bl_label = "Save"
+# class Save_Tools(SimulButtonsPanel, Panel):
+#    bl_label = "Save"
 #    COMPAT_ENGINES = {'BLENDER_RENDER'}
-
-    def draw(self, context):
-        layout = self.layout
-        scn = context.scene
-        layout.prop(scn, 'SelectSaveFile')
-        layout.operator("simul.save")
-        
-
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+#
+#    def draw(self, context):
+#        layout = self.layout
+#        scn = context.scene
+#        layout.prop(scn, 'SelectSaveFile')
+#        layout.operator("simul.save")
+#
+#
+class SimulComputationButton(bpy.types.Operator):
     bl_idname = "simul.offline"
     bl_label = "Compute N frames"
 
@@ -135,7 +153,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         return{'FINISHED'}
 
 
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class SimulLoadButton(bpy.types.Operator):
     bl_idname = "simul.set_offline"
     bl_label = "Load simulation"
 
@@ -143,31 +161,31 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         scn = bpy.context.scene
         view = bpy.context.space_data
         Sim.data = Sim.cr.to_list_of_point()
-        A.main(Sim.data, 20, 0)
+        A.points_to_curve(Sim.data, Sim.tau)
         return{'FINISHED'}
 
 
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
-    bl_idname = "simul.online_start"
-    bl_label = "Start Computation"
-
-    def execute(self, context):
-        scn = bpy.context.scene
-        view = bpy.context.space_data
-        return{'FINISHED'}
-
-
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
-    bl_idname = "simul.online_stop"
-    bl_label = "Stop computation"
-
-    def execute(self, context):
-        scn = bpy.context.scene
-        view = bpy.context.space_data
-        return{'FINISHED'}
-
-
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+# class SimulOnlineComputationButton(bpy.types.Operator):
+#     bl_idname = "simul.online_start"
+#     bl_label = "Start Computation"
+#
+#     def execute(self, context):
+#         scn = bpy.context.scene
+#         view = bpy.context.space_data
+#         return{'FINISHED'}
+#
+#
+# class SimulOnlineStopButton(bpy.types.Operator):
+#     bl_idname = "simul.online_stop"
+#     bl_label = "Stop computation"
+#
+#     def execute(self, context):
+#         scn = bpy.context.scene
+#         view = bpy.context.space_data
+#         return{'FINISHED'}
+#
+#
+class SimulSaveButton(bpy.types.Operator):
     bl_idname = "simul.save"
     bl_label = "Save"
 
@@ -180,7 +198,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         return{'FINISHED'}
 
 
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class SimulResetButton(bpy.types.Operator):
     bl_idname = "simul.reset"
     bl_label = "Reset Animation"
 

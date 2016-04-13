@@ -84,7 +84,7 @@ def initSceneProperties(scn):
     scn['RandomMesh'] = "filename.py"
     bpy.types.Scene.RandomAnim = StringProperty(
         name="Animation",
-        description="Select an animation for the individual (otherwise no animation)",
+        description="Select an animation for the individual (otherwise no% animation)",
         subtype='FILE_PATH')
     scn['RandomAnim'] = "filename.py"
     bpy.types.Scene.MaxInitX = FloatProperty(
@@ -219,24 +219,27 @@ def initSceneProperties(scn):
 initSceneProperties(bpy.context.scene)
 
 
-class ParamButtonsPanel(Panel):
-    bl_category = 'Parameters'
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'TOOLS'
-
-    def draw(self, context):
-        layout = self.layout
-        scn = context.scene
-        
-        
+# class ParamButtonsPanel(Panel):
+#     bl_category = 'Parameters'
+#     bl_space_type = 'VIEW_3D'
+#     bl_region_type = 'TOOLS'
+#
+#     def draw(self, context):
+#         layout = self.layout
+#         scn = context.scene
+#        
+#        
 #    @classmethod
 #    def poll(cls, context):
 #        scene = context.scene
 #        return scene and (scene.render.engine in cls.COMPAT_ENGINES)
-
-
-class File_Tools(ParamButtonsPanel, Panel):
+#
+#
+class File_Tools(Panel):
     bl_label = "Select from file / Save"
+    bl_category = 'Parameters'
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'TOOLS'
 #    COMPAT_ENGINES = {'BLENDER_RENDER'}
 
     def draw(self, context):
@@ -248,8 +251,11 @@ class File_Tools(ParamButtonsPanel, Panel):
         layout.operator("crowd.save")
 
 
-class Default_Tools(ParamButtonsPanel, Panel):
+class Default_Tools(Panel):
     bl_label = "Set default settings"
+    bl_category = 'Parameters'
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'TOOLS'
 #    COMPAT_ENGINES = {'BLENDER_RENDER'}
 
     def draw(self, context):
@@ -288,8 +294,11 @@ class Default_Tools(ParamButtonsPanel, Panel):
         layout.operator("crowd.default")
 
 
-class Random_Tools(ParamButtonsPanel, Panel):
+class Random_Tools(Panel):
     bl_label = "Set random settings"
+    bl_category = 'Parameters'
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'TOOLS'
 #    COMPAT_ENGINES = {'BLENDER_RENDER'}
 
     def draw(self, context):
@@ -345,8 +354,11 @@ class Random_Tools(ParamButtonsPanel, Panel):
         layout.operator("crowd.random")
 
         
-class Specific_Tools(ParamButtonsPanel, Panel):
+class Specific_Tools(Panel):
     bl_label = "Individual Settings"
+    bl_category = 'Parameters'
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'TOOLS'
 #    COMPAT_ENGINES = {'BLENDER_RENDER'}
 
     def draw(self, context):
@@ -385,8 +397,11 @@ class Specific_Tools(ParamButtonsPanel, Panel):
         layout.operator("crowd.indiv")
 
         
-class Generation_Tools(ParamButtonsPanel, Panel):
+class Generation_Tools(Panel):
     bl_label = "Generate the crowd"
+    bl_category = 'Parameters'
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'TOOLS'
 #    COMPAT_ENGINES = {'BLENDER_RENDER'}
 
     def draw(self, context):
@@ -395,8 +410,11 @@ class Generation_Tools(ParamButtonsPanel, Panel):
         layout.operator("crowd.generate")
 
 
-class Example_Tools(ParamButtonsPanel, Panel):
+class Example_Tools(Panel):
     bl_label = "Example crowds"
+    bl_category = 'Parameters'
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'TOOLS'
 
     def draw(self, context):
         layout = self.layout
@@ -406,7 +424,7 @@ class Example_Tools(ParamButtonsPanel, Panel):
         layout.operator("crowd.example3")
         
         
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class ParamSelectButton(bpy.types.Operator):
     bl_idname = "crowd.select"
     bl_label = "Set input as crowd"
 
@@ -419,7 +437,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         return{'FINISHED'}
     
     
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class ParamSaveButton(bpy.types.Operator):
     bl_idname = "crowd.save"
     bl_label = "Save crowd"
 
@@ -432,7 +450,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         return{'FINISHED'}
     
             
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class ParamDefaultButton(bpy.types.Operator):
     bl_idname = "crowd.default"
     bl_label = "Default"
 
@@ -453,7 +471,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         return{'FINISHED'}
 
     
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class ParamRandomButton(bpy.types.Operator):
     bl_idname = "crowd.random"
     bl_label = "Random"
 
@@ -477,7 +495,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         return{'FINISHED'}
     
 
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class ParamSpecificButton(bpy.types.Operator):
     bl_idname = "crowd.indiv"
     bl_label = "Set Specific"
 
@@ -503,7 +521,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         return{'FINISHED'}
 
 
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class ParamCursorInitButton(bpy.types.Operator):
     bl_idname = "crowd.cursor_init"
     bl_label = "From Cursor"
 
@@ -517,7 +535,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         return{'FINISHED'}
 
     
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class ParamCursorDefaultInitButton(bpy.types.Operator):
     bl_idname = "crowd.default_init"
     bl_label = "From Cursor"
 
@@ -531,7 +549,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         return{'FINISHED'}
 
     
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class ParamCursorDefaultGoalButton(bpy.types.Operator):
     bl_idname = "crowd.default_goal"
     bl_label = "From Cursor"
 
@@ -545,7 +563,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         return{'FINISHED'}
 
 
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class ParamCursorGoalButton(bpy.types.Operator):
     bl_idname = "crowd.cursor_goal"
     bl_label = "From Cursor"
 
@@ -559,7 +577,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         return{'FINISHED'}
 
 
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class ParamGenerationButton(bpy.types.Operator):
     bl_idname = "crowd.generate"
     bl_label = "Generate"
 
@@ -572,7 +590,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         return{'FINISHED'}
 
 
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class ParamExample1Button(bpy.types.Operator):
     bl_idname = "crowd.example"
     bl_label = "Generate example 1"
 
@@ -588,7 +606,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         return{'FINISHED'}
 
 
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class ParamExample2Button(bpy.types.Operator):
     bl_idname = "crowd.example2"
     bl_label = "Generate example 2"
 
@@ -604,7 +622,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         return{'FINISHED'}
 
 
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class ParamExample3Button(bpy.types.Operator):
     bl_idname = "crowd.example3"
     bl_label = "Generate example 3"
 

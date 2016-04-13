@@ -65,20 +65,23 @@ def initSceneProperties(scn):
     return
 
 initSceneProperties(bpy.context.scene)
-
-
-class MapButtonsPanel(Panel):
-    bl_category = 'Map'
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'TOOLS'
-
-    def draw(self, context):
-        layout = self.layout
-        scn = context.scene
+#
+#
+# class MapButtonsPanel(Panel):
+#     bl_category = 'Map'
+#     bl_space_type = 'VIEW_3D'
+#     bl_region_type = 'TOOLS'
+#
+#     def draw(self, context):
+#         layout = self.layout
+#         scn = context.scene
 
     
-class InputFile_Tools(MapButtonsPanel, Panel):
+class InputFile_Tools(Panel):
     bl_label = "Input File"
+    bl_category = "Map"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "TOOLS"
 
     def draw(self, context):
         layout = self.layout
@@ -89,8 +92,11 @@ class InputFile_Tools(MapButtonsPanel, Panel):
         layout.operator("env.save")
 
         
-class MapOrigin_Tools(MapButtonsPanel, Panel):
+class MapOrigin_Tools(Panel):
     bl_label = "Map Origin"
+    bl_category = "Map"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "TOOLS"
 #    COMPAT_ENGINES = {'BLENDER_RENDER'}
 
     def draw(self, context):
@@ -105,8 +111,11 @@ class MapOrigin_Tools(MapButtonsPanel, Panel):
         layout.operator("env.set")
         
         
-class MapSize_Tools(MapButtonsPanel, Panel):
+class MapSize_Tools(Panel):
     bl_label = "Map Bounds"
+    bl_category = "Map"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "TOOLS"
 
     def draw(self, context):
         layout = self.layout
@@ -124,8 +133,11 @@ class MapSize_Tools(MapButtonsPanel, Panel):
         layout.operator("env.size")
 
         
-class GridSize_Tools (MapButtonsPanel, Panel):
+class GridSize_Tools (Panel):
     bl_label = "Grid Size"
+    bl_category = "Map"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "TOOLS"
 
     def draw(self, context):
         layout = self.layout
@@ -134,8 +146,11 @@ class GridSize_Tools (MapButtonsPanel, Panel):
         layout.operator("env.grid")
 
         
-class Generate_Tools (MapButtonsPanel, Panel):
+class Generate_Tools (Panel):
     bl_label = "Generate Map"
+    bl_category = "Map"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "TOOLS"
 
     def draw(self, context):
         layout = self.layout
@@ -143,7 +158,7 @@ class Generate_Tools (MapButtonsPanel, Panel):
         layout.operator("env.generate")
         
 
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class MapSelectButton(bpy.types.Operator):
     bl_idname = "env.select"
     bl_label = "Set input as configuration"
 
@@ -156,7 +171,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         return{'FINISHED'}
     
     
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class MapSaveButton(bpy.types.Operator):
     bl_idname = "env.save"
     bl_label = "Save configuration"
 
@@ -169,7 +184,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         return{'FINISHED'}
     
             
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class MapOriginCursorButton(bpy.types.Operator):
     bl_idname = "env.origin"
     bl_label = "From cursor"
 
@@ -183,7 +198,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         return{'FINISHED'}
     
 
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class MapOriginButton(bpy.types.Operator):
     bl_idname = "env.set"
     bl_label = "Set map origin"
 
@@ -195,7 +210,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         return{'FINISHED'}
     
 
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class MapSizeButton(bpy.types.Operator):
     bl_idname = "env.size"
     bl_label = "Set map size"
 
@@ -208,7 +223,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         return{'FINISHED'}
 
     
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class MapGridButton(bpy.types.Operator):
     bl_idname = "env.grid"
     bl_label = "Set Grid size"
 
@@ -219,7 +234,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         return{'FINISHED'}
 
 
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class MapGenerationButton(bpy.types.Operator):
     bl_idname = "env.generate"
     bl_label = "Generate"
 
