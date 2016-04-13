@@ -163,7 +163,7 @@ class TruncatedCone:
         center = S.Point((pB.x - pA.x) / tau, (pB.y - pA.y) / tau)
         theta_c = argument(center)
         norm = distance(center, S.Point(0, 0))
-        r = (rA + rB ) / tau
+        r = (rA + rB) / tau
         if norm > 0:
             # Trigonometric formulas
             cos_theta = math.sqrt(norm ** 2 - r ** 2) / norm
