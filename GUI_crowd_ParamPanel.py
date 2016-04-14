@@ -366,6 +366,7 @@ class Specific_Tools(Panel):
         scn = context.scene
         layout.label(text="Select index of individual")
         layout.prop(scn, 'Ind', text="i")
+        layout.operator("crowd.load_ind")
         
         layout.label(text="Initial Position:")
         row = layout.row(align=True)
@@ -512,13 +513,6 @@ class ParamSpecificButton(bpy.types.Operator):
                                                 Sim.ew,
                                                 scn.SizeT,
                                                 Sha.Point(scn.GoalX, scn.GoalY, 0))
-        scn.InitX = scn.DefaultInitX
-        scn.InitY = scn.DefaultInitY
-        scn.VMax = scn.DefaultVMax
-        scn.VOpt = scn.DefaultVOpt
-        scn.SizeT = scn.DefaultSize
-        scn.GoalX = scn.DefaultGoalX
-        scn.GoalY = scn.DefaultGoalY
         return{'FINISHED'}
 
 
@@ -578,6 +572,28 @@ class ParamCursorGoalButton(bpy.types.Operator):
         return{'FINISHED'}
 
 
+class ParamLoadIndiv(bpy.types.Operator):
+    bl_idname = "crowd.load_ind"
+    bl_label = "Load individual settings"
+
+    def execute(self, context):
+        scn = bpy.context.scene
+        view = bpy.context.space_data
+        loadi = scn.Ind
+        numberi = len(Sim.Individuals)
+        if (loadi < numberi):
+            scn.InitX = Sim.Individuals[loadi].position.x
+            scn.InitY = Sim.Individuals[loadi].position.y
+            scn.GoalX = Sim.Individuals[loadi].goal.x
+            scn.GoalY = Sim.Individuals[loadi].goal.y
+            scn.SizeT = Sim.Individuals[loadi].radius
+            scn.VMax = Sim.Individuals[loadi].vmax
+            scn.VOpt = Sim.Individuals[loadi].vopt
+        
+        return{'FINISHED'}
+        
+
+
 class ParamGenerationButton(bpy.types.Operator):
     bl_idname = "crowd.generate"
     bl_label = "Generate"
@@ -612,7 +628,7 @@ class ParamExample1Button(bpy.types.Operator):
         ind1 = C.Individual(0, 0, 0, 3, 2, Sim.es, Sim.ew, 1, Sha.Point(40, 50))
         ind2 = C.Individual(40, 50, 0, 3, 2, Sim.es, Sim.ew, 1, Sha.Point(0, 0))
         Sim.Individuals = [ind1, ind2]
-
+        scn.NumN = 2
         return{'FINISHED'}
 
 
@@ -623,11 +639,12 @@ class ParamExample2Button(bpy.types.Operator):
     def execute(self, context):
         scn = bpy.context.scene
         view = bpy.context.space_data
-        ind1 = C.Individual(0, 0, 0, 5, 2, Sim.es, Sim.ew, Sim.radius, Sha.Point(40, 40))
-        ind2 = C.Individual(40, 40, 0, 5, 2, Sim.es, Sim.ew, Sim.radius, Sha.Point(0, 0))
-        ind3 = C.Individual(40, 0, 0, 5, 2, Sim.es, Sim.ew, Sim.radius, Sha.Point(0, 40))
-        ind4 = C.Individual(0, 40, 0, 5, 2, Sim.es, Sim.ew, Sim.radius, Sha.Point(40, 0))
+        ind1 = C.Individual(-10, -10, 0, 5, 2, Sim.es, Sim.ew, Sim.radius, Sha.Point(10, 10))
+        ind2 = C.Individual(10, 10, 0, 5, 2, Sim.es, Sim.ew, Sim.radius, Sha.Point(-10, -10))
+        ind3 = C.Individual(10, -10, 0, 5, 2, Sim.es, Sim.ew, Sim.radius, Sha.Point(-10, 10))
+        ind4 = C.Individual(-10, 10, 0, 5, 2, Sim.es, Sim.ew, Sim.radius, Sha.Point(10, -10))
         Sim.Individuals = [ind1, ind2, ind3, ind4]
+        scn.NumN = 4
             
         return{'FINISHED'}
 
