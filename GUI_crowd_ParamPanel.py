@@ -483,7 +483,7 @@ class ParamRandomButton(bpy.types.Operator):
         Sim.Individuals = []
         for i in range(scn.NumN):
             x = rd.uniform(scn.MinInitX, scn.MaxInitX)
-            y = rd.uniform(scn.MinInitY, scn.MinInitY)
+            y = rd.uniform(scn.MinInitY, scn.MaxInitY)
             z = 0
             vm = rd.uniform(scn.MinVMax, scn.MaxVMax)
             vo = rd.uniform(scn.MinVOpt, scn.MaxVOpt)
