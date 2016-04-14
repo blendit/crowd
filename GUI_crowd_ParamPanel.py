@@ -407,6 +407,7 @@ class Generation_Tools(Panel):
     def draw(self, context):
         layout = self.layout
         scn = context.scene
+        layout.operator("crowd.reset")
         layout.operator("crowd.generate")
 
 
@@ -584,9 +585,20 @@ class ParamGenerationButton(bpy.types.Operator):
     def execute(self, context):
         scn = bpy.context.scene
         view = bpy.context.space_data
-        Sim.reset_crowd(Sim.cr)
+        Sim.cr.reset_indiv()
         for x in Sim.Individuals:
             Sim.cr.add_indiv(x)
+        return{'FINISHED'}
+
+class ParamGenerationButton(bpy.types.Operator):
+    bl_idname = "crowd.reset"
+    bl_label = "Reset crowd and individuals"
+
+    def execute(self, context):
+        scn = bpy.context.scene
+        view = bpy.context.space_data
+        Sim.Individuals = []
+        Sim.cr.reset_indiv()
         return{'FINISHED'}
 
 

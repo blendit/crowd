@@ -31,6 +31,9 @@ class Crowd:
         self.graph = graph
         self.tau = tau
 
+    def reset_indiv(self):
+        self.individuals = set()
+
     def add_indiv(self, indiv):
         """Add one individual to the crowd"""
         self.individuals.add(indiv)
