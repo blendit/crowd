@@ -5,15 +5,17 @@ import shapely.geometry as Sha
 
 Individuals = []
 
-MinGrid = 0.1
+MinGrid = 0.5
 # Maxgrid = Mingrid*10^5
-Grid = 5
+Grid = 0.5
 OriginX = 0
 OriginY = 0
 MaxX = 100
 MaxY = 100
-MinX = -100
-MinY = -100
+MinX = 0
+MinY = 0
+taille = 30
+radius = 1.1
 
 graph = G.Graph(d=Grid,
                 sizeX=MaxX - MinX,
@@ -32,7 +34,7 @@ def renew_graph():
 es = 2.23
 ew = 1.26
 tau = 1
-theta = 1
+theta = 0.05
 cr = C.Crowd(graph, tau)
 
 

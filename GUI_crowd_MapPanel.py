@@ -49,9 +49,10 @@ def initSceneProperties(scn):
         name="P",
         description="Grid precision",
         subtype='PERCENTAGE',
+        default=100,
         min=0,
         max=100)
-    scn['GridP'] = 0
+    scn['GridP'] = 100
     bpy.types.Scene.SelectString = StringProperty(
         name="Input",
         description="Enter an input file",

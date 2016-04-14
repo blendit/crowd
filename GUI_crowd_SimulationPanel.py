@@ -39,8 +39,9 @@ def initSceneProperties(scn):
     scn['DeltaT'] = 1.0
     bpy.types.Scene.Theta = FloatProperty(
         name="d\N{GREEK CAPITAL LETTER THETA}",
-        description="Angle quantum for the simulation")
-    scn['Theta'] = 1.0
+        description="Angle quantum for the simulation",
+        default=0.05)
+    scn['Theta'] = 0.05
     bpy.types.Scene.NumF = IntProperty(
         name="N",
         description="Number of frames to compute",
@@ -162,7 +163,7 @@ class SimulLoadButton(bpy.types.Operator):
         scn = bpy.context.scene
         view = bpy.context.space_data
         Sim.data = Sim.cr.to_list_of_point()
-        A.points_to_curves(Sim.data, Sim.tau)
+        A.points_to_curves(Sim.data, 10 * Sim.tau)
         return{'FINISHED'}
 
 

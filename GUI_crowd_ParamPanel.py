@@ -592,7 +592,7 @@ class ParamGenerationButton(bpy.types.Operator):
 
 class ParamExample1Button(bpy.types.Operator):
     bl_idname = "crowd.example"
-    bl_label = "Generate example 1"
+    bl_label = "Example 1"
 
     def execute(self, context):
         scn = bpy.context.scene
@@ -606,21 +606,23 @@ class ParamExample1Button(bpy.types.Operator):
 
 class ParamExample2Button(bpy.types.Operator):
     bl_idname = "crowd.example2"
-    bl_label = "Generate example 2"
+    bl_label = "Example 2"
 
     def execute(self, context):
         scn = bpy.context.scene
         view = bpy.context.space_data
-        ind1 = C.Individual(0, 0, 0, 3, 2, Sim.es, Sim.ew, 1, Sha.Point(40, 50))
-        ind2 = C.Individual(40, 50, 0, 3, 2, Sim.es, Sim.ew, 1, Sha.Point(0, 0))
-        Sim.Individuals = [ind1, ind2]
+        ind1 = C.Individual(0, 0, 0, 5, 2, Sim.es, Sim.ew, Sim.radius, Sha.Point(40, 40))
+        ind2 = C.Individual(40, 40, 0, 5, 2, Sim.es, Sim.ew, Sim.radius, Sha.Point(0, 0))
+        ind3 = C.Individual(40, 0, 0, 5, 2, Sim.es, Sim.ew, Sim.radius, Sha.Point(0, 40))
+        ind4 = C.Individual(0, 40, 0, 5, 2, Sim.es, Sim.ew, Sim.radius, Sha.Point(40, 0))
+        Sim.Individuals = [ind1, ind2, ind3, ind4]
             
         return{'FINISHED'}
 
 
 class ParamExample3Button(bpy.types.Operator):
     bl_idname = "crowd.example3"
-    bl_label = "Generate example 3"
+    bl_label = "Example 3"
 
     def execute(self, context):
         scn = bpy.context.scene
