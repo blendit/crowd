@@ -160,15 +160,15 @@ class TruncatedCone:
         """Create a truncated cone for the ORCA algorithm"""
 
         # Usefull geometric datas
-        center = S.Point(pB.x - pA.x, pB.y - pA.y)
+        center = S.Point((pB.x - pA.x) / tau, (pB.y - pA.y) / tau)
         theta_c = argument(center)
         norm = distance(center, S.Point(0, 0))
-        r = rA + rB
+        r = (rA + rB) / tau
         if norm > 0:
             # Trigonometric formulas
             cos_theta = math.sqrt(norm ** 2 - r ** 2) / norm
             sin_theta = r / norm
-            norm2 = math.sqrt(norm ** 2 - r ** 2) / tau
+            norm2 = math.sqrt(norm ** 2 - r ** 2)
 
             # Define the two limits point
             point1 = S.Point(norm2 * (math.cos(theta_c) * cos_theta + sin_theta * math.sin(theta_c)), norm2 * (math.sin(theta_c) * cos_theta - sin_theta * math.cos(theta_c)))
@@ -180,12 +180,11 @@ class TruncatedCone:
         self.limit_points = [point1, point2]
 
         # Define the arc
-        center = S.Point(center.x / tau, center.y / tau)
-        radius = r / tau
+        radius = r
         start_angle = argument(difference(point1, center))
         end_angle = argument(difference(point2, center))
         numsegments = 65
-        print("Truncated cone :\n\t center ", center, "\n\t radius =", radius)
+        # print("Truncated cone :\n\t center ", center, "\n\t radius =", radius)
         # We format the angle so that we get the smaller one of the two possible
         if start_angle - end_angle > math.pi:
             start_angle -= 2 * math.pi
@@ -258,23 +257,23 @@ def intersection_line_line(origin1, ortho, point1, point2, vmax):
     line2 : two points
     Return the list of intersection points (empty or of cardinal 1)
     """
-    print(origin1, ortho, point1, point2)
+    # print(origin1, ortho, point1, point2)
     # Direction vector of the second line
     vect1 = S.Point(point1.x - point2.x, point1.y - point2.y)
     # Test if the lines are colinear or not
-    print(vect1.x * ortho.x + vect1.y * ortho.y)
+    # print(vect1.x * ortho.x + vect1.y * ortho.y)
     if abs(vect1.x * ortho.x + vect1.y * ortho.y) < 0.000001:
         return []
     # Find a second point on the first line
     origin2 = S.Point(origin1.x + ortho.y, origin1.y - ortho.x)
-    print(origin2)
+    # print(origin2)
     # Compute the intersection with an ugly forumla
     px = (origin1.x * origin2.y - origin1.y * origin2.x) * (point1.x - point2.x) - (point1.x * point2.y - point1.y * point2.x) * (origin1.x - origin2.x)
     px /= (origin1.x - origin2.x) * (point1.y - point2.y) - (origin1.y - origin2.y) * (point1.x - point2.x)
     py = (origin1.y * origin2.x - origin1.x * origin2.y) * (point1.y - point2.y) - (point1.y * point2.x - point1.x * point2.y) * (origin1.y - origin2.y)
     py /= (origin1.y - origin2.y) * (point1.x - point2.x) - (origin1.x - origin2.x) * (point1.y - point2.y)
     # Test if our intersection is within our range or not
-    print("\t", px, py)
+    # print("\t", px, py)
     if abs(px) <= vmax + 0.01 and abs(py) <= vmax + 0.01:  # Needed to add an error to make sure the rest behave well
         return [S.Point(px, py)]
     else:

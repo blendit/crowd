@@ -84,7 +84,7 @@ def initSceneProperties(scn):
     scn['RandomMesh'] = "filename.py"
     bpy.types.Scene.RandomAnim = StringProperty(
         name="Animation",
-        description="Select an animation for the individual (otherwise no animation)",
+        description="Select an animation for the individual (otherwise no% animation)",
         subtype='FILE_PATH')
     scn['RandomAnim'] = "filename.py"
     bpy.types.Scene.MaxInitX = FloatProperty(
@@ -219,24 +219,27 @@ def initSceneProperties(scn):
 initSceneProperties(bpy.context.scene)
 
 
-class ParamButtonsPanel(Panel):
-    bl_category = 'Parameters'
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'TOOLS'
-
-    def draw(self, context):
-        layout = self.layout
-        scn = context.scene
-        
-        
+# class ParamButtonsPanel(Panel):
+#     bl_category = 'Parameters'
+#     bl_space_type = 'VIEW_3D'
+#     bl_region_type = 'TOOLS'
+#
+#     def draw(self, context):
+#         layout = self.layout
+#         scn = context.scene
+#        
+#        
 #    @classmethod
 #    def poll(cls, context):
 #        scene = context.scene
 #        return scene and (scene.render.engine in cls.COMPAT_ENGINES)
-
-
-class File_Tools(ParamButtonsPanel, Panel):
+#
+#
+class File_Tools(Panel):
     bl_label = "Select from file / Save"
+    bl_category = 'Parameters'
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'TOOLS'
 #    COMPAT_ENGINES = {'BLENDER_RENDER'}
 
     def draw(self, context):
@@ -248,8 +251,11 @@ class File_Tools(ParamButtonsPanel, Panel):
         layout.operator("crowd.save")
 
 
-class Default_Tools(ParamButtonsPanel, Panel):
+class Default_Tools(Panel):
     bl_label = "Set default settings"
+    bl_category = 'Parameters'
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'TOOLS'
 #    COMPAT_ENGINES = {'BLENDER_RENDER'}
 
     def draw(self, context):
@@ -288,8 +294,11 @@ class Default_Tools(ParamButtonsPanel, Panel):
         layout.operator("crowd.default")
 
 
-class Random_Tools(ParamButtonsPanel, Panel):
+class Random_Tools(Panel):
     bl_label = "Set random settings"
+    bl_category = 'Parameters'
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'TOOLS'
 #    COMPAT_ENGINES = {'BLENDER_RENDER'}
 
     def draw(self, context):
@@ -345,8 +354,11 @@ class Random_Tools(ParamButtonsPanel, Panel):
         layout.operator("crowd.random")
 
         
-class Specific_Tools(ParamButtonsPanel, Panel):
+class Specific_Tools(Panel):
     bl_label = "Individual Settings"
+    bl_category = 'Parameters'
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'TOOLS'
 #    COMPAT_ENGINES = {'BLENDER_RENDER'}
 
     def draw(self, context):
@@ -354,6 +366,7 @@ class Specific_Tools(ParamButtonsPanel, Panel):
         scn = context.scene
         layout.label(text="Select index of individual")
         layout.prop(scn, 'Ind', text="i")
+        layout.operator("crowd.load_ind")
         
         layout.label(text="Initial Position:")
         row = layout.row(align=True)
@@ -385,26 +398,35 @@ class Specific_Tools(ParamButtonsPanel, Panel):
         layout.operator("crowd.indiv")
 
         
-class Generation_Tools(ParamButtonsPanel, Panel):
+class Generation_Tools(Panel):
     bl_label = "Generate the crowd"
+    bl_category = 'Parameters'
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'TOOLS'
 #    COMPAT_ENGINES = {'BLENDER_RENDER'}
 
     def draw(self, context):
         layout = self.layout
         scn = context.scene
+        layout.operator("crowd.reset")
         layout.operator("crowd.generate")
 
 
-class Example_Tools(ParamButtonsPanel, Panel):
-    bl_label = "Example crowd"
+class Example_Tools(Panel):
+    bl_label = "Example crowds"
+    bl_category = 'Parameters'
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'TOOLS'
 
     def draw(self, context):
         layout = self.layout
         scn = context.scene
         layout.operator("crowd.example")
+        layout.operator("crowd.example2")
+        layout.operator("crowd.example3")
         
         
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class ParamSelectButton(bpy.types.Operator):
     bl_idname = "crowd.select"
     bl_label = "Set input as crowd"
 
@@ -417,7 +439,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         return{'FINISHED'}
     
     
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class ParamSaveButton(bpy.types.Operator):
     bl_idname = "crowd.save"
     bl_label = "Save crowd"
 
@@ -430,7 +452,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         return{'FINISHED'}
     
             
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class ParamDefaultButton(bpy.types.Operator):
     bl_idname = "crowd.default"
     bl_label = "Default"
 
@@ -451,7 +473,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         return{'FINISHED'}
 
     
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class ParamRandomButton(bpy.types.Operator):
     bl_idname = "crowd.random"
     bl_label = "Random"
 
@@ -475,7 +497,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         return{'FINISHED'}
     
 
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class ParamSpecificButton(bpy.types.Operator):
     bl_idname = "crowd.indiv"
     bl_label = "Set Specific"
 
@@ -491,17 +513,10 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
                                                 Sim.ew,
                                                 scn.SizeT,
                                                 Sha.Point(scn.GoalX, scn.GoalY, 0))
-        scn.InitX = scn.DefaultInitX
-        scn.InitY = scn.DefaultInitY
-        scn.VMax = scn.DefaultVMax
-        scn.VOpt = scn.DefaultVOpt
-        scn.SizeT = scn.DefaultSize
-        scn.GoalX = scn.DefaultGoalX
-        scn.GoalY = scn.DefaultGoalY
         return{'FINISHED'}
 
 
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class ParamCursorInitButton(bpy.types.Operator):
     bl_idname = "crowd.cursor_init"
     bl_label = "From Cursor"
 
@@ -515,7 +530,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         return{'FINISHED'}
 
     
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class ParamCursorDefaultInitButton(bpy.types.Operator):
     bl_idname = "crowd.default_init"
     bl_label = "From Cursor"
 
@@ -529,7 +544,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         return{'FINISHED'}
 
     
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class ParamCursorDefaultGoalButton(bpy.types.Operator):
     bl_idname = "crowd.default_goal"
     bl_label = "From Cursor"
 
@@ -543,7 +558,7 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         return{'FINISHED'}
 
 
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class ParamCursorGoalButton(bpy.types.Operator):
     bl_idname = "crowd.cursor_goal"
     bl_label = "From Cursor"
 
@@ -557,31 +572,93 @@ class OBJECT_OT_ToolsButton(bpy.types.Operator):
         return{'FINISHED'}
 
 
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+class ParamLoadIndiv(bpy.types.Operator):
+    bl_idname = "crowd.load_ind"
+    bl_label = "Load individual settings"
+
+    def execute(self, context):
+        scn = bpy.context.scene
+        view = bpy.context.space_data
+        loadi = scn.Ind
+        numberi = len(Sim.Individuals)
+        if (loadi < numberi):
+            scn.InitX = Sim.Individuals[loadi].position.x
+            scn.InitY = Sim.Individuals[loadi].position.y
+            scn.GoalX = Sim.Individuals[loadi].goal.x
+            scn.GoalY = Sim.Individuals[loadi].goal.y
+            scn.SizeT = Sim.Individuals[loadi].radius
+            scn.VMax = Sim.Individuals[loadi].vmax
+            scn.VOpt = Sim.Individuals[loadi].vopt
+        
+        return{'FINISHED'}
+        
+
+
+class ParamGenerationButton(bpy.types.Operator):
     bl_idname = "crowd.generate"
     bl_label = "Generate"
 
     def execute(self, context):
         scn = bpy.context.scene
         view = bpy.context.space_data
-        Sim.reset_crowd(Sim.cr)
+        Sim.cr.reset_indiv()
         for x in Sim.Individuals:
             Sim.cr.add_indiv(x)
         return{'FINISHED'}
 
+class ParamGenerationButton(bpy.types.Operator):
+    bl_idname = "crowd.reset"
+    bl_label = "Reset crowd and individuals"
 
-class OBJECT_OT_ToolsButton(bpy.types.Operator):
+    def execute(self, context):
+        scn = bpy.context.scene
+        view = bpy.context.space_data
+        Sim.Individuals = []
+        Sim.cr.reset_indiv()
+        return{'FINISHED'}
+
+
+class ParamExample1Button(bpy.types.Operator):
     bl_idname = "crowd.example"
-    bl_label = "Generate example"
+    bl_label = "Example 1"
 
     def execute(self, context):
         scn = bpy.context.scene
         view = bpy.context.space_data
         ind1 = C.Individual(0, 0, 0, 3, 2, Sim.es, Sim.ew, 1, Sha.Point(40, 50))
         ind2 = C.Individual(40, 50, 0, 3, 2, Sim.es, Sim.ew, 1, Sha.Point(0, 0))
-        Sim.cr = C.Crowd(Sim.graph, 1)
-        Sim.cr.add_indiv(ind1)
-        Sim.cr.add_indiv(ind2)
+        Sim.Individuals = [ind1, ind2]
+        scn.NumN = 2
+        return{'FINISHED'}
+
+
+class ParamExample2Button(bpy.types.Operator):
+    bl_idname = "crowd.example2"
+    bl_label = "Example 2"
+
+    def execute(self, context):
+        scn = bpy.context.scene
+        view = bpy.context.space_data
+        ind1 = C.Individual(-10, -10, 0, 5, 2, Sim.es, Sim.ew, Sim.radius, Sha.Point(10, 10))
+        ind2 = C.Individual(10, 10, 0, 5, 2, Sim.es, Sim.ew, Sim.radius, Sha.Point(-10, -10))
+        ind3 = C.Individual(10, -10, 0, 5, 2, Sim.es, Sim.ew, Sim.radius, Sha.Point(-10, 10))
+        ind4 = C.Individual(-10, 10, 0, 5, 2, Sim.es, Sim.ew, Sim.radius, Sha.Point(10, -10))
+        Sim.Individuals = [ind1, ind2, ind3, ind4]
+        scn.NumN = 4
+            
+        return{'FINISHED'}
+
+
+class ParamExample3Button(bpy.types.Operator):
+    bl_idname = "crowd.example3"
+    bl_label = "Example 3"
+
+    def execute(self, context):
+        scn = bpy.context.scene
+        view = bpy.context.space_data
+        ind1 = C.Individual(0, 0, 0, 3, 2, Sim.es, Sim.ew, 1, Sha.Point(40, 50))
+        ind2 = C.Individual(40, 50, 0, 3, 2, Sim.es, Sim.ew, 1, Sha.Point(0, 0))
+        Sim.Individuals = [ind1, ind2]
             
         return{'FINISHED'}
 
