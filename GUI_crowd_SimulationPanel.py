@@ -207,6 +207,10 @@ class SimulResetButton(bpy.types.Operator):
     def execute(self, context):
         scn = bpy.context.scene
         view = bpy.context.space_data
+        for ob in bpy.context.scene.objects:
+            ob.select = True
+            
+        bpy.ops.object.delete()
         return{'FINISHED'}
 
 
