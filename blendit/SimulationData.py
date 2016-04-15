@@ -23,18 +23,11 @@ graph = G.Graph(d=Grid,
                 posX=OriginX + MinX,
                 posY=OriginY + MinY)
 
-
-
-
 es = 2.23
 ew = 1.26
 tau = 1
 theta = 0.05
 cr = C.Crowd(graph, tau)
-
-
-
-
     
 N = -1
 data = cr.to_list_of_point()

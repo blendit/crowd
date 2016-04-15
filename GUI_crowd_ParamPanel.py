@@ -227,14 +227,10 @@ initSceneProperties(bpy.context.scene)
 #     def draw(self, context):
 #         layout = self.layout
 #         scn = context.scene
-#        
-#        
 #    @classmethod
 #    def poll(cls, context):
 #        scene = context.scene
 #        return scene and (scene.render.engine in cls.COMPAT_ENGINES)
-#
-#
 class File_Tools(Panel):
     bl_label = "Select from file / Save"
     bl_category = 'Parameters'
@@ -593,7 +589,6 @@ class ParamLoadIndiv(bpy.types.Operator):
         return{'FINISHED'}
         
 
-
 class ParamGenerationButton(bpy.types.Operator):
     bl_idname = "crowd.generate"
     bl_label = "Generate"
@@ -606,6 +601,7 @@ class ParamGenerationButton(bpy.types.Operator):
             Sim.cr.add_indiv(x)
         return{'FINISHED'}
 
+    
 class ParamGenerationButton(bpy.types.Operator):
     bl_idname = "crowd.reset"
     bl_label = "Reset crowd and individuals"
