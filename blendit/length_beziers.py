@@ -27,6 +27,7 @@ import blendit.GraphPLE as G
 import blendit.classes as C
 import blendit.geometric_tools as GT
 
+
 # information concerning the points
 class point_info:
     def __init__(point, recurrence, location):
